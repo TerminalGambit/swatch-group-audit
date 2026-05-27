@@ -1,0 +1,182 @@
+{
+  "ticker": "UHR (bearer) / UHRN (registered)",
+  "exchange": "SIX Swiss Exchange",
+  "isin_bearer": "CH0012255151",
+  "isin_registered": "CH0012255144",
+  "data_as_of": "2026-05-27",
+  "share_price_recent": {
+    "bearer": 211.70,
+    "registered": 41.80,
+    "date": "2026-05-27",
+    "source": "stockanalysis.com / investing.com (intraday May 27 2026)",
+    "notes": "Bearer (UHR) +2.77% on the day; registered (UHRN) +3.21% on the day. Registered share is priced at ~1/5 of bearer, reflecting 5:1 ratio."
+  },
+  "market_cap_chf_m": 10630,
+  "market_cap_notes": "~CHF 10.63B as of May 2026 per stockanalysis.com and simplywall.st. Enterprise value ~CHF 11B (alphaspread.com).",
+  "shares_outstanding_m": {
+    "bearer": 51.5,
+    "registered_approx": 147.0,
+    "notes": "Approximate. Annual report 2024 states ~51.5M bearer shares and ~147M registered shares (5:1 price ratio, 1:1 voting). Total economic shares ~199M on a bearer-equivalent basis approx."
+  },
+  "week52_high_low": {
+    "bearer_high_chf": 213.80,
+    "bearer_low_chf": 127.05,
+    "source": "hl.co.uk / stockanalysis.com (52-week window ending May 2026)"
+  },
+  "valuation_multiples": {
+    "pe_trailing": "~3500x (distorted — TTM net income CHF 3M from FY2025; not meaningful for analysis)",
+    "pe_trailing_fy2024": 49.6,
+    "pe_trailing_fy2023": 13.8,
+    "pe_trailing_fy2022": 18.4,
+    "pe_trailing_fy2021": 19.8,
+    "pe_forward": 40.75,
+    "pe_forward_notes": "Based on consensus FY2025 EPS estimates (stockanalysis.com, disfold.com)",
+    "ev_ebitda": 14.4,
+    "ev_ebitda_notes": "LTM per multiples.vc (May 2026). AlphaSpread reports 16.7x. valueinvesting.io reports 17.53x. Range 14-17x depending on source and date.",
+    "ev_ebitda_fy2024": 12.0,
+    "ev_ebitda_fy2023": 5.9,
+    "price_to_book": 0.95,
+    "price_to_book_source": "investing.com (MRQ)",
+    "dividend_yield_pct": 2.14,
+    "dividend_yield_notes": "Based on CHF 4.50 bearer dividend / ~CHF 210 price (May 2026). Some sources show 2.14-2.28%.",
+    "ev_sales": 1.5,
+    "ev_sales_notes": "LTM per multiples.vc. Also reported as 1.74x (price/sales) by investing.com.",
+    "price_to_sales": 1.74
+  },
+  "dividend_history": {
+    "notes": "Dividends shown by fiscal year (paid in May of the following year). Bearer shares receive 5x the registered share dividend.",
+    "fy2024": {
+      "bearer": 4.50,
+      "registered": 0.90,
+      "paid_date": "2025-05-27",
+      "ex_date": "2025-05-23"
+    },
+    "fy2023": {
+      "bearer": 6.50,
+      "registered": 1.30,
+      "paid_date": "2024-05-15",
+      "ex_date": "2024-05-13"
+    },
+    "fy2022": {
+      "bearer": 6.00,
+      "registered": 1.20,
+      "paid_date": "2023-05-16",
+      "ex_date": "2023-05-12"
+    },
+    "fy2021": {
+      "bearer": 5.50,
+      "registered": 1.10,
+      "paid_date": "2022-05-31",
+      "ex_date": "2022-05-27"
+    },
+    "fy2020": {
+      "bearer": 3.50,
+      "registered": 0.70,
+      "paid_date": "2021-05-18",
+      "ex_date": "2021-05-14"
+    },
+    "fy2019": {
+      "bearer": 5.50,
+      "registered": 1.10,
+      "paid_date": "2020-05-20",
+      "ex_date": "2020-05-18"
+    },
+    "fy2018": {
+      "bearer": 8.00,
+      "registered": 1.60,
+      "paid_date": "2019-05-29",
+      "ex_date": "2019-05-27"
+    },
+    "source": "divvydiary.com (CH0012255151) and dividendmax.com; confirmed via swatchgroup.com press releases"
+  },
+  "share_price_history_eoy": {
+    "notes": "Year-end closing prices (last trading day of December). Direct year-end prices were not available from open web sources; estimates derived from market cap data (stockanalysis.com) divided by approximate shares outstanding, cross-referenced with annual PE ratios (companiesmarketcap.com) and EPS data.",
+    "2024": {
+      "bearer_approx_chf": 163,
+      "basis": "Market cap CHF 8.46B / ~52M bearer shares. Consistent with 52-week low of ~CHF 127 in early 2025 and watchpro.com reporting 16-year lows around CHF 141. The stock was under pressure through 2024 on weak China demand."
+    },
+    "2023": {
+      "bearer_approx_chf": 224,
+      "basis": "Market cap CHF 11.66B / ~52M shares. PE of 13.8x × FY2023 EPS CHF 16.76 = ~CHF 231. Both methods consistent."
+    },
+    "2022": {
+      "bearer_approx_chf": 252,
+      "basis": "Market cap CHF 13.10B / ~52M shares. PE 18.4x × FY2022 EPS CHF 15.57 = ~CHF 286. Range CHF 250-286; market cap method used as primary."
+    },
+    "2021": {
+      "bearer_approx_chf": 273,
+      "basis": "Market cap CHF 14.18B / ~52M shares. PE 19.8x × FY2021 EPS CHF 14.77 = ~CHF 292."
+    },
+    "2020": {
+      "bearer_approx_chf": null,
+      "basis": "Market cap data for 2020 not available from open sources. FY2020 EPS was approximately CHF 3.11 (year of Covid); PE was negative in 2020 per companiesmarketcap.com (net loss year). Price estimated around CHF 240-270 based on recovery trajectory."
+    },
+    "2019": {
+      "bearer_approx_chf": null,
+      "basis": "Not retrievable from open web sources without paywalled historical data. FY2019 PE was 20.3x per companiesmarketcap.com. FY2019 EPS not confirmed from open sources."
+    }
+  },
+  "analyst_consensus": {
+    "date": "2026-05 (approximate)",
+    "overall_rating": "Neutral / Hold",
+    "buy_count": 3,
+    "hold_count": 8,
+    "sell_count": 7,
+    "total_analysts": 18,
+    "avg_price_target_chf": 163,
+    "high_price_target_chf": 235.8,
+    "low_price_target_chf": 95,
+    "implied_upside_pct": -22.9,
+    "notes": "Data as of May 2026 from multiple sources (investing.com, simplywall.st). Note: Stock has significantly rallied (up ~47-51% over 12 months) vs. average analyst target, suggesting consensus may lag recent re-rating. Recent upgrades: Citi raised to CHF 193 (Neutral), BofA upgraded to Neutral CHF 200, RBC upgraded to Sector Perform CHF 220.",
+    "source": "investing.com/equities/swatch-grp-i-consensus-estimates; simplywall.st; stockanalysis.com"
+  },
+  "performance_vs_smi": {
+    "1yr": "+47-51% (UHR bearer, May 2025 to May 2026)",
+    "since_jan_2022": "-46% (vs Richemont +29% over same period)",
+    "notes": "Significant underperformance vs SMI and luxury peers over 2022-2024 period. Strong recovery from late 2024/early 2025 lows."
+  },
+  "major_shareholders": {
+    "hayek_family_pct_voting": 44.1,
+    "hayek_family_pct_capital": "~25% (estimated; exact figure requires annual report)",
+    "control_mechanism": "Dual-class shares: registered shares (CHF 0.45 nominal) carry same vote as bearer (CHF 2.25 nominal) but are 1/5 the price. Family concentrates in registered shares to amplify voting power vs economic stake.",
+    "other_major": [
+      {
+        "name": "The Vanguard Group",
+        "stake_pct": "<5%",
+        "type": "institutional"
+      },
+      {
+        "name": "BlackRock",
+        "stake_pct": "<5%",
+        "type": "institutional"
+      },
+      {
+        "name": "State Street Global Advisors",
+        "stake_pct": "<5%",
+        "type": "institutional"
+      },
+      {
+        "name": "Charles Schwab Investment Management",
+        "stake_pct": "<5%",
+        "type": "institutional"
+      }
+    ],
+    "activist_interest": "2024/2025: An activist investor sought a board seat challenging Hayek family control (reported by Hedgeweek and Business of Fashion).",
+    "source": "whoistheownerof.com; DCF modeling.com; swatchgroup.com Annual Report 2025 corporate governance; swissinfo.ch (Hayek family share purchases July 2024)"
+  },
+  "short_interest": {
+    "available": false,
+    "notes": "Short interest data for SIX-listed UHR shares (Swiss exchange) is not publicly disclosed in standard open-web sources. ORTEX and similar platforms track it behind paywalls. OTC equivalents (SWGAF, SWGNF) may have US-reported short interest but are low-volume proxies. Could not retrieve a reliable figure."
+  },
+  "key_financial_context_2024": {
+    "revenue_chf_m": 6735,
+    "revenue_change_pct": -14.6,
+    "ebitda_chf_m": 676,
+    "operating_profit_chf_m": 304,
+    "operating_margin_pct": 4.5,
+    "net_income_chf_m": 193,
+    "net_margin_pct": 3.3,
+    "eps_bearer_chf": 3.73,
+    "eps_note": "FY2024 EPS CHF 3.73 per bearer share (vs CHF 16.76 in FY2023). FY2025 EPS collapsed to CHF 0.06 due to tax spike."
+  }
+}

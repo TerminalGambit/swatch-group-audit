@@ -1,0 +1,776 @@
+{
+  "currency": "CHF million",
+  "reporting_standard": "Swiss GAAP FER",
+  "approved_by_board": "5 March 2025",
+  "auditor": "PricewaterhouseCoopers AG, Basel",
+  "auditor_opinion": "Unqualified - true and fair view",
+  "audit_materiality_consolidated": 40,
+  "audit_materiality_parent": 35,
+
+  "income_statement": {
+    "2024": {
+      "net_sales": 6735,
+      "sale_of_goods": 6708,
+      "rendering_of_services": 27,
+      "other_operating_income": 263,
+      "changes_in_inventories": 213,
+      "material_purchases": -1345,
+      "personnel_expense": -2506,
+      "depreciation_ppe": -368,
+      "amortization_intangibles": -48,
+      "other_operating_expenses": -2640,
+      "operating_result": 304,
+      "operating_margin_pct": 4.5,
+      "other_financial_income_expense": 44,
+      "interest_expense": -3,
+      "share_of_result_associates_jv": -2,
+      "net_financial_result": 39,
+      "ordinary_result": 343,
+      "non_operating_result": 2,
+      "result_before_income_taxes": 345,
+      "income_taxes": -126,
+      "effective_tax_rate_pct": 36.5,
+      "net_result": 219,
+      "net_result_pct_of_sales": 3.3,
+      "attributable_to_shareholders": 193,
+      "attributable_to_minority_interests": 26,
+      "eps_registered_basic": 0.75,
+      "eps_registered_diluted": 0.75,
+      "eps_bearer_basic": 3.74,
+      "eps_bearer_diluted": 3.74
+    },
+    "2023": {
+      "net_sales": 7888,
+      "sale_of_goods": 7864,
+      "rendering_of_services": 24,
+      "other_operating_income": 136,
+      "changes_in_inventories": 687,
+      "material_purchases": -1864,
+      "personnel_expense": -2550,
+      "depreciation_ppe": -346,
+      "amortization_intangibles": -44,
+      "other_operating_expenses": -2716,
+      "operating_result": 1191,
+      "operating_margin_pct": 15.1,
+      "other_financial_income_expense": -36,
+      "interest_expense": -4,
+      "share_of_result_associates_jv": -1,
+      "net_financial_result": -41,
+      "ordinary_result": 1150,
+      "non_operating_result": 2,
+      "result_before_income_taxes": 1152,
+      "income_taxes": -262,
+      "effective_tax_rate_pct": 22.7,
+      "net_result": 890,
+      "net_result_pct_of_sales": 11.3,
+      "attributable_to_shareholders": 869,
+      "attributable_to_minority_interests": 21,
+      "eps_registered_basic": 3.35,
+      "eps_registered_diluted": 3.35,
+      "eps_bearer_basic": 16.76,
+      "eps_bearer_diluted": 16.75
+    }
+  },
+
+  "other_operating_expenses_breakdown": {
+    "2024": {
+      "marketing_sales_administration": -1051,
+      "subcontracting_other_direct_costs": -353,
+      "maintenance_rents_energy": -1023,
+      "other_operating_expenses": -213,
+      "total": -2640
+    },
+    "2023": {
+      "marketing_sales_administration": -1204,
+      "subcontracting_other_direct_costs": -380,
+      "maintenance_rents_energy": -1057,
+      "other_operating_expenses": -75,
+      "total": -2716
+    }
+  },
+
+  "balance_sheet": {
+    "2024": {
+      "assets": {
+        "current": {
+          "cash_and_equivalents": 1103,
+          "financial_assets_securities_derivatives": 293,
+          "trade_receivables_net": 612,
+          "trade_receivables_gross": 618,
+          "allowance_impaired_receivables": -6,
+          "other_current_assets": 107,
+          "inventories": 7641,
+          "prepayments_accrued_income": 250,
+          "total_current": 10006
+        },
+        "non_current": {
+          "property_plant_equipment_net": 3162,
+          "intangible_assets_net": 151,
+          "investments_associates_jv": 34,
+          "other_non_current_assets": 186,
+          "deferred_tax_assets": 453,
+          "total_non_current": 3986
+        },
+        "total_assets": 13992
+      },
+      "liabilities_and_equity": {
+        "current_liabilities": {
+          "financial_debts_derivatives": 20,
+          "trade_payables": 270,
+          "other_liabilities": 213,
+          "provisions": 95,
+          "accrued_expenses": 424,
+          "total_current": 1022
+        },
+        "non_current_liabilities": {
+          "financial_debts": 2,
+          "deferred_tax_liabilities": 507,
+          "retirement_benefit_obligations": 44,
+          "provisions": 71,
+          "accrued_expenses": 129,
+          "total_non_current": 753
+        },
+        "total_liabilities": 1775,
+        "equity": {
+          "share_capital": 118,
+          "capital_reserves": -978,
+          "treasury_shares": -132,
+          "goodwill_recognized": -1416,
+          "translation_differences": -754,
+          "retained_earnings": 15274,
+          "equity_of_swatch_group_ltd_shareholders": 12112,
+          "non_controlling_interests": 105,
+          "total_equity": 12217,
+          "equity_pct_of_total": 87.3
+        }
+      }
+    },
+    "2023": {
+      "assets": {
+        "current": {
+          "cash_and_equivalents": 1683,
+          "financial_assets_securities_derivatives": 380,
+          "trade_receivables_net": 672,
+          "trade_receivables_gross": 678,
+          "allowance_impaired_receivables": -6,
+          "other_current_assets": 195,
+          "inventories": 7309,
+          "prepayments_accrued_income": 263,
+          "total_current": 10502
+        },
+        "non_current": {
+          "property_plant_equipment_net": 3029,
+          "intangible_assets_net": 153,
+          "investments_associates_jv": 13,
+          "other_non_current_assets": 84,
+          "deferred_tax_assets": 448,
+          "total_non_current": 3727
+        },
+        "total_assets": 14229
+      },
+      "liabilities_and_equity": {
+        "current_liabilities": {
+          "financial_debts_derivatives": 75,
+          "trade_payables": 317,
+          "other_liabilities": 164,
+          "provisions": 97,
+          "accrued_expenses": 567,
+          "total_current": 1220
+        },
+        "non_current_liabilities": {
+          "financial_debts": 2,
+          "deferred_tax_liabilities": 516,
+          "retirement_benefit_obligations": 42,
+          "provisions": 64,
+          "accrued_expenses": 127,
+          "total_non_current": 751
+        },
+        "total_liabilities": 1971,
+        "equity": {
+          "share_capital": 118,
+          "capital_reserves": -971,
+          "treasury_shares": -114,
+          "goodwill_recognized": -1352,
+          "translation_differences": -900,
+          "retained_earnings": 15416,
+          "equity_of_swatch_group_ltd_shareholders": 12197,
+          "non_controlling_interests": 61,
+          "total_equity": 12258,
+          "equity_pct_of_total": 86.1
+        }
+      }
+    }
+  },
+
+  "cash_flows": {
+    "2024": {
+      "operating": {
+        "net_result": 219,
+        "share_of_result_associates_jv": 2,
+        "income_taxes_addback": 126,
+        "depreciation_amortization": 414,
+        "impairment": 2,
+        "changes_provisions_retirement": 4,
+        "gains_losses_sale_noncurrent": 1,
+        "fair_value_gains_losses_securities": 4,
+        "stock_option_expense": 7,
+        "other_noncash": -39,
+        "change_trade_receivables": 71,
+        "change_inventories": -220,
+        "change_other_current_assets_prepayments": 32,
+        "change_trade_payables": -30,
+        "change_other_liabilities_accrued": -60,
+        "dividends_from_associates_jv": 2,
+        "income_tax_paid": -202,
+        "total_operating": 333
+      },
+      "investing": {
+        "capex_ppe": -503,
+        "proceeds_sale_ppe": 3,
+        "government_grants_assets": 1,
+        "investments_intangibles": -46,
+        "proceeds_sale_intangibles": 2,
+        "investments_other_noncurrent": -19,
+        "proceeds_other_noncurrent": 9,
+        "acquisition_subsidiaries_net_cash": 0,
+        "repurchase_nci": -6,
+        "investments_current_financial_assets_securities": -241,
+        "proceeds_current_financial_assets_securities": 330,
+        "total_investing": -470
+      },
+      "financing": {
+        "dividends_paid_shareholders": -335,
+        "dividends_paid_nci": -23,
+        "purchase_treasury_shares": -50,
+        "sale_treasury_shares": 0,
+        "change_noncurrent_financial_debts": 0,
+        "change_current_financial_debts": -3,
+        "total_financing": -410,
+        "note_financing_per_summary": -382
+      },
+      "fx_impact_on_cash": 28,
+      "net_change_in_cash": -519,
+      "opening_cash": 1616,
+      "closing_cash": 1097,
+      "closing_cash_balance_sheet": 1103,
+      "overdrafts_netted": -6
+    },
+    "2023": {
+      "operating": {
+        "net_result": 890,
+        "share_of_result_associates_jv": 1,
+        "income_taxes_addback": 262,
+        "depreciation_amortization": 390,
+        "impairment": 0,
+        "changes_provisions_retirement": 16,
+        "gains_losses_sale_noncurrent": -2,
+        "fair_value_gains_losses_securities": -12,
+        "stock_option_expense": 8,
+        "other_noncash": 81,
+        "change_trade_receivables": 72,
+        "change_inventories": -698,
+        "change_other_current_assets_prepayments": -73,
+        "change_trade_payables": 25,
+        "change_other_liabilities_accrued": 26,
+        "dividends_from_associates_jv": 1,
+        "income_tax_paid": -228,
+        "total_operating": 615
+      },
+      "investing": {
+        "capex_ppe": -730,
+        "proceeds_sale_ppe": 20,
+        "government_grants_assets": 0,
+        "investments_intangibles": -55,
+        "proceeds_sale_intangibles": 1,
+        "investments_other_noncurrent": -18,
+        "proceeds_other_noncurrent": 12,
+        "acquisition_subsidiaries_net_cash": -2,
+        "repurchase_nci": 0,
+        "investments_current_financial_assets_securities": -439,
+        "proceeds_current_financial_assets_securities": 443,
+        "total_investing": -768
+      },
+      "financing": {
+        "dividends_paid_shareholders": -311,
+        "dividends_paid_nci": -17,
+        "purchase_treasury_shares": 0,
+        "sale_treasury_shares": 0,
+        "change_noncurrent_financial_debts": 0,
+        "change_current_financial_debts": 0,
+        "total_financing": -327,
+        "note_financing_per_summary": -407
+      },
+      "fx_impact_on_cash": -80,
+      "net_change_in_cash": -560,
+      "opening_cash": 2176,
+      "closing_cash": 1616,
+      "closing_cash_balance_sheet": 1683,
+      "overdrafts_netted": -67
+    }
+  },
+
+  "equity_changes": {
+    "2024": {
+      "opening_equity_shareholders": 12197,
+      "opening_nci": 61,
+      "opening_total_equity": 12258,
+      "net_result_shareholders": 193,
+      "net_result_nci": 26,
+      "currency_translation_shareholders": 146,
+      "currency_translation_nci": 7,
+      "change_in_goodwill": -5,
+      "dividends_paid_shareholders": -335,
+      "dividends_paid_nci": -23,
+      "employee_stock_option_plan": 6,
+      "purchase_treasury_shares": -50,
+      "transactions_with_nci": -40,
+      "transactions_with_nci_impact_on_nci": 34,
+      "closing_equity_shareholders": 12112,
+      "closing_nci": 105,
+      "closing_total_equity": 12217
+    },
+    "2023": {
+      "opening_equity_shareholders": 11985,
+      "opening_nci": 66,
+      "opening_total_equity": 12051,
+      "net_result_shareholders": 869,
+      "net_result_nci": 21,
+      "currency_translation_shareholders": -353,
+      "currency_translation_nci": -9,
+      "change_in_goodwill": -2,
+      "dividends_paid_shareholders": -311,
+      "dividends_paid_nci": -17,
+      "employee_stock_option_plan": 9,
+      "purchase_treasury_shares": 0,
+      "transactions_with_nci": 0,
+      "closing_equity_shareholders": 12197,
+      "closing_nci": 61,
+      "closing_total_equity": 12258
+    }
+  },
+
+  "segments": {
+    "2024": {
+      "watches_jewelry": {
+        "net_sales_third_parties": 6415,
+        "net_sales_group": 3,
+        "net_sales": 6418,
+        "operating_result": 410,
+        "margin_pct": 6.4
+      },
+      "electronic_systems": {
+        "net_sales_third_parties": 316,
+        "net_sales_group": 14,
+        "net_sales": 330,
+        "operating_result": 12,
+        "margin_pct": 3.6
+      },
+      "corporate": {
+        "net_sales_third_parties": 4,
+        "net_sales_group": 4,
+        "net_sales": 8,
+        "operating_result": -118
+      },
+      "eliminations": {
+        "net_sales": -21,
+        "operating_result": 0
+      },
+      "total": {
+        "net_sales": 6735,
+        "operating_result": 304,
+        "margin_pct": 4.5
+      }
+    },
+    "2023": {
+      "watches_jewelry": {
+        "net_sales_third_parties": 7544,
+        "net_sales_group": 2,
+        "net_sales": 7546,
+        "operating_result": 1298,
+        "margin_pct": 17.2
+      },
+      "electronic_systems": {
+        "net_sales_third_parties": 340,
+        "net_sales_group": 19,
+        "net_sales": 359,
+        "operating_result": 27,
+        "margin_pct": 7.5
+      },
+      "corporate": {
+        "net_sales_third_parties": 4,
+        "net_sales_group": 5,
+        "net_sales": 9,
+        "operating_result": -134
+      },
+      "eliminations": {
+        "net_sales": -26,
+        "operating_result": 0
+      },
+      "total": {
+        "net_sales": 7888,
+        "operating_result": 1191,
+        "margin_pct": 15.1
+      }
+    }
+  },
+
+  "geographic_net_sales": {
+    "2024": {
+      "switzerland": 500,
+      "other_europe": 1368,
+      "total_europe": 1868,
+      "greater_china": 1833,
+      "other_asia": 1722,
+      "total_asia": 3555,
+      "total_america": 1188,
+      "total_oceania": 93,
+      "total_africa": 31,
+      "total": 6735,
+      "china_incl_hk_macau_pct": 27,
+      "note": "Greater China = CHF 1833m (27% of total vs 33% in 2023)"
+    },
+    "2023": {
+      "switzerland": 579,
+      "other_europe": 1543,
+      "total_europe": 2122,
+      "greater_china": 2630,
+      "other_asia": 1796,
+      "total_asia": 4426,
+      "total_america": 1198,
+      "total_oceania": 106,
+      "total_africa": 36,
+      "total": 7888,
+      "china_incl_hk_macau_pct": 33
+    }
+  },
+
+  "per_share": {
+    "2024": {
+      "eps_registered_basic": 0.75,
+      "eps_registered_diluted": 0.75,
+      "eps_bearer_basic": 3.74,
+      "eps_bearer_diluted": 3.74,
+      "cfo_per_registered_share": 1.29,
+      "cfo_per_bearer_share": 6.44,
+      "consolidated_equity_per_registered_share": 47.27,
+      "consolidated_equity_per_bearer_share": 236.37,
+      "dividend_registered_proposed": 0.90,
+      "dividend_bearer_proposed": 4.50,
+      "shares_registered_avg_outstanding": 115027319,
+      "shares_bearer_avg_outstanding": 28681447,
+      "shares_registered_total_issued": 116919500,
+      "shares_bearer_total_issued": 28936000,
+      "treasury_registered": 1791172,
+      "treasury_bearer": 194669,
+      "stock_price_registered_high": 43.95,
+      "stock_price_registered_low": 29.35,
+      "stock_price_registered_year_end": 32.10,
+      "stock_price_bearer_high": 228.60,
+      "stock_price_bearer_low": 148.85,
+      "stock_price_bearer_year_end": 165.00,
+      "market_cap_chf_million": 8528,
+      "dividend_yield_registered_pct": 2.8,
+      "dividend_yield_bearer_pct": 2.7,
+      "average_roe_pct": 1.8
+    },
+    "2023": {
+      "eps_registered_basic": 3.35,
+      "eps_registered_diluted": 3.35,
+      "eps_bearer_basic": 16.76,
+      "eps_bearer_diluted": 16.75,
+      "cfo_per_registered_share": 2.37,
+      "cfo_per_bearer_share": 11.86,
+      "consolidated_equity_per_registered_share": 47.28,
+      "consolidated_equity_per_bearer_share": 236.39,
+      "dividend_registered_paid": 1.30,
+      "dividend_bearer_paid": 6.50,
+      "market_cap_chf_million": 11765,
+      "average_roe_pct": 7.3
+    }
+  },
+
+  "key_notes": {
+    "inventories_2024": 7641,
+    "inventories_breakdown_2024": {
+      "raw_materials_auxiliary_supplies": 660,
+      "goods_in_progress": 408,
+      "semi_finished_goods": 2287,
+      "finished_goods": 3918,
+      "spare_parts_customer_service": 368,
+      "total": 7641
+    },
+    "inventories_2023": 7309,
+    "inventories_breakdown_2023": {
+      "raw_materials_auxiliary_supplies": 690,
+      "goods_in_progress": 565,
+      "semi_finished_goods": 2117,
+      "finished_goods": 3565,
+      "spare_parts_customer_service": 372,
+      "total": 7309
+    },
+    "inventory_writedowns_2024": {
+      "additional_writedowns": -47,
+      "reversal_of_writedowns": 8,
+      "net_impact_income_statement": -39
+    },
+    "inventory_writedowns_2023": {
+      "additional_writedowns": -53,
+      "reversal_of_writedowns": 3,
+      "net_impact_income_statement": -50
+    },
+    "ppe_net_2024": 3162,
+    "ppe_net_2023": 3029,
+    "ppe_breakdown_2024": {
+      "land_buildings_properties_net": 1731,
+      "technical_equipment_machinery_net": 1004,
+      "other_equipment_fixtures_net": 301,
+      "advances_construction_in_progress_net": 126,
+      "total_net": 3162,
+      "investment_properties_included": 529,
+      "undeveloped_properties_included": 31
+    },
+    "ppe_breakdown_2023": {
+      "land_buildings_properties_net": 1745,
+      "technical_equipment_machinery_net": 947,
+      "other_equipment_fixtures_net": 267,
+      "advances_construction_in_progress_net": 70,
+      "total_net": 3029,
+      "investment_properties_included": 527,
+      "undeveloped_properties_included": 29
+    },
+    "ppe_historical_cost_2024": 8533,
+    "ppe_accumulated_depreciation_2024": -5371,
+    "capex_2024": 503,
+    "capex_intangibles_2024": 46,
+    "total_noncurrent_asset_investments_2024": 568,
+    "depreciation_amortization_2024": 414,
+    "depreciation_ppe_2024": 366,
+    "amortization_intangibles_2024": 48,
+    "intangibles_net_2024": 151,
+    "intangibles_breakdown_2024": {
+      "capitalized_development_costs_net": 44,
+      "software_net": 40,
+      "other_intangibles_net": 67,
+      "total_net": 151
+    },
+    "goodwill_policy": "Charged directly to Group equity at acquisition; not capitalized on balance sheet per Swiss GAAP FER",
+    "goodwill_theoretical_net_book_value_2024": 70,
+    "goodwill_theoretical_net_book_value_2023": 1,
+    "goodwill_historical_cost_total_2024": 1481,
+    "goodwill_historical_cost_group_companies_2024": 1439,
+    "goodwill_historical_cost_associates_2024": 42,
+    "goodwill_recognized_in_equity_2024": -1416,
+    "goodwill_recognized_in_equity_2023": -1352,
+    "financial_debt_total_2024": 22,
+    "financial_debt_current_2024": 20,
+    "financial_debt_noncurrent_2024": 2,
+    "financial_debt_total_2023": 77,
+    "cash_and_equivalents_balance_sheet_2024": 1103,
+    "cash_and_equivalents_balance_sheet_2023": 1683,
+    "cash_funds_net_cash_2024": 1097,
+    "cash_funds_net_cash_2023": 1616,
+    "net_liquidity_2024": 1376,
+    "net_liquidity_2023": 1988,
+    "financial_assets_securities_2024": 293,
+    "financial_assets_securities_2023": 380,
+    "marketable_securities_2024": {
+      "equity_securities": 108,
+      "bond_securities": 163,
+      "investment_funds_other": 1,
+      "total": 272
+    },
+    "marketable_securities_2023": {
+      "equity_securities": 113,
+      "bond_securities": 227,
+      "investment_funds_other": 5,
+      "total": 345
+    },
+    "forward_contracts_outstanding_2024": {
+      "total_contract_value": 810,
+      "total_positive_fair_value": 1,
+      "total_negative_fair_value": -9,
+      "currencies": ["CNY", "EUR", "GBP", "HKD", "JPY", "USD", "Other"]
+    },
+    "pension_obligations_balance_sheet_2024": 44,
+    "pension_obligations_balance_sheet_2023": 42,
+    "total_pension_costs_2024": -151,
+    "total_pension_costs_2023": -146,
+    "pension_fund_surplus_2024": 304,
+    "pension_fund_group_economic_share_2024": -44,
+    "income_tax_rate_applicable": 20.9,
+    "income_tax_rate_effective_2024": 36.5,
+    "income_tax_rate_effective_2023": 22.7,
+    "income_taxes_current_2024": -139,
+    "income_taxes_deferred_2024": 8,
+    "income_taxes_prior_periods_2024": 5,
+    "total_income_taxes_2024": -126,
+    "deferred_tax_assets_2024": 453,
+    "deferred_tax_liabilities_2024": 507,
+    "deferred_tax_net_2024": -54,
+    "unused_carryforward_tax_losses_2024": 952,
+    "carryforward_losses_recognized_2024": 89,
+    "carryforward_losses_not_recognized_2024": 863,
+    "number_employees_avg_2024": 33230,
+    "number_employees_total_dec2024": 32477,
+    "number_employees_avg_2023": 32693,
+    "number_employees_total_dec2023": 33602,
+    "retail_share_pct_2024": 47,
+    "rd_costs_2024": 273,
+    "rd_pct_of_sales_2024": 4.1,
+    "rd_costs_2023": 275,
+    "rd_pct_of_sales_2023": 3.5,
+    "personnel_expense_breakdown_2024": {
+      "wages_salaries": -1997,
+      "social_security_costs": -351,
+      "stock_option_plan": -7,
+      "pension_costs": -151,
+      "total": -2506
+    },
+    "provisions_total_2024": 166,
+    "provisions_breakdown_2024": {
+      "warranty": 99,
+      "legal_risks": 3,
+      "dismantling_restoration": 37,
+      "other_incl_restructuring_15m": 27,
+      "total": 166,
+      "current": 95,
+      "non_current": 71
+    },
+    "provisions_total_2023": 161,
+    "provisions_breakdown_2023": {
+      "warranty": 96,
+      "legal_risks": 3,
+      "dismantling_restoration": 34,
+      "other": 28,
+      "total": 161,
+      "current": 97,
+      "non_current": 64
+    },
+    "operating_lease_commitments_2024": {
+      "less_than_1_year": 386,
+      "between_1_and_5_years": 1123,
+      "over_5_years": 613,
+      "total": 2122
+    },
+    "operating_lease_commitments_2023": {
+      "less_than_1_year": 336,
+      "between_1_and_5_years": 1009,
+      "over_5_years": 613,
+      "total": 1958
+    },
+    "leasing_costs_recognized_2024": 551,
+    "other_irrevocable_commitments_2024": 730,
+    "guarantees_to_third_parties_2024": 11,
+    "assets_pledged_2024": 81,
+    "number_consolidated_companies": 148,
+    "number_countries_taxed": 37,
+    "share_capital_registered_shares": 116919500,
+    "share_capital_bearer_shares": 28936000,
+    "nominal_value_registered_per_share_chf": 0.45,
+    "nominal_value_bearer_per_share_chf": 2.25,
+    "total_share_capital_chf": 117719775,
+    "hayek_pool_voting_rights_pct": 44.1
+  },
+
+  "net_financial_result_detail": {
+    "2024": {
+      "interest_income": 34,
+      "result_marketable_securities_fair_value": 19,
+      "net_currency_result": -5,
+      "other_financial_expense": -4,
+      "other_financial_income_expense_subtotal": 44,
+      "interest_expense": -3,
+      "share_result_associates_jv": -2,
+      "net_financial_result": 39
+    },
+    "2023": {
+      "interest_income": 41,
+      "result_marketable_securities_fair_value": 17,
+      "net_currency_result": -91,
+      "other_financial_expense": -3,
+      "other_financial_income_expense_subtotal": -36,
+      "interest_expense": -4,
+      "share_result_associates_jv": -1,
+      "net_financial_result": -41
+    }
+  },
+
+  "parent_company_swatch_group_ltd": {
+    "income_statement_2024": {
+      "income_from_investments_in_subsidiaries": 674,
+      "other_income": 6,
+      "personnel_expense": -39,
+      "other_expenses": -48,
+      "depreciation_impairment": -105,
+      "financial_expenses": -22,
+      "financial_income": 136,
+      "ordinary_result": 602,
+      "profit_before_income_taxes": 602,
+      "income_taxes": -1,
+      "net_income": 601
+    },
+    "income_statement_2023": {
+      "income_from_investments_in_subsidiaries": 629,
+      "other_income": 6,
+      "personnel_expense": -47,
+      "other_expenses": -23,
+      "depreciation_impairment": -48,
+      "financial_expenses": -69,
+      "financial_income": 128,
+      "ordinary_result": 576,
+      "profit_before_income_taxes": 576,
+      "income_taxes": -2,
+      "net_income": 574
+    },
+    "balance_sheet_2024": {
+      "total_assets": 9618,
+      "total_current_assets": 4345,
+      "total_non_current_assets": 5273,
+      "total_liabilities": 141,
+      "total_equity": 9477,
+      "equity_ratio_pct": 98.5,
+      "investments_subsidiaries_associates": 4753,
+      "loans_to_group_companies": 515,
+      "available_earnings": 631,
+      "proposed_dividend_registered_per_share": 0.90,
+      "proposed_dividend_bearer_per_share": 4.50,
+      "proposed_total_dividend": 235,
+      "allocation_voluntary_reserve": 370,
+      "balance_carried_forward": 26
+    },
+    "balance_sheet_2023": {
+      "total_assets": 9438,
+      "total_equity": 9237,
+      "equity_ratio_pct": 97.9,
+      "investments_subsidiaries_associates": 4552
+    },
+    "employees_fte_avg_2024": 138
+  },
+
+  "exchange_rates": {
+    "2024": {
+      "CNY_avg": 0.1230,
+      "CNY_year_end": 0.1240,
+      "EUR_avg": 0.9551,
+      "EUR_year_end": 0.9430,
+      "HKD_avg": 0.1135,
+      "HKD_year_end": 0.1170,
+      "JPY100_avg": 0.5835,
+      "JPY100_year_end": 0.5790,
+      "USD_avg": 0.8853,
+      "USD_year_end": 0.9080
+    },
+    "2023": {
+      "CNY_avg": 0.1271,
+      "CNY_year_end": 0.1188,
+      "EUR_avg": 0.9742,
+      "EUR_year_end": 0.9347,
+      "HKD_avg": 0.1150,
+      "HKD_year_end": 0.1082,
+      "JPY100_avg": 0.6399,
+      "JPY100_year_end": 0.5980,
+      "USD_avg": 0.9007,
+      "USD_year_end": 0.8450
+    }
+  }
+}

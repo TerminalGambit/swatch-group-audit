@@ -1,0 +1,137 @@
+{
+  "currency": "CHF million",
+  "source_notes": "Data sourced from Swatch Group official key figures press releases (swatchgroup.com), Federation of the Swiss Watch Industry (FHS) annual summaries, and corroborated via secondary sources (MonochromeWatches, DivvyDiary, MarketScreener). Dividends shown are for the fiscal year reported (paid at the subsequent AGM, typically in May). Operating margin figures are Group consolidated (not segment-only). Net margin computed as net result / net sales.",
+  "annual_data": {
+    "2019": {
+      "net_sales": 8243,
+      "operating_result": 1023,
+      "operating_margin_pct": 12.4,
+      "net_result": 748,
+      "net_margin_pct": 9.1,
+      "dividend_bearer": 8.00,
+      "employees": 36100,
+      "notes": "Pre-COVID baseline. Hong Kong protests reduced H2 sales by ~CHF 200M. Net sales down 1.8% at constant FX vs 2018. Calvin Klein license still active. Share repurchase program (CHF 1B, 2016-launched) closed January 2019."
+    },
+    "2020": {
+      "net_sales": 5595,
+      "operating_result": 52,
+      "operating_margin_pct": 0.9,
+      "net_result": -53,
+      "net_margin_pct": -0.9,
+      "dividend_bearer": 3.50,
+      "employees": 32400,
+      "notes": "COVID-19 pandemic — first net loss in company history (since 1983 founding). Net sales fell 28.7% at constant FX. 384 retail locations temporarily closed. E-commerce grew 70%. H2 recovery: -14.3% vs prior H2. Workforce reduced 10.2%. Calvin Klein to be discontinued in 2021. Net liquidity reached CHF 1,700M (+CHF 332M vs 2019). Dividend cut from CHF 8.00 to CHF 3.50."
+    },
+    "2021": {
+      "net_sales": 7313,
+      "operating_result": 1021,
+      "operating_margin_pct": 14.0,
+      "net_result": 774,
+      "net_margin_pct": 10.6,
+      "dividend_bearer": 5.50,
+      "employees": 31444,
+      "notes": "Strong V-shaped recovery driven by pent-up demand and China rebound. Net sales up 30.7% at current rates (29.6% constant FX). Did not fully recover to pre-COVID 2019 level of CHF 8,243M. Calvin Klein license formally discontinued. Short-time work allowances: CHF 61M. Dividend partially restored to CHF 5.50."
+    },
+    "2022": {
+      "net_sales": 7499,
+      "operating_result": 1158,
+      "operating_margin_pct": 15.4,
+      "net_result": 823,
+      "net_margin_pct": 11.0,
+      "dividend_bearer": 6.00,
+      "employees": 32061,
+      "notes": "Post-recovery normalization despite headwinds. MoonSwatch (Swatch x Omega collaboration) launched March 26, 2022 — drove viral demand, boosted Omega Speedmaster sales ~50%. China COVID confinements caused >CHF 700M sales shortfall. Net sales +4.6% constant FX. Russia-Ukraine war added geopolitical uncertainty. Operating margin expanded to 15.4%. Short-time work: CHF 1M (down from CHF 61M in 2021)."
+    },
+    "2023": {
+      "net_sales": 7888,
+      "operating_result": 1191,
+      "operating_margin_pct": 15.1,
+      "net_result": 890,
+      "net_margin_pct": 11.3,
+      "dividend_bearer": 6.50,
+      "employees": 33602,
+      "notes": "Peak profitability year. Net sales +12.6% constant FX (+5.2% current rates). Negative currency impact CHF 554M. New Swiss jobs: 802. Capital investments: CHF 803M. Real estate net book value CHF 1.8B. Operating margin slightly moderated to 15.1% from 15.4% in 2022 but net result reached record CHF 890M. China luxury demand began showing early softness late 2023."
+    },
+    "2024": {
+      "net_sales": 6735,
+      "operating_result": 304,
+      "operating_margin_pct": 4.5,
+      "net_result": 219,
+      "net_margin_pct": 3.3,
+      "dividend_bearer": 4.50,
+      "employees": 32477,
+      "notes": "Sharp China-led decline. Net sales -12.2% constant FX (-14.6% current rates). Negative currency impact CHF 192M. Watches & Jewellery segment operating margin fell to 10.6% (vs 17.2% in 2023). Production division reported strongly negative operating result. Capital investments reduced to CHF 568M (from CHF 803M). Share buybacks and Hayek family open-market purchases signalled management conviction. Marc A. Hayek joined Board May 2024 (third generation)."
+    }
+  },
+  "peak_year": {
+    "net_sales": 8243,
+    "year": "2019",
+    "notes": "Pre-COVID peak. Group never recovered to this revenue level through 2024."
+  },
+  "trough_year": {
+    "net_sales": 5595,
+    "year": "2020",
+    "notes": "COVID pandemic trough. First net loss (CHF -53M) in company history."
+  },
+  "corporate_actions": {
+    "share_buybacks": [
+      {
+        "program": "CHF 1 billion repurchase (15,488,500 shares)",
+        "launched": "February 5, 2016",
+        "closed": "January 24, 2019",
+        "notes": "Closed before most of the audit period. No new formal buyback program announced 2020-2022."
+      },
+      {
+        "program": "Sustained open-market repurchases",
+        "period": "2023-2025",
+        "total": "Exceeding CHF 600 million",
+        "notes": "Management deployed buybacks during market downturn, amplifying Hayek family relative stake."
+      }
+    ],
+    "major_acquisitions_divestitures": [
+      {
+        "event": "Calvin Klein license discontinued",
+        "year": "2021",
+        "type": "Divestiture/license exit",
+        "notes": "22-year licensing agreement (watches and jewelry, from 1997) allowed to expire. Had been flagged as drag on 2020 results; excluding CK, 2020 operating result would have been CHF 99M vs CHF 52M reported."
+      },
+      {
+        "event": "Harry Winston acquisition",
+        "year": "2013",
+        "type": "Acquisition (pre-period)",
+        "notes": "Acquired for CHF 711M in 2013, remains within group portfolio throughout audit period."
+      }
+    ],
+    "management": {
+      "ceo": "Nick Hayek Jr.",
+      "ceo_tenure": "CEO since January 1, 2003 — continuous throughout 2019-2024 period.",
+      "chairwoman": "Nayla Hayek (sister of Nick Hayek Jr.) — Chairwoman since June 30, 2010.",
+      "third_generation": "Marc A. Hayek (nephew) joined Board of Directors May 2024.",
+      "key_changes": "No CEO transition during 2019-2024. Leadership structure stable. Third-generation succession planning formalized with Marc Hayek's board appointment in 2024."
+    },
+    "hayek_family_ownership": {
+      "structure": "Dual-class shares: registered shares (CHF 0.45 nominal) give voting asymmetry. Family leverages registered-share concentration to convert ~25% economic capital into ~43-44% voting control.",
+      "end_2023": "43.3% of Group voting rights — 62.5M registered shares + 738,026 bearer shares.",
+      "end_2024": "44.1% of voting rights (Hayek Pool).",
+      "mid_2024_purchase": "July 2024: Nayla Hayek, Nick Hayek, and Marc Hayek together purchased 80,371 bearer shares at CHF 178.30 each (total CHF 14.3M), signalling confidence during downturn.",
+      "trend": "Family ownership percentage gradually increasing 2023-2025 through combination of buybacks reducing public float and direct family purchases."
+    }
+  },
+  "sources": [
+    "https://www.swatchgroup.com/en/services/archive/2020/swatch-group-key-figures-2019",
+    "https://www.fhs.swiss/eng/2020_02_06_01_Swatch_Group.html",
+    "https://www.fhs.swiss/eng/2021_02_18_01_Swatch_Group.html",
+    "https://www.fhs.swiss/eng/2023_02_09_01_Swatch_Group.html",
+    "https://www.fhs.swiss/eng/2024_02_08_01_Swatch_Group.html",
+    "https://www.fhs.swiss/eng/2025_02_13_01_Swatch_Group.html",
+    "https://www.swatchgroup.com/en/services/archive/2022/swatch-group-key-figures-2021",
+    "https://www.swatchgroup.com/en/services/archive/2023/swatch-group-key-figures-2022",
+    "https://www.swatchgroup.com/en/services/archive/2024/swatch-group-key-figures-2023",
+    "https://www.swatchgroup.com/en/services/archive/2025/key-figures-2024",
+    "https://monochrome-watches.com/swatch-group-2021-sales-bounce-back-after-pandemic-hit-yet-not-at-pre-pandemic-levels/",
+    "https://monochrome-watches.com/swatch-group-2020-results-industry-news/",
+    "https://divvydiary.com/en/swatch-group-stock-CH0012255151",
+    "https://www.swissinfo.ch/eng/swiss-made/swatch-the-hayek-family-buys-over-14-million-shares/87678872",
+    "https://www.marketscreener.com/quote/stock/SWATCH-GROUP-9364976/news/The-Swatch-Group-AG-announces-an-Equity-Buyback-for-15-488-500-shares-for-CHF-1-000-million-38111476/"
+  ]
+}

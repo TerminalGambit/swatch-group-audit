@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background: #FAF9F5;
+    color: #141413;
+    font-feature-settings: 'tnum' 1;
+  }
+  h1, h2, h3, h4 {
+    font-family: ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+    letter-spacing: -0.01em;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white border border-[#D1CFC5] rounded-xl p-5 shadow-[0_1px_2px_rgba(20,20,19,0.04)];
+  }
+  .pill {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+  .pill-pos { @apply bg-olive/15 text-olive; }
+  .pill-neg { @apply bg-rust/15 text-rust; }
+  .pill-neu { @apply bg-oat text-slate/70; }
+  .tab-btn {
+    @apply px-4 py-2 rounded-md text-sm font-medium transition-colors;
+  }
+  .tab-btn-active {
+    @apply bg-slate text-ivory;
+  }
+  .tab-btn-inactive {
+    @apply bg-oat/50 text-slate/70 hover:bg-oat;
+  }
+}
+
+/* Markdown prose for report reader */
+.prose-report h1 { @apply font-serif text-3xl mt-2 mb-4 text-slate; }
+.prose-report h2 { @apply font-serif text-2xl mt-8 mb-3 text-slate border-b border-border pb-2; }
+.prose-report h3 { @apply font-serif text-xl mt-6 mb-2 text-slate; }
+.prose-report h4 { @apply font-serif text-lg mt-4 mb-2 text-slate; }
+.prose-report p  { @apply leading-relaxed mb-4 text-slate/85; }
+.prose-report ul { @apply list-disc pl-6 mb-4 space-y-1 text-slate/85; }
+.prose-report ol { @apply list-decimal pl-6 mb-4 space-y-1 text-slate/85; }
+.prose-report strong { @apply text-slate font-semibold; }
+.prose-report code { @apply font-mono text-sm bg-oat/50 px-1 py-0.5 rounded; }
+.prose-report blockquote { @apply border-l-4 border-clay pl-4 italic text-slate/70 my-4; }
+.prose-report hr { @apply border-border my-8; }
+.prose-report table { @apply w-full border-collapse my-4 text-sm; }
+.prose-report th { @apply text-left bg-oat/40 px-3 py-2 font-semibold border border-border; }
+.prose-report td { @apply px-3 py-2 border border-border num text-right; }
+.prose-report td:first-child { @apply text-left font-medium; }
+.prose-report a { @apply text-clay underline underline-offset-2 hover:text-rust; }
