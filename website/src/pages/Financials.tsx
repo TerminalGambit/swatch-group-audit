@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import StatementTable, { Row } from '../components/StatementTable';
 import Callout from '../components/Callout';
+import SourceBadge from '../components/SourceBadge';
 import { financials } from '../data';
 
 type Tab = 'is' | 'bs' | 'cf';
@@ -169,27 +171,32 @@ export default function Financials() {
         <Callout variant="rust" title="Operating result fell 74.5% on a 14.6% revenue decline">
           The CHF 887M operating profit drop decomposes as: revenue −1,153M; material savings +519M;
           personnel savings +44M; lower D&A +76M offset by other items. Fixed costs (personnel,
-          D&A, rents) of ~CHF 3,945M represent 58.6% of net sales, producing 5.1× operating leverage.
+          D&A, rents) of ~CHF 3,945M represent 58.6% of net sales, producing 5.1×
+          <SourceBadge label="See /ratios" tone="muted" title="Full operating leverage derivation on /ratios" />
+          operating leverage.
         </Callout>
       )}
       {tab === 'bs' && (
         <Callout variant="oat" title="Fortress balance sheet — but inventory is the watch-out">
           Total assets CHF 13,992M with equity ratio 87.3% (industry-leading). Inventories of
-          CHF 7,641M represent 54.6% of total assets — PwC's sole Key Audit Matter. Goodwill is
-          charged directly to equity under Swiss GAAP FER (Note 33) — different from IFRS treatment.
+          CHF 7,641M represent 54.6% of total assets — PwC's sole Key Audit Matter
+          <SourceBadge label="PwC opinion" tone="olive" title="PricewaterhouseCoopers AG, Basel — Independent Auditor's Report, 5 March 2025" />
+          . Goodwill is charged directly to equity under Swiss GAAP FER (Note 33) — different from IFRS treatment.
         </Callout>
       )}
       {tab === 'cf' && (
         <Callout variant="rust" title="Negative free cash flow · capital returns exceed OCF">
           Operating cash flow of CHF 333M was insufficient to fund CHF 335M of dividends plus
-          CHF 50M of buybacks plus capex. Net liquidity drew down from CHF 1,988M to CHF 1,376M.
+          CHF 50M of buybacks
+          <SourceBadge label="CF stmt" tone="clay" title="Consolidated statement of cash flows — financing activities" />
+          plus capex. Net liquidity drew down from CHF 1,988M to CHF 1,376M.
           A sustained gap between distributions and OCF is unusual for a company guiding to
           recovery.
         </Callout>
       )}
 
       {/* Table */}
-      <div className="card">
+      <div className="card table-scroll">
         <div className="mb-3">
           <h3 className="font-serif text-lg text-slate">{active.label}</h3>
           <div className="text-xs text-muted mt-0.5">{active.sub}</div>
@@ -204,13 +211,22 @@ export default function Financials() {
           CHF 863M of unrecognized tax loss carryforwards across 37 jurisdictions — a signal that
           multiple subsidiaries (likely Greater China + Europe) booked sizeable local losses.
           Potential tax benefit if utilizable: CHF 152M.
+          <SourceBadge label="Note 27" tone="clay" title="Note 27 — Income taxes" />
         </Callout>
         <Callout variant="olive" title="PwC unqualified opinion">
-          PricewaterhouseCoopers AG, Basel, issued an unqualified opinion on 5 March 2025.
+          PricewaterhouseCoopers AG, Basel
+          <SourceBadge label="Audit opinion" tone="olive" title="Independent Auditor's Report, 5 March 2025" />
+          , issued an unqualified opinion on 5 March 2025.
           Sole Key Audit Matter: valuation of inventories. Audit materiality: CHF 40M consolidated,
           CHF 41M parent. No post-balance sheet events disclosed (Note 3).
         </Callout>
       </div>
+
+      <Link to="/verdict" className="card hover:border-clay/60 hover:shadow-md transition-all block group">
+        <div className="text-xs uppercase tracking-wider text-muted font-medium">Next</div>
+        <div className="font-serif text-xl text-slate group-hover:text-clay mt-1">The Verdict →</div>
+        <div className="text-sm text-muted mt-1">Investment signal and 2025 monitoring metrics</div>
+      </Link>
     </div>
   );
 }

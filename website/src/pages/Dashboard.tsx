@@ -1,25 +1,16 @@
+import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  ComposedChart,
-  Legend,
-  Line,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
+  Bar, BarChart, CartesianGrid, Cell, ComposedChart, LabelList, Legend, Line,
+  Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts';
 import KPICard from '../components/KPICard';
 import ChartCard from '../components/ChartCard';
 import PageHeader from '../components/PageHeader';
 import Callout from '../components/Callout';
+import SourceBadge from '../components/SourceBadge';
 import { financials, historical } from '../data';
-import { fmtNum, fmtPct } from '../lib/format';
+import { fmtNum } from '../lib/format';
 
 const PALETTE = {
   ivory: '#FAF9F5',
@@ -44,22 +35,11 @@ const trendData = yearOrder.map((y) => {
   };
 });
 
+const segs2024 = financials.segments['2024'];
 const segmentData = [
-  {
-    name: 'Watches & Jewelry',
-    value: financials.segments['2024'].watches_jewelry.net_sales,
-    color: PALETTE.clay,
-  },
-  {
-    name: 'Electronic Systems',
-    value: financials.segments['2024'].electronic_systems.net_sales,
-    color: PALETTE.olive,
-  },
-  {
-    name: 'Corporate',
-    value: financials.segments['2024'].corporate.net_sales,
-    color: PALETTE.oat,
-  },
+  { name: 'Watches & Jewelry', value: segs2024.watches_jewelry.net_sales, color: PALETTE.clay },
+  { name: 'Electronic Systems', value: segs2024.electronic_systems.net_sales, color: PALETTE.olive },
+  { name: 'Corporate', value: segs2024.corporate.net_sales, color: PALETTE.oat },
 ];
 
 // Geographic data: compute YoY % change
@@ -77,7 +57,9 @@ const geoData = [
   change: ((g.v2024 - g.v2023) / g.v2023) * 100,
 }));
 
-const redFlags = [
+type RedFlag = { title: string; metric: string; sub: ReactNode; severity: string };
+
+const redFlags: RedFlag[] = [
   {
     title: 'ETR Spike',
     metric: '36.5%',
@@ -93,7 +75,12 @@ const redFlags = [
   {
     title: 'Negative FCF',
     metric: '−CHF 216M',
-    sub: 'Shareholder returns (408m) exceed operating cash flow (333m)',
+    sub: (
+      <>
+        Shareholder returns (408m) exceed operating cash flow (333m)
+        <SourceBadge label="Note 5 + CF stmt" tone="clay" />
+      </>
+    ),
     severity: 'Medium',
   },
   {
@@ -105,13 +92,18 @@ const redFlags = [
   {
     title: 'Market Share Loss',
     metric: '−200 bps',
-    sub: 'To 18.3% of Swiss watch market; Big Four gained +300 bps to 47%',
+    sub: (
+      <>
+        To 18.3% of Swiss watch market; Big Four gained +300 bps to 47%
+        <SourceBadge label="MS / LuxeConsult" tone="clay" title="Morgan Stanley / LuxeConsult Top 50, 2024" />
+      </>
+    ),
     severity: 'Medium',
   },
   {
-    title: 'Payout > Earnings',
-    metric: '120%',
-    sub: 'Proposed dividend CHF 4.50 vs EPS CHF 3.74 — drawn from reserves',
+    title: 'Governance & Payout',
+    metric: '44.1%',
+    sub: 'Hayek Pool voting on ~25% economic capital · 2025 activist board challenge · 120% payout from reserves',
     severity: 'Low–Med',
   },
 ];
@@ -212,6 +204,13 @@ export default function Dashboard() {
                   {trendData.map((d, i) => (
                     <Cell key={i} fill={d.year === '2024' ? PALETTE.rust : d.year === '2020' ? PALETTE.muted : PALETTE.slate} />
                   ))}
+                  <LabelList
+                    dataKey="revenue"
+                    position="top"
+                    fill={PALETTE.slate}
+                    fontSize={10}
+                    formatter={(v: number) => fmtNum(v)}
+                  />
                 </Bar>
                 <Line
                   yAxisId="right"
@@ -267,7 +266,13 @@ export default function Dashboard() {
           title="Geographic revenue change · 2023 → 2024"
           subtitle="YoY % change by region — CHF terms"
           className="lg:col-span-2"
-          footer="Greater China collapsed −30.4% (CHF 1.83B vs CHF 2.63B), accounting for ~69% of the group's total revenue decline. The US set a record but contributes only ~18% of mix."
+          footer={
+            <>
+              Greater China collapsed −30.4%
+              <SourceBadge label="Group Key Figures 2024" tone="olive" />
+              {' '}(CHF 1.83B vs CHF 2.63B), accounting for ~69% of the group's total revenue decline. The US set a record but contributes only ~18% of mix.
+            </>
+          }
         >
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
@@ -283,6 +288,13 @@ export default function Dashboard() {
                   {geoData.map((d, i) => (
                     <Cell key={i} fill={d.change < 0 ? PALETTE.rust : PALETTE.olive} />
                   ))}
+                  <LabelList
+                    dataKey="change"
+                    position="right"
+                    fill={PALETTE.slate}
+                    fontSize={11}
+                    formatter={(v: number) => `${v > 0 ? '+' : ''}${v.toFixed(1)}%`}
+                  />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -291,12 +303,29 @@ export default function Dashboard() {
 
         {/* Operating leverage callout */}
         <div className="card bg-gradient-to-br from-rust/8 to-clay/8 border-rust/30 relative overflow-hidden">
-          <div className="text-xs uppercase tracking-wider text-rust font-semibold mb-2">Operating Leverage</div>
+          <div className="text-xs uppercase tracking-wider text-rust font-semibold mb-2">
+            Operating Leverage
+            <SourceBadge label="Ratios derivation" tone="clay" title="See /ratios for full DuPont + fixed cost breakdown" />
+          </div>
           <div className="font-serif text-slate text-2xl leading-tight">Every 1% of revenue lost became</div>
           <div className="font-serif text-7xl text-rust mt-2 mb-1 num">5.1×</div>
           <div className="font-serif text-slate text-2xl leading-tight">of operating profit lost</div>
           <div className="mt-4 text-sm text-slate/80 leading-relaxed border-t border-rust/20 pt-3">
-            Fixed costs of <span className="num font-semibold">CHF 3,945M</span> — personnel, depreciation, rents, energy — represent <span className="font-semibold">58.6%</span> of net sales. When revenue falls, these costs do not. The breakeven appears to be CHF 6.2–6.5B at current cost structure.
+            <span className="font-semibold text-slate">Why did a 14.6% revenue decline collapse operating profit by 74.5%?</span>
+            <br />
+            Because fixed costs of <span className="num font-semibold">CHF 3,945M</span>
+            <SourceBadge label="Note 11 + 8" tone="clay" title="Personnel + D&A from notes" />
+            {' '}(<span className="font-semibold">58.6%</span>
+            <SourceBadge label="Audit calc" tone="muted" />
+            {' '}of sales) do not move with volume.
+          </div>
+          <div className="mt-4 pt-3 border-t border-rust/20">
+            <Link
+              to="/ratios"
+              className="text-sm text-clay hover:text-rust font-medium underline underline-offset-2"
+            >
+              See the full DuPont derivation →
+            </Link>
           </div>
         </div>
       </section>
@@ -331,22 +360,28 @@ export default function Dashboard() {
         Unqualified opinion: the consolidated financial statements give a true and fair view of the financial position
         as at 31 December 2024. The sole Key Audit Matter raised was the <strong>valuation of inventories</strong> —
         Swatch holds CHF 7,641M of inventory representing 54.6% of total assets. Audit materiality: CHF 40M (consolidated).
+        <SourceBadge label="PwC opinion" tone="olive" />
       </Callout>
 
       {/* CTA navigation */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
         {[
           { to: '/financials', title: 'Financials', desc: 'Income statement, balance sheet, cash flows' },
           { to: '/segments', title: 'Segments', desc: 'W&J vs Electronic Systems + geo split' },
           { to: '/ratios', title: 'Ratios & DuPont', desc: '5 categories · operating leverage analysis' },
           { to: '/benchmarking', title: 'Benchmarking', desc: 'Peers, Swiss exports, market share' },
+          { to: '/verdict', title: 'Verdict', desc: 'Investment signal · FY2025 watch items', emphasized: true },
         ].map((c) => (
           <Link
             key={c.to}
             to={c.to}
-            className="card hover:border-clay/60 hover:shadow-md transition-all group"
+            className={`card hover:shadow-md transition-all group ${
+              c.emphasized ? 'border-clay/60 bg-clay/5 hover:border-rust' : 'hover:border-clay/60'
+            }`}
           >
-            <div className="font-serif text-lg text-slate group-hover:text-clay">{c.title} →</div>
+            <div className={`font-serif text-lg ${c.emphasized ? 'text-rust font-semibold' : 'text-slate group-hover:text-clay'}`}>
+              {c.title} →
+            </div>
             <div className="text-xs text-muted mt-1">{c.desc}</div>
           </Link>
         ))}

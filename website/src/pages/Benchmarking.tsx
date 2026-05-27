@@ -3,15 +3,18 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
+  LabelList,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
+import { Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import ChartCard from '../components/ChartCard';
 import Callout from '../components/Callout';
 import KPICard from '../components/KPICard';
+import SourceBadge from '../components/SourceBadge';
 import { benchmarks } from '../data';
 import { fmtNum } from '../lib/format';
 
@@ -88,31 +91,63 @@ export default function Benchmarking() {
           sub="Swiss watch exports declined 2.8%; Swatch underperformed the industry materially"
           accent="rust"
         />
-        <KPICard
-          label="Market share"
-          value="18.3%"
-          delta="−200 bps YoY"
-          deltaNum={-2}
-          sub="Down from 20.3% in 2023 (Morgan Stanley / LuxeConsult Top 50)"
-          accent="rust"
-        />
-        <KPICard
-          label="Breguet unit shipments"
-          value="~7,400"
-          delta="−63% (industry est.)"
-          deltaNum={-63}
-          sub="Down from ~20,000 units — prestige collapse"
-          accent="rust"
-        />
-        <KPICard
-          label="Big Four share gain"
-          value="+300 bps"
-          delta="Rolex · Patek · AP · Richard Mille"
-          deltaNum={3}
-          sub="Combined 47% share of Swiss watch industry"
-          accent="olive"
-        />
+        <div className="relative">
+          <KPICard
+            label="Market share"
+            value="18.3%"
+            delta="−200 bps YoY"
+            deltaNum={-2}
+            sub="Down from 20.3% in 2023 (Morgan Stanley / LuxeConsult Top 50)"
+            accent="rust"
+          />
+          <div className="absolute top-3 right-3">
+            <SourceBadge label="MS / LuxeConsult" tone="clay" title="Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024" />
+          </div>
+        </div>
+        <div className="relative">
+          <KPICard
+            label="Breguet unit shipments"
+            value="~7,400"
+            delta="−63% (industry est.)"
+            deltaNum={-63}
+            sub="Down from ~20,000 units — prestige collapse"
+            accent="rust"
+          />
+          <div className="absolute top-3 right-3">
+            <SourceBadge label="MS / LuxeConsult" tone="clay" title="Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024" />
+          </div>
+        </div>
+        <div className="relative">
+          <KPICard
+            label="Big Four share gain"
+            value="+300 bps"
+            delta="Rolex · Patek · AP · Richard Mille"
+            deltaNum={3}
+            sub="Combined 47% share of Swiss watch industry"
+            accent="olive"
+          />
+          <div className="absolute top-3 right-3">
+            <SourceBadge label="MS / LuxeConsult" tone="clay" title="Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024" />
+          </div>
+        </div>
       </section>
+
+      {/* Audit verdict — moved to top so evidence below supports the thesis */}
+      <Callout variant="clay" title="Structural vs cyclical · 60/40 diagnosis">
+        <div className="flex items-start justify-between gap-3 mb-1">
+          <div className="text-xs uppercase tracking-wider text-muted font-medium">
+            Audit verdict on the underperformance
+          </div>
+          <SourceBadge label="Audit judgment" tone="muted" title="Audit team synthesis of FH, MS/LuxeConsult, and filings" />
+        </div>
+        Roughly 60% of the FY2024 deterioration is cyclical (China demand will recover as
+        property destruction stabilises and consumer confidence returns; FX should normalise;
+        Olympic spend reverses in the IOC cycle). The remaining ~40% is structural: mid-market
+        watches face secular pressure from a growing pre-owned market, Apple/Huawei smartwatch
+        competition at entry level, generational shifts away from status objects, and Big Four
+        share consolidation at the ultra-luxury end. A full revenue recovery to the 2023 CHF
+        7,888M is not guaranteed even on a strong China cycle.
+      </Callout>
 
       {/* Operating margin bar chart */}
       <ChartCard
@@ -142,6 +177,12 @@ export default function Benchmarking() {
                     }
                   />
                 ))}
+                <LabelList
+                  dataKey="margin"
+                  position="right"
+                  formatter={(v: number) => `${v.toFixed(1)}%`}
+                  style={{ fill: PALETTE.slate, fontSize: 11, fontWeight: 500 }}
+                />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
@@ -151,10 +192,10 @@ export default function Benchmarking() {
       {/* Peer comparison table */}
       <div className="card">
         <h3 className="font-serif text-lg text-slate mb-3">Peer comparison · FY2024 (or nearest comparable)</h3>
-        <div className="overflow-x-auto">
+        <div className="table-scroll overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-xs uppercase tracking-wider text-muted border-b border-border">
+              <tr className="text-xs uppercase tracking-wider text-muted border-b border-border bg-oat">
                 <th className="text-left py-2 px-2 font-medium">Company</th>
                 <th className="text-right py-2 px-2 font-medium">Revenue</th>
                 <th className="text-right py-2 px-2 font-medium">Growth</th>
@@ -163,48 +204,63 @@ export default function Benchmarking() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border/40 bg-clay/8">
+              <tr className="border-t-2 border-clay/40 border-b border-border/40 bg-clay/8 hover:bg-clay/12">
                 <td className="py-2 px-2 font-semibold text-slate">Swatch Group</td>
-                <td className="py-2 px-2 text-right num">CHF {fmtNum(cmp.swatch_group.revenue_chf_m)}m</td>
-                <td className="py-2 px-2 text-right num text-rust">−14.6%</td>
-                <td className="py-2 px-2 text-right num text-rust">4.5%</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums">CHF {fmtNum(cmp.swatch_group.revenue_chf_m)}m</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-rust">−14.6%</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-rust">4.5%</td>
                 <td className="py-2 px-2 text-xs text-muted">Pure-play watch & jewelry</td>
               </tr>
-              <tr className="border-b border-border/40">
-                <td className="py-2 px-2 text-slate">Richemont (group)</td>
-                <td className="py-2 px-2 text-right num">€{fmtNum(cmp.richemont.revenue_eur_m)}m</td>
-                <td className="py-2 px-2 text-right num text-olive">+4%</td>
-                <td className="py-2 px-2 text-right num text-olive">20.9%</td>
+              <tr className="border-b border-border/40 hover:bg-oat/30">
+                <td className="py-2 px-2 text-slate">
+                  Richemont (group)
+                  <SourceBadge label="Richemont FY25" tone="olive" title="Compagnie Financière Richemont SA — Annual Report FY ending 31 Mar 2025" />
+                </td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums">€{fmtNum(cmp.richemont.revenue_eur_m)}m</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-olive">+4%</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-olive">20.9%</td>
                 <td className="py-2 px-2 text-xs text-muted">FY ending Mar 2025 · cushioned by Cartier/VCA</td>
               </tr>
-              <tr className="border-b border-border/40">
-                <td className="py-2 px-2 text-slate pl-6">— Specialist Watchmakers</td>
-                <td className="py-2 px-2 text-right num">€{fmtNum(cmp.richemont.segments?.specialist_watchmakers?.revenue_eur_m)}m</td>
-                <td className="py-2 px-2 text-right num text-rust">−13%</td>
-                <td className="py-2 px-2 text-right num text-rust">5.3%</td>
+              <tr className="border-b border-border/40 hover:bg-oat/30">
+                <td className="py-2 px-2 text-slate pl-6">
+                  — Specialist Watchmakers
+                  <SourceBadge label="Richemont FY25" tone="olive" title="Richemont Annual Report FY25 — segment disclosure" />
+                </td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums">€{fmtNum(cmp.richemont.segments?.specialist_watchmakers?.revenue_eur_m)}m</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-rust">−13%</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-rust">5.3%</td>
                 <td className="py-2 px-2 text-xs text-muted">IWC, Panerai, JLC — close to Swatch pure-play</td>
               </tr>
-              <tr className="border-b border-border/40">
-                <td className="py-2 px-2 text-slate pl-6">— Jewellery Maisons</td>
-                <td className="py-2 px-2 text-right num">€{fmtNum(cmp.richemont.segments?.jewellery_maisons?.revenue_eur_m)}m</td>
-                <td className="py-2 px-2 text-right num text-olive">+8%</td>
-                <td className="py-2 px-2 text-right num text-olive">31.9%</td>
+              <tr className="border-b border-border/40 hover:bg-oat/30">
+                <td className="py-2 px-2 text-slate pl-6">
+                  — Jewellery Maisons
+                  <SourceBadge label="Richemont FY25" tone="olive" title="Richemont Annual Report FY25 — segment disclosure" />
+                </td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums">€{fmtNum(cmp.richemont.segments?.jewellery_maisons?.revenue_eur_m)}m</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-olive">+8%</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-olive">31.9%</td>
                 <td className="py-2 px-2 text-xs text-muted">Cartier, VCA — Richemont's growth engine</td>
               </tr>
               {cmp.lvmh_watches_jewelry && (
-                <tr className="border-b border-border/40">
-                  <td className="py-2 px-2 text-slate">LVMH W&J</td>
-                  <td className="py-2 px-2 text-right num">€{fmtNum(cmp.lvmh_watches_jewelry.revenue_eur_m)}m</td>
-                  <td className="py-2 px-2 text-right num text-rust">−3.6%</td>
-                  <td className="py-2 px-2 text-right num text-clay">14.7%</td>
+                <tr className="border-b border-border/40 hover:bg-oat/30">
+                  <td className="py-2 px-2 text-slate">
+                    LVMH W&J
+                    <SourceBadge label="LVMH FY24" tone="olive" title="LVMH Moët Hennessy Louis Vuitton — Annual Report FY2024" />
+                  </td>
+                  <td className="py-2 px-2 text-right num font-mono tabular-nums">€{fmtNum(cmp.lvmh_watches_jewelry.revenue_eur_m)}m</td>
+                  <td className="py-2 px-2 text-right num font-mono tabular-nums text-rust">−3.6%</td>
+                  <td className="py-2 px-2 text-right num font-mono tabular-nums text-clay">14.7%</td>
                   <td className="py-2 px-2 text-xs text-muted">Bulgari, Tiffany cushion the watch line</td>
                 </tr>
               )}
-              <tr className="border-b border-border/40">
-                <td className="py-2 px-2 text-slate">Rolex (estimate)</td>
-                <td className="py-2 px-2 text-right num">CHF {fmtNum(benchmarks.rolex_2024_estimates?.revenue_chf_m ?? 10583)}m</td>
-                <td className="py-2 px-2 text-right num text-muted">~flat</td>
-                <td className="py-2 px-2 text-right num text-olive">~38%</td>
+              <tr className="border-b border-border/40 hover:bg-oat/30">
+                <td className="py-2 px-2 text-slate">
+                  Rolex (estimate)
+                  <SourceBadge label="MS / LuxeConsult" tone="clay" title="Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024" />
+                </td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums">CHF {fmtNum(benchmarks.rolex_2024_estimates?.revenue_chf_m ?? 10583)}m</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-muted">~flat</td>
+                <td className="py-2 px-2 text-right num font-mono tabular-nums text-olive">~38%</td>
                 <td className="py-2 px-2 text-xs text-muted">Private · Morgan Stanley estimate · 32% market share</td>
               </tr>
             </tbody>
@@ -218,7 +274,12 @@ export default function Benchmarking() {
           title="Swiss watch exports · top destinations YoY"
           subtitle="Source: Fédération de l'Horlogerie 2024 Annual Statistics"
           className="lg:col-span-2"
-          footer="Two-track market: traditional luxury hubs in Asia (China/HK/Singapore) collapsed; the US, Japan, India and Korea grew double-digits. Total exports −2.8% on −9.4% units (i.e. price/mix held)."
+          footer={
+            <span>
+              Two-track market: traditional luxury hubs in Asia (China/HK/Singapore) collapsed; the US, Japan, India and Korea grew double-digits. Total exports −2.8% on −9.4% units (i.e. price/mix held).
+              <SourceBadge label="FH 2024" tone="olive" title="Fédération de l'Horlogerie Annual Statistics, 30 Jan 2025" />
+            </span>
+          }
         >
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -234,6 +295,12 @@ export default function Benchmarking() {
                   {destData.map((d: any, i: number) => (
                     <Cell key={i} fill={d.change < 0 ? PALETTE.rust : PALETTE.olive} />
                   ))}
+                  <LabelList
+                    dataKey="change"
+                    position="right"
+                    formatter={(v: number) => `${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(1)}%`}
+                    style={{ fill: PALETTE.slate, fontSize: 10, fontWeight: 500 }}
+                  />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -262,8 +329,11 @@ export default function Benchmarking() {
 
       {/* Market share movement */}
       <div className="card">
-        <h3 className="font-serif text-lg text-slate mb-3">Swiss watch industry · group market share movement</h3>
-        <div className="overflow-x-auto">
+        <div className="flex items-start justify-between mb-3 gap-3">
+          <h3 className="font-serif text-lg text-slate">Swiss watch industry · group market share movement</h3>
+          <SourceBadge label="MS / LuxeConsult" tone="clay" title="Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024" />
+        </div>
+        <div className="table-scroll overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-xs uppercase tracking-wider text-muted border-b border-border">
@@ -287,16 +357,12 @@ export default function Benchmarking() {
         </div>
       </div>
 
-      {/* Structural verdict */}
-      <Callout variant="clay" title="Structural vs cyclical · 60/40 diagnosis">
-        Roughly 60% of the FY2024 deterioration is cyclical (China demand will recover as
-        property destruction stabilises and consumer confidence returns; FX should normalise;
-        Olympic spend reverses in the IOC cycle). The remaining ~40% is structural: mid-market
-        watches face secular pressure from a growing pre-owned market, Apple/Huawei smartwatch
-        competition at entry level, generational shifts away from status objects, and Big Four
-        share consolidation at the ultra-luxury end. A full revenue recovery to the 2023 CHF
-        7,888M is not guaranteed even on a strong China cycle.
-      </Callout>
+      {/* Bottom CTA */}
+      <Link to="/verdict" className="card hover:border-clay/60 hover:shadow-md transition-all block group">
+        <div className="text-xs uppercase tracking-wider text-muted font-medium">Next</div>
+        <div className="font-serif text-xl text-slate group-hover:text-clay mt-1">The Verdict →</div>
+        <div className="text-sm text-muted mt-1">Investment signal and FY2025 monitoring metrics</div>
+      </Link>
     </div>
   );
 }

@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import Callout from '../components/Callout';
 import KPICard from '../components/KPICard';
+import SourceBadge from '../components/SourceBadge';
 import { ratios } from '../data';
-import { fmtPct } from '../lib/format';
 
 const r24 = ratios.ratios['2024'];
 const r23 = ratios.ratios['2023'];
@@ -65,12 +66,19 @@ const ps: RatioRow[] = [
   { label: 'P/B at year-end 2024', v24: r24.per_share.price_to_book_at_year_end, v23: '—', format: 'x', flag: 'clay', note: 'Below 1.0 — rare for luxury' },
 ];
 
-const sections = [
-  { title: 'Profitability', rows: profit },
-  { title: 'Liquidity', rows: liq },
-  { title: 'Solvency & Leverage', rows: sol },
-  { title: 'Efficiency', rows: eff },
-  { title: 'Per Share', rows: ps },
+type Accent = 'clay' | 'olive' | 'rust';
+const accentBar: Record<Accent, string> = {
+  clay: 'bg-clay',
+  olive: 'bg-olive',
+  rust: 'bg-rust',
+};
+
+const sections: { title: string; subtitle: string; rows: RatioRow[]; accent: Accent }[] = [
+  { title: 'Profitability', subtitle: 'Return Metrics', rows: profit, accent: 'clay' },
+  { title: 'Liquidity', subtitle: 'Short-Term Resilience', rows: liq, accent: 'olive' },
+  { title: 'Solvency & Leverage', subtitle: 'Balance-Sheet Strength', rows: sol, accent: 'olive' },
+  { title: 'Efficiency', subtitle: 'Asset Productivity', rows: eff, accent: 'clay' },
+  { title: 'Per Share', subtitle: 'Shareholder Metrics', rows: ps, accent: 'clay' },
 ];
 
 const dupont = r24.dupont;
@@ -88,18 +96,103 @@ export default function Ratios() {
       <section>
         <h2 className="font-serif text-2xl text-slate mb-4">DuPont decomposition of ROE</h2>
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-3 items-stretch">
-          <DupontBox label="Net margin" value={`${dupont.net_margin_pct.toFixed(2)}%`} note="219 / 6,735" />
+          <DupontBox
+            label="Net margin"
+            value={`${dupont.net_margin_pct.toFixed(2)}%`}
+            note="219 / 6,735"
+            badge={<SourceBadge label="IS" tone="olive" title="Income Statement 2024" />}
+          />
           <Multiplier />
-          <DupontBox label="Asset turnover" value={`${dupont.asset_turnover.toFixed(3)}×`} note="6,735 / 14,110.5 avg" />
+          <DupontBox
+            label="Asset turnover"
+            value={`${dupont.asset_turnover.toFixed(3)}×`}
+            note="6,735 / 14,110.5 avg"
+            badge={<SourceBadge label="IS + BS avg" tone="olive" title="Income Statement & Balance Sheet (2-yr avg assets)" />}
+          />
           <Multiplier />
-          <DupontBox label="Equity multiplier" value={`${dupont.equity_multiplier.toFixed(3)}×`} note="13,992 / 12,217" />
+          <DupontBox
+            label="Equity multiplier"
+            value={`${dupont.equity_multiplier.toFixed(3)}×`}
+            note="13,992 / 12,217"
+            badge={<SourceBadge label="BS" tone="olive" title="Balance Sheet 2024 — total assets / equity" />}
+          />
           <Multiplier eq />
-          <DupontBox label="ROE" value={`${dupont.roe_pct.toFixed(2)}%`} note="3.25 × 0.477 × 1.145 ≈ 1.77%" accent="clay" />
+          <DupontBox
+            label="ROE"
+            value={`${dupont.roe_pct.toFixed(2)}%`}
+            note="3.25 × 0.477 × 1.145 ≈ 1.77%"
+            accent="clay"
+            badge={<SourceBadge label="Key Figures 2024" tone="olive" title="Reconciles to 1.8% ROE reported in Key Figures table" />}
+          />
         </div>
         <p className="text-xs text-muted mt-2 text-center">
           Check passes: 3.25% × 0.477 × 1.145 = 1.78%, rounds to the 1.8% ROE reported in Key Figures.
         </p>
       </section>
+
+      {/* The Climax — 5.1× Derivation */}
+      <section className="card bg-gradient-to-br from-rust/5 to-clay/5 border-rust/30">
+        <div className="text-xs uppercase tracking-[0.18em] text-rust font-semibold">The Climax</div>
+        <h2 className="font-serif text-3xl text-slate mt-2 mb-1">
+          How 5.1× Was Computed
+          <SourceBadge label="Audit calc" tone="muted" title="Derived from FY2024 Income Statement deltas" />
+        </h2>
+        <p className="text-sm text-slate/70 mb-6">
+          A formal derivation of the operating leverage multiplier — the audit's central diagnostic finding.
+        </p>
+
+        {/* Three-step derivation */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="bg-white border border-border rounded-xl p-4">
+            <div className="text-xs uppercase tracking-wider text-muted font-medium">Step 1 · The Inputs</div>
+            <ul className="mt-3 space-y-1.5 text-sm">
+              <li>Revenue decline: <span className="num text-rust font-semibold">−14.6%</span></li>
+              <li>Op result decline: <span className="num text-rust font-semibold">−74.5%</span></li>
+              <li>CHF: 7,888m → 6,735m</li>
+              <li>Op: 1,191m → 304m</li>
+            </ul>
+          </div>
+          <div className="bg-white border border-border rounded-xl p-4">
+            <div className="text-xs uppercase tracking-wider text-muted font-medium">Step 2 · The Ratio</div>
+            <div className="mt-3 font-mono text-sm bg-oat/30 p-3 rounded">
+              leverage = Δ op result %<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;÷ Δ revenue %<br />
+              = −74.5% ÷ −14.6%<br />
+              = <span className="text-rust font-semibold">5.1×</span>
+            </div>
+            <p className="text-xs text-muted mt-3">For every 1% of revenue lost, 5.1% of operating profit was lost.</p>
+          </div>
+          <div className="bg-white border border-border rounded-xl p-4">
+            <div className="text-xs uppercase tracking-wider text-muted font-medium">Step 3 · The Cause</div>
+            <ul className="mt-3 space-y-1.5 text-sm">
+              <li>Personnel: <span className="num">CHF 2,506m</span></li>
+              <li>D&A: <span className="num">CHF 416m</span></li>
+              <li>Rents + energy: <span className="num">CHF 1,023m</span></li>
+              <li className="pt-1 border-t border-border mt-2 font-semibold">Fixed costs total: <span className="num text-rust">CHF 3,945m</span></li>
+              <li className="text-rust font-semibold num">= 58.6% of revenue</li>
+            </ul>
+          </div>
+        </div>
+
+        <p className="mt-5 text-sm text-slate/80 leading-relaxed border-t border-rust/20 pt-4">
+          <strong className="text-slate">Implication:</strong> Fixed costs do not fall with revenue. The
+          breakeven point appears to be CHF 6.2–6.5B at current cost levels. The CHF 6,735M FY2024
+          revenue is ~CHF 200–500M above breakeven. A further 5–10% revenue decline in 2025 would
+          push the group toward operating losses for the first time since 2020.
+        </p>
+      </section>
+
+      {/* DIO red flag — surfaced next to the derivation as part of the visual peak */}
+      <Callout variant="rust" title="DIO of ~2,400 days — context, not panic">
+        <span>
+          On a materials-only COGS basis, DIO computes to ~2,400 days
+          <SourceBadge label="Audit calc · Note 7" tone="clay" title="Computed from Note 7 Inventories; materials-only COGS proxy" />
+          {' '}— extreme by standard analyst conventions but consistent with Swatch's deliberate strategy
+          of maintaining Swiss production capacity and a finished-goods buffer. The risk is realisation:
+          if China demand does not recover in 2025, CHF 200–400M of additional write-downs are plausible
+          against the CHF 7,641M inventory book.
+        </span>
+      </Callout>
 
       {/* Operating leverage callout */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -129,64 +222,95 @@ export default function Ratios() {
         />
       </section>
 
-      {/* All ratios in 5 grouped tables */}
+      {/* All ratios in 5 grouped tables — visually separated by accent + subtitle */}
       <section className="space-y-6">
         {sections.map((s) => (
-          <div key={s.title} className="card">
-            <h3 className="font-serif text-lg text-slate mb-3">{s.title}</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-xs uppercase tracking-wider text-muted border-b border-border">
-                    <th className="text-left py-2 px-2 font-medium">Ratio</th>
-                    <th className="text-right py-2 px-2 font-medium">2024</th>
-                    <th className="text-right py-2 px-2 font-medium">2023</th>
-                    <th className="text-left py-2 pl-4 font-medium">Note</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {s.rows.map((row, i) => (
-                    <tr key={i} className="border-b border-border/40">
-                      <td className="py-1.5 px-2 text-slate">{row.label}</td>
-                      <td className={`py-1.5 px-2 text-right num font-semibold ${row.flag === 'rust' ? 'text-rust' : row.flag === 'olive' ? 'text-olive' : row.flag === 'clay' ? 'text-clay' : 'text-slate'}`}>
-                        {fmt(row.v24, row.format)}
-                      </td>
-                      <td className="py-1.5 px-2 text-right num text-slate/60">{fmt(row.v23, row.format)}</td>
-                      <td className="py-1.5 pl-4 text-xs text-muted">{row.note ?? ''}</td>
+          <div key={s.title} className="card relative overflow-hidden">
+            <div className={`absolute left-0 top-0 bottom-0 w-1 ${accentBar[s.accent]}`} />
+            <div className="pl-3">
+              <div className={`text-[10px] uppercase tracking-[0.18em] font-semibold ${s.accent === 'olive' ? 'text-olive' : s.accent === 'rust' ? 'text-rust' : 'text-clay'}`}>
+                {s.subtitle}
+              </div>
+              <h3 className="font-serif text-lg text-slate mb-3 mt-0.5">
+                {s.title}
+                {s.title === 'Profitability' && (
+                  <SourceBadge label="Key Figures 2024" tone="olive" title="ROE 1.8% reconciles to Key Figures table" />
+                )}
+              </h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-xs uppercase tracking-wider text-muted border-b border-border">
+                      <th className="text-left py-2 px-2 font-medium">Ratio</th>
+                      <th className="text-right py-2 px-2 font-medium">2024</th>
+                      <th className="text-right py-2 px-2 font-medium">2023</th>
+                      <th className="text-left py-2 pl-4 font-medium">Note</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {s.rows.map((row, i) => (
+                      <tr key={i} className="border-b border-border/40">
+                        <td className="py-1.5 px-2 text-slate">{row.label}</td>
+                        <td className={`py-1.5 px-2 text-right num font-semibold ${row.flag === 'rust' ? 'text-rust' : row.flag === 'olive' ? 'text-olive' : row.flag === 'clay' ? 'text-clay' : 'text-slate'}`}>
+                          {fmt(row.v24, row.format)}
+                        </td>
+                        <td className="py-1.5 px-2 text-right num text-slate/60">{fmt(row.v23, row.format)}</td>
+                        <td className="py-1.5 pl-4 text-xs text-muted">{row.note ?? ''}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         ))}
       </section>
 
-      {/* Red flag callouts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <Callout variant="rust" title="DIO of ~2,400 days — context, not panic">
-          On a materials-only COGS basis, DIO computes to ~2,400 days — extreme by standard
-          analyst conventions but consistent with Swatch's deliberate strategy of maintaining
-          Swiss production capacity and a finished-goods buffer. The risk is realisation: if
-          China demand does not recover in 2025, CHF 200–400M of additional write-downs are
-          plausible against the CHF 7,641M inventory book.
-        </Callout>
-        <Callout variant="rust" title="Payout ratio 120% — confidence or strain?">
-          Proposed dividend of CHF 4.50 (bearer) versus EPS of CHF 3.74 = 120.3% payout. The
-          group can fund this from reserves (book value per bearer share is CHF 236.37, payout
-          is 1.9% of book), so it is not distressed. But the optics during an earnings trough
-          are a governance signal — and the 2025 activist board challenge cited capital
-          allocation as a concern.
-        </Callout>
-      </div>
+      {/* Payout callout — stays at the bottom as a governance / capital-allocation aside */}
+      <Callout variant="rust" title="Payout ratio 120% — confidence or strain?">
+        <span>
+          Proposed dividend of CHF 4.50 (bearer) versus EPS of CHF 3.74 = 120.3% payout
+          <SourceBadge label="EPS / div proposal" tone="clay" title="2024 EPS and proposed dividend per Key Figures table" />
+          . The group can fund this from reserves (book value per bearer share is CHF 236.37, payout
+          is 1.9% of book
+          <SourceBadge label="Year-end 2024" tone="clay" title="Book value & P/B 0.70× at 31-Dec-2024 close" />
+          ), so it is not distressed. But the optics during an earnings trough are a governance
+          signal — and the 2025 activist board challenge cited capital allocation as a concern.
+        </span>
+      </Callout>
+
+      {/* Next-step CTA */}
+      <Link
+        to="/verdict"
+        className="card hover:border-clay/60 hover:shadow-md transition-all block group"
+      >
+        <div className="text-xs uppercase tracking-wider text-muted font-medium">Next</div>
+        <div className="font-serif text-xl text-slate group-hover:text-clay mt-1">The Verdict →</div>
+        <div className="text-sm text-muted mt-1">The investment signal that emerges from these ratios</div>
+      </Link>
     </div>
   );
 }
 
-function DupontBox({ label, value, note, accent }: { label: string; value: string; note: string; accent?: 'clay' }) {
+function DupontBox({
+  label,
+  value,
+  note,
+  accent,
+  badge,
+}: {
+  label: string;
+  value: string;
+  note: string;
+  accent?: 'clay';
+  badge?: React.ReactNode;
+}) {
   return (
     <div className={`card text-center flex flex-col justify-center ${accent === 'clay' ? 'bg-clay/8 border-clay/40' : ''}`}>
-      <div className="text-xs uppercase tracking-wider text-muted font-medium">{label}</div>
+      <div className="text-xs uppercase tracking-wider text-muted font-medium">
+        {label}
+        {badge}
+      </div>
       <div className="font-serif text-3xl text-slate num mt-2">{value}</div>
       <div className="text-xs text-muted mt-2 num">{note}</div>
     </div>

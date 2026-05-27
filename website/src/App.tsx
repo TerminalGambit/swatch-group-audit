@@ -6,6 +6,7 @@ import Financials from './pages/Financials';
 import Segments from './pages/Segments';
 import Ratios from './pages/Ratios';
 import Benchmarking from './pages/Benchmarking';
+import Verdict from './pages/Verdict';
 import Report from './pages/Report';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/segments" element={<Segments />} />
           <Route path="/ratios" element={<Ratios />} />
           <Route path="/benchmarking" element={<Benchmarking />} />
+          <Route path="/verdict" element={<Verdict />} />
           <Route path="/report" element={<Report />} />
           <Route path="*" element={<Dashboard />} />
         </Routes>

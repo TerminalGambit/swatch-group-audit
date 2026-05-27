@@ -3,15 +3,18 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
+  LabelList,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
+import { Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import ChartCard from '../components/ChartCard';
 import Callout from '../components/Callout';
 import KPICard from '../components/KPICard';
+import SourceBadge from '../components/SourceBadge';
 import { financials } from '../data';
 import { fmtNum, fmtPct, yoy } from '../lib/format';
 
@@ -91,31 +94,49 @@ export default function Segments() {
       </section>
 
       {/* Segment KPI strip */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <KPICard
-          label="W&J segment margin"
-          value={fmtPct(wj24.margin_pct)}
-          delta={`${wj24.margin_pct - wj23.margin_pct >= 0 ? '+' : ''}${(wj24.margin_pct - wj23.margin_pct).toFixed(1)} pp`}
-          deltaNum={wj24.margin_pct - wj23.margin_pct}
-          sub="Vs Richemont watch-only 5.3%. Industry pure-play margins compressed."
-          accent="rust"
-        />
-        <KPICard
-          label="Greater China revenue"
-          value={`CHF ${fmtNum(geo24.greater_china)}m`}
-          delta={`${yoy(geo24.greater_china, geo23.greater_china).toFixed(1)}%`}
-          deltaNum={yoy(geo24.greater_china, geo23.greater_china)}
-          sub={`${geo24.china_incl_hk_macau_pct}% of total · was 33% in 2023`}
-          accent="rust"
-        />
-        <KPICard
-          label="ES order book"
-          value="+25%"
-          delta="YoY"
-          deltaNum={25}
-          sub="Sole recovery signal in the report — industrial micro-electronics demand rebuilding"
-          accent="olive"
-        />
+      <section className="space-y-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <KPICard
+            label="W&J segment margin"
+            value={fmtPct(wj24.margin_pct)}
+            delta={`${wj24.margin_pct - wj23.margin_pct >= 0 ? '+' : ''}${(wj24.margin_pct - wj23.margin_pct).toFixed(1)} pp`}
+            deltaNum={wj24.margin_pct - wj23.margin_pct}
+            sub="Vs Richemont watch-only 5.3%. Industry pure-play margins compressed."
+            accent="rust"
+          />
+          <KPICard
+            label="Greater China revenue"
+            value={`CHF ${fmtNum(geo24.greater_china)}m`}
+            delta={`${yoy(geo24.greater_china, geo23.greater_china).toFixed(1)}%`}
+            deltaNum={yoy(geo24.greater_china, geo23.greater_china)}
+            sub={`${geo24.china_incl_hk_macau_pct}% of total · was 33% in 2023`}
+            accent="rust"
+          />
+          <KPICard
+            label="ES order book"
+            value="+25%"
+            delta="YoY"
+            deltaNum={25}
+            sub="Sole recovery signal in the report — industrial micro-electronics demand rebuilding"
+            accent="olive"
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-[10px] text-muted px-1">
+          <div className="flex items-center">
+            W&J 6.4% margin
+            <SourceBadge label="Note 4" tone="clay" title="Segment information — Note 4" />
+          </div>
+          <div className="flex items-center flex-wrap gap-y-1">
+            CHF & −30.4%
+            <SourceBadge label="Group Key Figures" tone="olive" title="2024 Group Key Figures" />
+            27% of total
+            <SourceBadge label="Note 4" tone="clay" title="Segment information — Note 4" />
+          </div>
+          <div className="flex items-center">
+            ES order book +25%
+            <SourceBadge label="Mgmt commentary" tone="clay" title="Management commentary in 2024 annual report" />
+          </div>
+        </div>
       </section>
 
       {/* Geographic chart */}
@@ -143,6 +164,13 @@ export default function Segments() {
                 {geoData.map((d, i) => (
                   <Cell key={i} fill={d.change < 0 ? PALETTE.rust : PALETTE.olive} />
                 ))}
+                <LabelList
+                  dataKey="change"
+                  position="right"
+                  fill={PALETTE.slate}
+                  fontSize={11}
+                  formatter={(v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v).toFixed(1)}%`}
+                />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
@@ -176,7 +204,9 @@ export default function Segments() {
           <li>
             <strong className="text-slate">Breguet, Blancpain (prestige):</strong> Worst hit by the
             challenging market environment — Breguet unit shipments collapsed from ~20,000 to
-            ~7,400 according to industry estimates. Structural share loss to Richemont's specialist
+            ~7,400
+            <SourceBadge label="MS / LuxeConsult" tone="clay" title="Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024" />
+            according to industry estimates. Structural share loss to Richemont's specialist
             watchmakers.
           </li>
           <li>
@@ -197,6 +227,12 @@ export default function Segments() {
           </li>
         </ul>
       </div>
+
+      <Link to="/verdict" className="card hover:border-clay/60 hover:shadow-md transition-all block group">
+        <div className="text-xs uppercase tracking-wider text-muted font-medium">Next</div>
+        <div className="font-serif text-xl text-slate group-hover:text-clay mt-1">The Verdict →</div>
+        <div className="text-sm text-muted mt-1">What this segment story means for 2025</div>
+      </Link>
     </div>
   );
 }

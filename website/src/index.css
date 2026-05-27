@@ -41,6 +41,19 @@
   .tab-btn-inactive {
     @apply bg-oat/50 text-slate/70 hover:bg-oat;
   }
+  /* Right-edge shadow indicating horizontal scroll on overflow tables */
+  .table-scroll {
+    @apply overflow-x-auto relative;
+    background:
+      linear-gradient(to right, white 30%, rgba(255,255,255,0)) left center,
+      linear-gradient(to left, white 30%, rgba(255,255,255,0)) right center,
+      radial-gradient(farthest-side at 0% 50%, rgba(20,20,19,0.12), rgba(255,255,255,0)) left center,
+      radial-gradient(farthest-side at 100% 50%, rgba(20,20,19,0.12), rgba(255,255,255,0)) right center;
+    background-repeat: no-repeat;
+    background-size: 24px 100%, 24px 100%, 12px 100%, 12px 100%;
+    background-attachment: local, local, scroll, scroll;
+  }
+
 }
 
 /* Markdown prose for report reader */

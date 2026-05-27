@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import PageHeader from '../components/PageHeader';
 
@@ -38,15 +39,18 @@ export default function Report() {
   return (
     <div className="space-y-6">
       <PageHeader
-        eyebrow="Full Audit Report · 9 Sections"
-        title="Read the audit"
-        description="The narrative version of every finding the dashboard summarises. Use the sidebar to navigate. Each section is self-contained and was written from the same data the charts use."
+        eyebrow="Full Audit Report · 9 Sections · ~17,000 words"
+        title="An operating-leverage collapse, narrated"
+        description="The long-form companion to the dashboard. Every chart and ratio you saw has a source section here. PwC issued an unqualified opinion on 5 March 2025; the audit's central diagnosis is that fixed-cost operating leverage of 5.1× turned a 14.6% revenue decline into a 74.5% operating profit collapse."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Sidebar */}
         <aside className="lg:col-span-1">
           <div className="card sticky top-4">
+            <div className="mb-3 pb-3 border-b border-border">
+              <Link to="/" className="text-xs text-clay hover:text-rust">← Back to Dashboard</Link>
+            </div>
             <div className="text-xs uppercase tracking-wider text-muted font-medium mb-3">Sections</div>
             <nav className="space-y-1">
               {SECTIONS.map((s) => (
@@ -72,7 +76,13 @@ export default function Report() {
 
         {/* Main reader */}
         <article className="lg:col-span-3 card prose-report">
-          <ReactMarkdown>{content}</ReactMarkdown>
+          <div className="text-xs uppercase tracking-wider text-muted font-medium mb-4 flex items-baseline justify-between">
+            <span>Section {active.num} of 09 · {active.title}</span>
+            <span className="text-clay">~{Math.ceil(content.length / 5000)} min read</span>
+          </div>
+          <div className="max-w-prose">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </div>
         </article>
       </div>
     </div>
