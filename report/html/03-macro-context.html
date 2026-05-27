@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macro Context — Swatch Group 2024 Financial Audit</title>
+  <style>
+    :root {
+      --ivory: #FAF9F5; --slate: #141413; --clay: #D97757; --oat: #E3DACC;
+      --olive: #788C5D; --rust: #B04A3F; --muted: #6B7280; --border: #D1CFC5;
+      --card: #FFFFFF; --shadow: 0 1px 3px rgba(20,20,19,0.07), 0 4px 16px rgba(20,20,19,0.05);
+      --radius: 12px; --serif: ui-serif, Georgia, serif; --sans: system-ui, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--ivory); color: var(--slate); font-family: var(--sans); font-size: 15px; line-height: 1.6; max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 6rem; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.2; }
+    h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: 0.4rem; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 3rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1.5px solid var(--border); }
+    h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+    h4 { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 1rem 0 0.4rem; }
+    p { margin: 0.6rem 0; color: var(--slate); }
+    .meta-strip { display: flex; flex-wrap: wrap; gap: 0.4rem 2rem; padding: 0.8rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 0.5rem 0 2.5rem; font-size: 0.83rem; color: var(--muted); }
+    .meta-strip strong { color: var(--slate); }
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: var(--oat); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.7rem 1rem; text-align: left; border-bottom: 1.5px solid var(--border); }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:hover td { background: rgba(227,218,204,0.3); }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    td.positive { color: var(--olive); font-weight: 600; }
+    td.negative { color: var(--rust); font-weight: 600; }
+    .signal { padding: 1rem 1.25rem; border-radius: var(--radius); margin: 1rem 0; border-left: 4px solid; }
+    .signal.warn { background: rgba(217,119,87,0.08); border-color: var(--clay); }
+    .signal.danger { background: rgba(176,74,63,0.08); border-color: var(--rust); }
+    .signal.ok { background: rgba(120,140,93,0.08); border-color: var(--olive); }
+    .signal.neutral { background: rgba(209,207,197,0.3); border-color: var(--muted); }
+    .signal-title { font-weight: 700; margin-bottom: 0.25rem; }
+    .signal.warn .signal-title { color: var(--clay); }
+    .signal.danger .signal-title { color: var(--rust); }
+    .signal.ok .signal-title { color: var(--olive); }
+    .signal.neutral .signal-title { color: var(--slate); }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .kpi-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.3rem; box-shadow: var(--shadow); }
+    .kpi-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .kpi-value { font-family: var(--serif); font-size: 1.7rem; font-weight: 700; line-height: 1; }
+    .kpi-note { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+    .kpi-value.negative { color: var(--rust); }
+    .kpi-value.positive { color: var(--olive); }
+    .kpi-value.neutral { color: var(--clay); }
+
+    /* Timeline */
+    .timeline { border-left: 2px solid var(--border); margin: 1rem 0 1rem 1rem; padding-left: 1.5rem; }
+    .timeline-item { position: relative; margin-bottom: 1.2rem; }
+    .timeline-item::before { content: ''; position: absolute; left: -1.85rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--clay); border: 2px solid var(--ivory); }
+    .timeline-date { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 0.1rem; }
+    .timeline-title { font-weight: 600; font-size: 0.92rem; margin-bottom: 0.2rem; }
+    .timeline-desc { font-size: 0.85rem; color: var(--muted); }
+
+    /* Geo chart */
+    .geo-bar-chart { margin: 1rem 0; }
+    .geo-bar-row { display: flex; align-items: center; gap: 0.8rem; padding: 0.45rem 0; }
+    .geo-label { min-width: 140px; font-size: 0.85rem; }
+    .geo-track { flex: 1; height: 18px; background: var(--oat); border-radius: 3px; overflow: hidden; position: relative; }
+    .geo-fill { height: 100%; border-radius: 3px; }
+    .geo-fill.negative { background: var(--rust); }
+    .geo-fill.positive { background: var(--olive); }
+    .geo-pct { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; min-width: 55px; text-align: right; }
+    .geo-pct.negative { color: var(--rust); }
+    .geo-pct.positive { color: var(--olive); }
+    .geo-pct.neutral-color { color: var(--muted); }
+
+    /* Two-col layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1rem 0; }
+    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+    .col-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; }
+    .col-card h3 { margin-top: 0; }
+
+    /* Section numbering badge */
+    .section-badge { display: inline-block; font-family: var(--mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; color: var(--muted); background: var(--oat); border-radius: 4px; padding: 0.15rem 0.5rem; vertical-align: middle; margin-right: 0.5rem; }
+
+    /* Inline highlight */
+    .hl { background: rgba(217,119,87,0.12); padding: 0.05rem 0.3rem; border-radius: 3px; font-weight: 600; }
+    .hl-olive { background: rgba(120,140,93,0.12); padding: 0.05rem 0.3rem; border-radius: 3px; font-weight: 600; color: var(--olive); }
+    .hl-rust { background: rgba(176,74,63,0.1); padding: 0.05rem 0.3rem; border-radius: 3px; font-weight: 600; color: var(--rust); }
+
+    /* Divider */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    /* Math check callout */
+    .math-check { background: rgba(209,207,197,0.4); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1.2rem; font-family: var(--mono); font-size: 0.85rem; margin: 1rem 0; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .math-check .eq-part { display: inline-block; }
+    .math-check .eq-result { font-weight: 700; color: var(--rust); }
+
+    ul.bullets { margin: 0.5rem 0 0.5rem 1.2rem; }
+    ul.bullets li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--slate); }
+
+    footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1.5px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+    footer a { color: var(--muted); text-decoration: underline; }
+
+    .report-eyebrow { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--clay); margin-bottom: 0.6rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <p class="report-eyebrow">Swatch Group 2024 Financial Audit &mdash; Report 03</p>
+  <h1>Macro Context</h1>
+  <p style="font-size:1.05rem; color:var(--muted); margin-top:0.3rem;">China, CHF dynamics, and the first luxury contraction in fifteen years</p>
+
+  <div class="meta-strip">
+    <span><strong>Period:</strong> Full-year 2024</span>
+    <span><strong>Compiled:</strong> May 2026</span>
+    <span><strong>Primary sources:</strong> Bain &amp; Company, FH, SNB, Deloitte, HKTB, Counterpoint Research</span>
+    <span><strong>Currency:</strong> CHF unless stated</span>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SECTION 1: MACRO AT A GLANCE                           -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <h2><span class="section-badge">01</span>Macro at a Glance</h2>
+  <p>Six headline numbers frame the external environment that shaped Swatch Group's 2024 results. Three are headwinds, two are partial offsets, and one is a structural bellwether.</p>
+
+  <div class="kpi-grid">
+
+    <div class="kpi-card">
+      <div class="kpi-label">China Luxury Market</div>
+      <div class="kpi-value negative">&minus;18 to &minus;20%</div>
+      <div class="kpi-note">YoY. Back to 2020 levels — erased 4 years of post-pandemic recovery in one year (Bain)</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">Swiss Watch Exports to China</div>
+      <div class="kpi-value negative">&minus;25.8%</div>
+      <div class="kpi-note">Value terms. FH: "stronger than during the Covid pandemic." USD 2.9B total</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">Global Personal Luxury</div>
+      <div class="kpi-value negative">&euro;363B &minus;2%</div>
+      <div class="kpi-note">First contraction in 15 years (ex-COVID). Only 1/3 of brands grew (vs 95% in 2021–22)</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">SNB Rate Cuts 2024</div>
+      <div class="kpi-value neutral">&minus;125 bps</div>
+      <div class="kpi-note">1.75% &rarr; 0.50%. First major DM CB to cut post-pandemic. CHF remained structurally strong</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">Pre-Owned Watch Market</div>
+      <div class="kpi-value positive">+10%</div>
+      <div class="kpi-note">USD ~28B in 2024. Structural disruptor competes with Swatch's mid-tier primary sales</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">Japan Luxury Market</div>
+      <div class="kpi-value positive">+12 to +13%</div>
+      <div class="kpi-note">Record 36.9M inbound tourists. Weak yen made Japan 20–30% cheaper than alternatives</div>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SECTION 2: CHINA                                       -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <h2><span class="section-badge">02</span>China &mdash; The Dominant Driver</h2>
+
+  <p>No single macro factor shaped Swatch Group's 2024 results more decisively than the Chinese luxury demand collapse. The group's China, Hong Kong, and Macau region represented approximately 33% of net sales in 2023; that region contracted roughly 30% in 2024. Understanding why requires separating structural drivers from cyclical noise.</p>
+
+  <div class="signal danger">
+    <div class="signal-title">China Luxury: Structural + Cyclical Storm</div>
+    <p>Four independent forces converged simultaneously in 2024, compressing Chinese luxury demand in ways that go beyond a standard economic slowdown. The resulting shock was described by the Federation of the Swiss Watch Industry as <em>worse than the Covid pandemic</em> for watch exports.</p>
+  </div>
+
+  <h3>The Four Drivers of Chinese Demand Destruction</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Driver</th>
+          <th>Mechanism</th>
+          <th>Severity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Property Wealth Destruction</strong></td>
+          <td>70% of urban household assets are residential property. Average new home prices fell ~20% from 2021 peak; unsold inventory at 381M m&sup2; (170% above pre-pandemic). Macquarie estimated 85% of household wealth gains since 2010 evaporated by 2024.</td>
+          <td class="negative">Dominant</td>
+        </tr>
+        <tr>
+          <td><strong>Youth Unemployment</strong></td>
+          <td>Ages 16&ndash;24 (excl. students) peaked at 18.8% in August 2024 under revised NBS methodology. Prior methodology peak was 21.3% (June 2023), prompting a 6-month NBS suspension. Suppresses aspirational spending in the key future luxury cohort.</td>
+          <td class="negative">High</td>
+        </tr>
+        <tr>
+          <td><strong>"Luxury Shame" &amp; Common Prosperity</strong></td>
+          <td>CCP crackdown on "wealth flaunting": high-profile lifestyle influencers banned from social media (May 2024). Bain labeled an emerging "luxury shame" among the affluent — avoiding conspicuous consumption amid political pressure and economic anxiety. Watches (highly visible status symbols) were hardest-hit.</td>
+          <td class="negative">High</td>
+        </tr>
+        <tr>
+          <td><strong>Overseas Spending Redistribution</strong></td>
+          <td>Chinese luxury spending migrated rather than disappeared. ~40% of total Chinese luxury spend occurred overseas in 2024. Japan received ~120% of 2019-level Chinese luxury spend; Europe recovered to only ~50%. Hainan duty-free channel fell ~29%.</td>
+          <td class="negative">Material</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Swiss Watch Export Impact by China Region</h3>
+  <p>The Federation of the Swiss Watch Industry (FH) provides direct quantification of the category-level damage. All figures are full-year 2024 vs. 2023.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Destination</th>
+          <th>FH Export Change (Value)</th>
+          <th>Context</th>
+          <th>Swatch Group Implication</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mainland China</strong></td>
+          <td class="num negative">&minus;25.8%</td>
+          <td>FH: "stronger than during the Covid pandemic." USD 2.9B total value; volume &minus;23.6% to 7.6M units</td>
+          <td class="negative">Severe — directly hits ~25% of group revenue</td>
+        </tr>
+        <tr>
+          <td><strong>Hong Kong SAR</strong></td>
+          <td class="num negative">&minus;18.7%</td>
+          <td>Despite visitor arrivals +31% to ~45M. HK lost its #3 ranking in global Swiss watch export destinations</td>
+          <td class="negative">Severe — HK is a re-export and retail hub for Chinese buyers</td>
+        </tr>
+        <tr>
+          <td><strong>Macau</strong></td>
+          <td class="num" style="text-align:right; font-family:var(--mono);">&minus;30% (est.)</td>
+          <td>Gaming GGR +23.9% to USD 28.1B, but VIP junket retail segment eliminated; mass-market profile shift</td>
+          <td class="negative">High — Swatch mgmt cited SE Asia/ tourist-dependent markets &minus;30% overall</td>
+        </tr>
+        <tr>
+          <td><strong>Japan (offset)</strong></td>
+          <td class="num positive">+7.8%</td>
+          <td>Received redistributed Chinese luxury spend. Swatch Group achieved record Japan sales, +30% growth</td>
+          <td class="positive">Partial offset — insufficient to compensate China losses</td>
+        </tr>
+        <tr>
+          <td><strong>USA (offset)</strong></td>
+          <td class="num positive">+5.0%</td>
+          <td>USD &uarr; ~7.8% vs CHF made Swiss goods cheaper for American buyers. Record Swatch Group US sales; Tissot exceeded USD 100M first time</td>
+          <td class="positive">Partial offset</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="signal warn">
+    <div class="signal-title">The Hong Kong Paradox</div>
+    <p>Hong Kong registered 45 million visitor arrivals in 2024 — up 31% year-on-year. Inbound visitor spending reached HKD 195 billion (+9.6%). Yet watch and jewelry retail sales fell between 5% and 25% depending on the month, and Swiss watch exports to Hong Kong fell 18.7%. Chinese tourists arrived for experiences: dining, entertainment, free attractions. The USD-pegged Hong Kong dollar, strong against Asian currencies, made HK goods expensive relative to Japan. Tourism recovered; watch retail did not. This structural decoupling of visitor footfall from luxury spending is a warning signal for revenue models built on pre-pandemic tourist behavior.</p>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SECTION 3: CHF CURRENCY DYNAMICS                       -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <h2><span class="section-badge">03</span>CHF Currency Dynamics</h2>
+
+  <p>The Swiss National Bank became the first major developed-market central bank to cut rates in the post-pandemic tightening cycle. Despite four rate reductions totaling 125 basis points, the CHF remained structurally elevated — creating a material translation drag on Swatch Group's reported results.</p>
+
+  <h3>SNB Easing Cycle — 2024</h3>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">March 2024</div>
+      <div class="timeline-title">&minus;25 bps &rarr; Rate: 1.50%</div>
+      <div class="timeline-desc">First rate cut. SNB became the first major DM central bank to ease post-pandemic. Surprised consensus expecting a hold. CHF weakened briefly before recovering.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">June 2024</div>
+      <div class="timeline-title">&minus;25 bps &rarr; Rate: 1.25%</div>
+      <div class="timeline-desc">Second consecutive cut. SNB cited below-target inflation (Swiss CPI running below 2%) and concern about CHF appreciation's deflationary effect on import prices.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">September 2024</div>
+      <div class="timeline-title">&minus;25 bps &rarr; Rate: 1.00%</div>
+      <div class="timeline-desc">Third cut. SNB reinforced commitment to easing cycle as inflation remained subdued. CHF began weakening more materially vs. USD following Fed signals of its own cuts.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">December 2024</div>
+      <div class="timeline-title">&minus;50 bps &rarr; Rate: 0.50% (Surprise)</div>
+      <div class="timeline-desc">Bloomberg described as "surprising." The outsized cut signaled the SNB's active concern that CHF strength was damaging Swiss export competitiveness — directly relevant to the watch industry's deteriorating China numbers. Year-end rate: 0.50% (from 1.75% at start of 2024).</div>
+    </div>
+  </div>
+
+  <h3>FX Pair Performance vs. CHF — 2024</h3>
+  <p>Despite the SNB's aggressive easing, the CHF remained strong in absolute terms against most currencies relevant to luxury watch demand.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Currency Pair</th>
+          <th>Direction</th>
+          <th>Magnitude</th>
+          <th>Net Impact on Swatch Group</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>CHF / CNY</strong></td>
+          <td>CHF depreciated vs. CNY</td>
+          <td class="num">&minus;4.4%</td>
+          <td>Mildly positive for Swiss watch price competitiveness in China — overwhelmed by demand destruction</td>
+        </tr>
+        <tr>
+          <td><strong>CHF / USD</strong></td>
+          <td>USD appreciated vs. CHF</td>
+          <td class="num positive">+7.8%</td>
+          <td class="positive">Positive — Swiss goods cheaper for American buyers; supported record US performance</td>
+        </tr>
+        <tr>
+          <td><strong>CHF / EUR</strong></td>
+          <td>CHF weakened slightly vs. EUR</td>
+          <td class="num">&minus;1.1%</td>
+          <td>Minimal — Europe roughly flat in luxury demand; marginal positive on translation</td>
+        </tr>
+        <tr>
+          <td><strong>CHF / JPY</strong></td>
+          <td>JPY weakened sharply vs. CHF</td>
+          <td class="num negative">CHF gained ~12%</td>
+          <td class="negative">Mixed — Japan sales boomed in local JPY terms but translated back at unfavorable rate; partly offsets record Japan performance on reporting</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Mathematical Verification: Revenue Bridge</h3>
+  <p>Swatch Group explicitly cited a &minus;2.4% translation drag from currency effects. The arithmetic reconciles cleanly against reported figures.</p>
+
+  <div class="math-check">
+    <span class="eq-part">Reported revenue decline:</span>
+    <span class="eq-part" style="color:var(--rust); font-weight:700;">&minus;14.6%</span>
+    <span class="eq-part">=</span>
+    <span class="eq-part">Constant-currency decline:</span>
+    <span class="eq-part" style="color:var(--rust); font-weight:700;">&minus;12.2%</span>
+    <span class="eq-part">+</span>
+    <span class="eq-part">FX translation drag:</span>
+    <span class="eq-part" style="color:var(--rust); font-weight:700;">&minus;2.4%</span>
+    <span class="eq-part">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+    <span class="eq-part">CHF impact:</span>
+    <span class="eq-result">~CHF 192 million</span>
+  </div>
+
+  <p>The SNB's rate trajectory from 1.75% to 0.50% in a single year represents a structural acknowledgment that CHF strength threatens Swiss export competitiveness. However, without direct FX intervention, the SNB cannot engineer a sustained franc depreciation — leaving Swiss watchmakers with a structural cost base in the world's strongest reserve currency outside the dollar.</p>
+
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SECTION 4: GLOBAL LUXURY MARKET                        -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <h2><span class="section-badge">04</span>Global Luxury Market 2024</h2>
+
+  <p>Bain &amp; Company's annual Worldwide Luxury Market Monitor — produced in partnership with Altagamma — confirmed 2024 as a landmark inflection year for the global personal luxury goods industry.</p>
+
+  <div class="signal danger">
+    <div class="signal-title">First Contraction in 15 Years (Ex-COVID)</div>
+    <p>The global personal luxury goods market fell to <strong>&euro;363 billion in 2024, down &minus;2%</strong> from &euro;370 billion in 2023. The previous contraction (excluding the 2020 COVID shock) was during the 2008&ndash;2009 global financial crisis. Only approximately <strong>one-third of luxury brands grew in 2024</strong>, versus 95% growing during the 2021&ndash;22 post-lockdown boom and 65% in 2023. The luxury consumer base had shrunk by approximately 50 million people over 2023&ndash;2024, reversing the aspirational-consumer expansion that defined the pandemic era.</p>
+  </div>
+
+  <h3>Category Performance — Personal Luxury Goods 2024</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>2024 Growth</th>
+          <th>Market Est.</th>
+          <th>Swatch Exposure</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Watches</strong></td>
+          <td class="num negative">&minus;5 to &minus;7%</td>
+          <td class="num">~&euro;51B</td>
+          <td class="negative">Primary — worst-performing category; China disproportionately large in watches</td>
+        </tr>
+        <tr>
+          <td><strong>Shoes</strong></td>
+          <td class="num negative">&minus;5 to &minus;7%</td>
+          <td class="num">&mdash;</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td><strong>Leather Goods</strong></td>
+          <td class="num negative">&minus;3 to &minus;5%</td>
+          <td class="num">&mdash;</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td><strong>Jewelry</strong></td>
+          <td class="num" style="color:var(--olive);">+0 to +2%</td>
+          <td class="num">&mdash;</td>
+          <td>Partial — Harry Winston; small share of group revenue</td>
+        </tr>
+        <tr>
+          <td><strong>Fashion &amp; Apparel</strong></td>
+          <td class="num positive">+1%</td>
+          <td class="num">&mdash;</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td><strong>Beauty</strong></td>
+          <td class="num positive">+3 to +5%</td>
+          <td class="num">&mdash;</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td><strong>Eyewear</strong></td>
+          <td class="num positive">+3 to +5%</td>
+          <td class="num">&mdash;</td>
+          <td>None</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Watches and jewelry faced "the most significant challenges" per Bain's China analysis, as consumers shifted toward value-preserving assets and experiences. Declining secondary market prices for luxury watches — driven partly by the global pre-owned correction — also reduced the "investment premium" narrative that had driven Chinese watch accumulation during 2021&ndash;2022.</p>
+
+  <h3>Geographic Luxury Demand — 2024 YoY Change</h3>
+  <p>The global picture was one of sharp regional divergence rather than uniform decline. China's market fell from the world's #2 to #4 luxury market, ceding ground to Japan and broader Asia ex-China.</p>
+
+  <div class="geo-bar-chart">
+
+    <div class="geo-bar-row">
+      <div class="geo-label">Japan</div>
+      <div class="geo-track">
+        <div class="geo-fill positive" style="width: 65%;"></div>
+      </div>
+      <div class="geo-pct positive">+12 to +13%</div>
+    </div>
+
+    <div class="geo-bar-row">
+      <div class="geo-label">Americas</div>
+      <div class="geo-track">
+        <div class="geo-fill positive" style="width: 25%;"></div>
+      </div>
+      <div class="geo-pct positive">+4 to +5%</div>
+    </div>
+
+    <div class="geo-bar-row">
+      <div class="geo-label">Middle East</div>
+      <div class="geo-track">
+        <div class="geo-fill positive" style="width: 15%;"></div>
+      </div>
+      <div class="geo-pct positive">+3%</div>
+    </div>
+
+    <div class="geo-bar-row">
+      <div class="geo-label">Europe</div>
+      <div class="geo-track">
+        <div class="geo-fill positive" style="width: 3%;"></div>
+      </div>
+      <div class="geo-pct neutral-color">Flat</div>
+    </div>
+
+    <div class="geo-bar-row">
+      <div class="geo-label">HK / SE Asia</div>
+      <div class="geo-track">
+        <div class="geo-fill negative" style="width: 75%;"></div>
+      </div>
+      <div class="geo-pct negative">&minus;15%</div>
+    </div>
+
+    <div class="geo-bar-row">
+      <div class="geo-label">Mainland China</div>
+      <div class="geo-track">
+        <div class="geo-fill negative" style="width: 100%;"></div>
+      </div>
+      <div class="geo-pct negative">&minus;18 to &minus;20%</div>
+    </div>
+
+  </div>
+
+  <p style="font-size:0.8rem; color:var(--muted); margin-top:0.5rem;">Bar length proportional to magnitude of change. Source: Bain &amp; Company Worldwide Luxury Market Monitor 2024; FH Swiss Watch Export Statistics 2024.</p>
+
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SECTION 5: PARIS OLYMPICS                              -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <h2><span class="section-badge">05</span>Paris Olympics &mdash; The Timing Mismatch</h2>
+
+  <p>Omega served as Official Timekeeper of the Paris 2024 Olympics for the 31st time since 1932, covering all 329 events across 32 sports. The operation deployed 550 on-site professionals, 900 trained volunteers, and 350 tons of equipment including the new Scan'O'Vision ULTIMATE photofinish camera (up to 40,000 images per second). Brand visibility was at its highest: sprinter Noah Lyles wore an Omega Speedmaster during the men's 100m; pole vaulter Armand Duplantis wore one while setting a world record.</p>
+
+  <div class="signal warn">
+    <div class="signal-title">The Olympic Burden: Peak Cost, Trough Revenue</div>
+    <p>Despite high-profile Olympic presence, empirical data contradicts any near-term commercial benefit. Fortune (September 2024) reported that used Omega watch prices declined by <strong>nearly 1%</strong> in the 30-day period following the Games — per the Bloomberg Subdial Watch Index — while Rolex, Patek Philippe, Audemars Piguet, Cartier, and Tudor prices rose over the same period. Omega's Olympic investment is strategically defensible as long-term brand equity (the IOC partnership extends through Brisbane 2032), but it created an acute timing problem: <strong>peak marketing expenditure coincided with the weakest revenue environment in over a decade</strong>. Swatch Group management cited Olympic marketing spend as one of three explicit factors pressuring the 2024 operating margin, which collapsed from 15.1% to 4.5% — a 74.5% decline in absolute operating profit.</p>
+    <ul class="bullets" style="margin-top:0.75rem;">
+      <li>Omega pre-owned prices: <span class="hl-rust">&minus;1%</span> post-Games (Bloomberg Subdial)</li>
+      <li>Rolex, Patek, AP, Cartier, Tudor: all rose in same period</li>
+      <li>Olympic costs: industry estimates suggest hundreds of millions CHF (rights fees + logistics + athlete sponsorships + media)</li>
+      <li>IOC partnership commitment: through Brisbane 2032 — cost continues regardless of revenue cycle</li>
+    </ul>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SECTION 6: STRUCTURAL THREATS                          -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <h2><span class="section-badge">06</span>Structural Threats &mdash; The Long Game</h2>
+
+  <p>Two structural trends did not cause 2024's shortfall but set the ceiling on recovery speed. Both are secular, not cyclical.</p>
+
+  <div class="two-col">
+
+    <div class="col-card">
+      <h3>Pre-Owned Market Rise</h3>
+      <h4>Displacing primary demand at Swatch's core price tiers</h4>
+      <ul class="bullets">
+        <li>Global pre-owned luxury watches: <strong>USD ~28B in 2024</strong>, growing <span class="hl-rust">+10% YoY</span></li>
+        <li>Projected to reach USD 43.7B by 2031 (CAGR ~11.6%)</li>
+        <li>Deloitte: secondhand will equal primary market <strong>within 10 years</strong></li>
+        <li><strong>38% of Gen Z</strong> plan to buy pre-owned in next 12 months vs. only 17% of Baby Boomers</li>
+        <li>Platforms: Chrono24, WatchBox, Watchfinder, and brand-certified programs (Omega entered CPO space)</li>
+        <li>Consumers access a pre-owned Longines or Omega at 30&ndash;50% below retail through authenticated platforms — compressing primary demand</li>
+      </ul>
+      <div class="signal warn" style="margin-top:1rem; padding:0.75rem 1rem;">
+        <div class="signal-title" style="font-size:0.85rem;">Swatch Most Exposed</div>
+        <p style="font-size:0.82rem; margin:0;">Mid-market price positioning (Omega, Longines, Tissot) means pre-owned directly competes with new sales — unlike Rolex or Patek whose secondary-market premium reinforces primary demand.</p>
+      </div>
+    </div>
+
+    <div class="col-card">
+      <h3>Smartwatch Evolution</h3>
+      <h4>Easing at the top, threatening at the middle</h4>
+      <ul class="bullets">
+        <li>Global smartwatch market itself declined <span class="hl-rust">&minus;7%</span> in 2024 (first-ever decline)</li>
+        <li>Apple Watch: <span class="hl-rust">&minus;19%</span>; Apple market share 25% &rarr; 22%</li>
+        <li>Samsung: +3%; Xiaomi surged <span class="hl-olive">+135%</span> on aggressive pricing</li>
+        <li>Eases near-term competitive pressure at the high end — ultra-luxury not at risk</li>
+        <li>But Huawei/Xiaomi at CHF 200&ndash;400 directly competes with Tissot and Swatch brand</li>
+        <li>Entry-level mechanical and quartz faces substitution from health-monitoring smartwatches</li>
+        <li>Swatch Group's SPOT smartwatch and connected initiatives: insufficient commercial traction</li>
+      </ul>
+      <div class="signal neutral" style="margin-top:1rem; padding:0.75rem 1rem;">
+        <div class="signal-title" style="font-size:0.85rem;">Nuanced Threat Profile</div>
+        <p style="font-size:0.82rem; margin:0;">Smartwatch headwinds are concentrated at Swatch Group's most price-sensitive brands. Omega and Longines face minimal smartwatch competition but maximum pre-owned competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>Generational Demand Shift</h3>
+  <p>Bain's 2024 global luxury report identified a structural risk beneath the cyclical China shock: the luxury customer base had <strong>shrunk by approximately 50 million people over 2023&ndash;2024</strong>. Gen Z "advocacy for luxury brands" continued to decline, with generational preferences trending toward experiences over objects, sustainability credentials, secondhand and neo-vintage references, and casualization of dress codes reducing the social occasions that historically required a formal watch. This cohort shift creates a medium-term structural challenge for Swatch Group's aspirational tier — though the Swatch brand's pop-culture collaborations and limited editions have demonstrated effectiveness at engaging younger consumers.</p>
+
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SECTION 7: AUDIT TAKEAWAY                              -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <h2><span class="section-badge">07</span>The Audit Takeaway</h2>
+
+  <div class="signal neutral" style="margin-bottom:1.5rem;">
+    <div class="signal-title">Connecting Macro to Swatch's Specific Underperformance</div>
+  </div>
+
+  <p>Swatch Group's 2024 results — net sales down <span class="hl-rust">&minus;14.6%</span>, operating margin collapsing from 15.1% to 4.5%, and absolute operating profit falling &minus;74.5% — are explicable through a hierarchy of causes. Getting the hierarchy right matters for distinguishing recoverable headwinds from structural erosion.</p>
+
+  <p><strong>China was the dominant driver.</strong> The group's China, Hong Kong, and Macau region, which represented approximately 33% of net sales in 2023, contracted roughly 30% in 2024. This is not a company-specific story: Swiss watch exports to China fell 25.8% industry-wide, described by the FH as worse than the Covid demand shock. Swatch Group's specific vulnerability lay in its <em>price tier</em>, not its <em>brand quality</em>. Ultra-high-net-worth Chinese consumers who buy Rolex Daytona or Patek Philippe Nautilus are relatively insulated from consumer confidence cycles; the aspirational middle class buying Omega Seamasters and Longines Conquest is not. The property wealth destruction that wiped out 85% of household wealth gains since 2010 hit exactly the wealth band that drives Swatch Group's volume.</p>
+
+  <p><strong>Currency effects were real but secondary.</strong> The CHF translation drag of &minus;2.4% (approximately CHF 192 million) is material but represents less than a fifth of the total revenue shortfall. The constant-currency decline of &minus;12.2% is a more accurate signal of underlying demand destruction. The SNB's 125 basis point easing cycle acknowledges the structural threat CHF strength poses to Swiss exporters, but without direct intervention, the SNB cannot engineer sustained franc weakness.</p>
+
+  <p><strong>Olympic marketing created an unfavorable cost-revenue timing mismatch.</strong> The Omega&ndash;IOC partnership through Brisbane 2032 is a long-term strategic bet on brand equity, not a 2024 revenue catalyst. The empirical evidence — pre-owned Omega prices declining while competitors rose post-Games — confirms the absence of a near-term commercial halo effect. The strategic logic of the partnership is sound; the timing of peak expenditure against the weakest revenue year in over a decade was painful. With the operating cost base in Switzerland largely fixed, the revenue collapse flowed through to operating profit with maximum leverage.</p>
+
+  <p><strong>Structural trends set the recovery ceiling.</strong> Even if China's property market and consumer confidence recover in 2025&ndash;2026, the structural forces analyzed above — pre-owned market growth compressing primary mid-tier demand, generational preference drift, and Swatch Group's limited smartwatch traction at the mid-market — suggest that recovery will be materially slower than simple mean-reversion would imply. Management's guidance for a China recovery assumes a behavioral normalization that the structural "luxury shame" narrative, youth unemployment dynamics, and property wealth destruction timeline make uncertain. The pre-owned market does not reverse; it compounds. The 50 million luxury consumers who exited the market in 2023&ndash;2024 do not automatically return. Swatch Group's recovery path requires both cyclical macro improvement <em>and</em> structural strategic adaptation — and the 2024 audit shows only the former is implicit in near-term guidance.</p>
+
+  <div class="signal ok" style="margin-top:1.5rem;">
+    <div class="signal-title">What External Data Confirms vs. Management Narrative</div>
+    <ul class="bullets" style="margin-top:0.5rem;">
+      <li><span class="hl-olive">Confirmed:</span> China demand collapse was industry-wide (FH, Bain, CNBC) — not company-specific failure</li>
+      <li><span class="hl-olive">Confirmed:</span> CHF drag of &minus;2.4% reconciles against constant-currency figures</li>
+      <li><span class="hl-olive">Confirmed:</span> Olympic marketing cost is material and recurring through 2032</li>
+      <li><span class="hl-rust">Risk:</span> Management narrative implies near-term China recovery that structural data does not fully support</li>
+      <li><span class="hl-rust">Risk:</span> Pre-owned market growth structurally compresses primary mid-tier demand — not captured in guidance framework</li>
+      <li><span class="hl-rust">Risk:</span> Operating leverage remains extreme: 74.5% profit decline on 14.6% revenue decline — any further China softness could produce losses</li>
+    </ul>
+  </div>
+
+
+  <!-- Footer -->
+  <footer>
+    <p><strong>Sources:</strong> Bain &amp; Company China Luxury Report 2024; Bain-Altagamma Worldwide Luxury Market Monitor 2024; Federation of the Swiss Watch Industry (FH) Annual Statistics 2024; Deloitte Swiss Watch Industry Insights 2024; Hong Kong Census &amp; Statistics Department; Hong Kong Tourism Board 2024; Macau gross gaming revenue data (ASGAM); SNB monetary policy decisions; Bloomberg Subdial Watch Index; Fortune; CNBC; South China Morning Post; Swatch Group official releases; Counterpoint Research smartwatch data; Macquarie Group China property analysis; IndexBox China watch import data.</p>
+    <p style="margin-top:0.75rem;">Swatch Group 2024 Financial Audit &mdash; Report 03 of 07 &mdash; Macro Context &mdash; Compiled May 2026</p>
+  </footer>
+
+</body>
+</html>
