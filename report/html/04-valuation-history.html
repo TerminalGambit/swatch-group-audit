@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swatch Group — Valuation &amp; Historical Performance | Financial Audit 2024</title>
+  <style>
+    :root {
+      --ivory: #FAF9F5; --slate: #141413; --clay: #D97757; --oat: #E3DACC;
+      --olive: #788C5D; --rust: #B04A3F; --muted: #6B7280; --border: #D1CFC5;
+      --card: #FFFFFF; --shadow: 0 1px 3px rgba(20,20,19,0.07), 0 4px 16px rgba(20,20,19,0.05);
+      --radius: 12px; --serif: ui-serif, Georgia, serif; --sans: system-ui, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--ivory); color: var(--slate); font-family: var(--sans); font-size: 15px; line-height: 1.6; max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 6rem; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.2; }
+    h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: 0.4rem; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 3rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1.5px solid var(--border); }
+    h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+    h4 { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 1rem 0 0.4rem; }
+    p { margin: 0.6rem 0; }
+    .meta-strip { display: flex; flex-wrap: wrap; gap: 0.4rem 2rem; padding: 0.8rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 0.5rem 0 2.5rem; font-size: 0.83rem; color: var(--muted); }
+    .meta-strip strong { color: var(--slate); }
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: var(--oat); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.7rem 1rem; text-align: left; border-bottom: 1.5px solid var(--border); }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:hover td { background: rgba(227,218,204,0.3); }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    td.positive { color: var(--olive); font-weight: 600; }
+    td.negative { color: var(--rust); font-weight: 600; }
+    td.label-bold { font-weight: 700; }
+    tr.highlight td { background: rgba(217,119,87,0.08); border-left: 3px solid var(--clay); }
+    tr.trough td { background: rgba(176,74,63,0.06); }
+    tr.total td { background: var(--oat); font-weight: 700; }
+    .signal { padding: 1rem 1.25rem; border-radius: var(--radius); margin: 1rem 0; border-left: 4px solid; }
+    .signal.warn { background: rgba(217,119,87,0.08); border-color: var(--clay); }
+    .signal.danger { background: rgba(176,74,63,0.08); border-color: var(--rust); }
+    .signal.ok { background: rgba(120,140,93,0.08); border-color: var(--olive); }
+    .signal.neutral { background: rgba(209,207,197,0.3); border-color: var(--muted); }
+    .signal-title { font-weight: 700; margin-bottom: 0.25rem; }
+    .signal.warn .signal-title { color: var(--clay); }
+    .signal.danger .signal-title { color: var(--rust); }
+    .signal.ok .signal-title { color: var(--olive); }
+
+    /* Valuation multiples display */
+    .multiple-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .multiple-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; text-align: center; box-shadow: var(--shadow); }
+    .multiple-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.5rem; }
+    .multiple-value { font-family: var(--serif); font-size: 1.8rem; font-weight: 700; line-height: 1; }
+    .multiple-value.expensive { color: var(--rust); }
+    .multiple-value.cheap { color: var(--olive); }
+    .multiple-value.neutral { color: var(--clay); }
+    .multiple-note { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* Analyst consensus gauge */
+    .consensus-bar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; margin: 0.8rem 0; }
+    .consensus-buy { background: var(--olive); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 700; }
+    .consensus-hold { background: var(--oat); display: flex; align-items: center; justify-content: center; color: var(--slate); font-size: 0.75rem; font-weight: 700; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+    .consensus-sell { background: var(--rust); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 700; }
+    .consensus-legend { display: flex; gap: 1.5rem; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+    .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.3rem; }
+
+    /* Historical trend mini chart */
+    .trend-chart { display: flex; align-items: flex-end; gap: 4px; height: 80px; margin: 1rem 0; padding: 0.5rem 0; border-bottom: 1.5px solid var(--border); }
+    .trend-bar { flex: 1; border-radius: 3px 3px 0 0; position: relative; min-width: 30px; }
+    .trend-bar.revenue { background: var(--clay); opacity: 0.7; }
+    .trend-bar.margin { background: var(--olive); }
+    .trend-bar.negative-margin { background: var(--rust); }
+    .trend-label { font-size: 0.65rem; text-align: center; color: var(--muted); margin-top: 0.3rem; }
+    .trend-year { display: flex; gap: 4px; }
+    .trend-year-label { flex: 1; font-size: 0.7rem; text-align: center; color: var(--muted); font-weight: 600; }
+
+    /* Price vs target */
+    .price-comparison { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1rem 0; }
+    .price-track { height: 12px; background: var(--oat); border-radius: 6px; position: relative; margin: 1rem 0; }
+    .price-current { position: absolute; height: 20px; width: 3px; background: var(--clay); border-radius: 2px; top: -4px; }
+    .price-target { position: absolute; height: 20px; width: 3px; background: var(--rust); border-radius: 2px; top: -4px; }
+    .price-labels { display: flex; justify-content: space-between; font-size: 0.78rem; }
+    .price-current-label { color: var(--clay); font-weight: 700; font-family: var(--mono); }
+    .price-target-label { color: var(--rust); font-weight: 700; font-family: var(--mono); }
+
+    /* Bear/Bull two-col */
+    .bb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1rem 0; }
+    @media (max-width: 640px) { .bb-grid { grid-template-columns: 1fr; } }
+    .bear-card { background: rgba(176,74,63,0.05); border: 1.5px solid rgba(176,74,63,0.3); border-radius: var(--radius); padding: 1.2rem 1.4rem; }
+    .bull-card { background: rgba(120,140,93,0.05); border: 1.5px solid rgba(120,140,93,0.3); border-radius: var(--radius); padding: 1.2rem 1.4rem; }
+    .bear-title { color: var(--rust); font-weight: 700; font-size: 1rem; margin-bottom: 0.7rem; }
+    .bull-title { color: var(--olive); font-weight: 700; font-size: 1rem; margin-bottom: 0.7rem; }
+    .case-point { display: flex; gap: 0.5rem; margin: 0.4rem 0; font-size: 0.88rem; align-items: flex-start; }
+    .case-icon { flex-shrink: 0; font-weight: 700; }
+
+    /* Dividend timeline */
+    .div-timeline { display: flex; gap: 0; border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 1rem 0; }
+    .div-year { flex: 1; text-align: center; padding: 0.8rem 0.4rem; border-right: 1px solid var(--border); }
+    .div-year:last-child { border-right: none; }
+    .div-year-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; color: var(--muted); }
+    .div-amount { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; margin-top: 0.2rem; }
+    .div-amount.cut { color: var(--rust); }
+    .div-amount.raised { color: var(--olive); }
+    .div-amount.flat { color: var(--muted); }
+
+    /* Payout ratio mini bar */
+    .payout-bar-wrap { display: flex; align-items: center; gap: 0.6rem; }
+    .payout-bar-bg { flex: 1; height: 8px; background: var(--oat); border-radius: 4px; overflow: visible; position: relative; }
+    .payout-bar-fill { height: 8px; border-radius: 4px; }
+    .payout-over-mark { position: absolute; right: -2px; top: -4px; width: 3px; height: 16px; background: var(--rust); border-radius: 2px; opacity: 0.7; }
+
+    /* Section divider label */
+    .section-number { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--clay); margin-bottom: 0.3rem; }
+
+    /* Audit conclusion box */
+    .conclusion-box { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.8rem 2rem; margin: 1.5rem 0; box-shadow: var(--shadow); }
+    .conclusion-box h3 { margin-top: 0; }
+    .conclusion-box p { font-size: 0.95rem; line-height: 1.75; color: var(--slate); }
+
+    /* Key metric callout inline */
+    .kpi { display: inline-block; background: var(--oat); border-radius: 4px; padding: 0.05rem 0.4rem; font-family: var(--mono); font-size: 0.88rem; font-weight: 700; }
+
+    footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1.5px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+    footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 1 — PAGE HEADER
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Financial Audit 2024 — Module 04</div>
+  <h1>Swatch Group — Valuation &amp; Historical Performance</h1>
+  <div class="meta-strip">
+    <span><strong>Ticker</strong> UHRN / SIX Swiss Exchange</span>
+    <span><strong>Currency</strong> CHF</span>
+    <span><strong>Data as of</strong> May 2026</span>
+    <span><strong>ISIN (Bearer)</strong> CH0012255151</span>
+    <span><strong>Period</strong> FY2019 – FY2024</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 2 — VALUATION MULTIPLES GRID
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 2</div>
+  <h2>Valuation Multiples at a Glance</h2>
+  <p>All multiples as of May 27, 2026. Bearer share price used throughout. FY2024 financials as reported.</p>
+
+  <div class="multiple-grid">
+    <div class="multiple-card">
+      <div class="multiple-label">Share Price (Bearer)</div>
+      <div class="multiple-value neutral">CHF 211.70</div>
+      <div class="multiple-note">+47–51% over 12 months; near 52-week high of CHF 213.80</div>
+    </div>
+    <div class="multiple-card">
+      <div class="multiple-label">Market Capitalisation</div>
+      <div class="multiple-value neutral">~CHF 10.6B</div>
+      <div class="multiple-note">Enterprise value ~CHF 11B per AlphaSpread</div>
+    </div>
+    <div class="multiple-card">
+      <div class="multiple-label">Price / Book (MRQ)</div>
+      <div class="multiple-value cheap">0.95x</div>
+      <div class="multiple-note">Below book — rare for luxury goods</div>
+    </div>
+    <div class="multiple-card">
+      <div class="multiple-label">P/E FY2024</div>
+      <div class="multiple-value expensive">49.6x</div>
+      <div class="multiple-note">On collapsed earnings — EPS CHF 3.73 vs CHF 16.76 in FY2023</div>
+    </div>
+    <div class="multiple-card">
+      <div class="multiple-label">EV / EBITDA</div>
+      <div class="multiple-value neutral">14–17x</div>
+      <div class="multiple-note">Range across sources; LTM 14.4x (multiples.vc) to 17.5x (valueinvesting.io)</div>
+    </div>
+    <div class="multiple-card">
+      <div class="multiple-label">Dividend Yield</div>
+      <div class="multiple-value neutral">~2.2%</div>
+      <div class="multiple-note">CHF 4.50 bearer div / CHF ~210 price; FY2024 payout 121% of net income</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 3 — ANALYST CONSENSUS
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 3</div>
+  <h2>Stock vs. Analyst Consensus</h2>
+
+  <div class="signal warn">
+    <div class="signal-title">Stock Trading 30% Above Analyst Consensus</div>
+    Current CHF 211.70 vs. average analyst target of CHF ~163 — the street consensus implies
+    <strong>-23% downside</strong> from current levels. The gap reflects a sharp 12-month re-rating
+    the sell-side has not fully absorbed. Recent upgrades from BofA (to Neutral, target CHF 200),
+    RBC (to Sector Perform, target CHF 220), and Citi (target CHF 193) are closing the gap —
+    but consensus still trails the market price by a material margin.
+  </div>
+
+  <div class="price-comparison">
+    <h3 style="margin-top:0; margin-bottom:0.25rem;">Price vs. Consensus Target Range</h3>
+    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:0.5rem;">Low CHF 95 &mdash; Avg CHF 163 &mdash; Current CHF 211.70 &mdash; High CHF 235.80</p>
+    <div class="price-track">
+      <!-- Low=95, High=235.80, range=140.80 -->
+      <!-- Avg target 163 → (163-95)/140.80 = 48.3% -->
+      <!-- Current 211.70 → (211.70-95)/140.80 = 82.9% -->
+      <div class="price-target" style="left: 48.3%;"></div>
+      <div class="price-current" style="left: 82.9%;"></div>
+    </div>
+    <div class="price-labels">
+      <span style="font-size:0.75rem; color:var(--muted);">Low: CHF 95</span>
+      <span class="price-target-label">Avg Target: CHF 163</span>
+      <span class="price-current-label">Current: CHF 211.70</span>
+      <span style="font-size:0.75rem; color:var(--muted);">High: CHF 235.80</span>
+    </div>
+  </div>
+
+  <h3>Analyst Breakdown — 18 Analysts (May 2026)</h3>
+  <div class="consensus-bar">
+    <div class="consensus-buy" style="width: 16.7%;">Buy (3)</div>
+    <div class="consensus-hold" style="width: 44.4%;">Hold (8)</div>
+    <div class="consensus-sell" style="width: 38.9%;">Sell (7)</div>
+  </div>
+  <div class="consensus-legend">
+    <span><span class="legend-dot" style="background:var(--olive);"></span>Buy — 3 / 18 (16.7%)</span>
+    <span><span class="legend-dot" style="background:var(--oat); border:1px solid var(--border);"></span>Hold — 8 / 18 (44.4%)</span>
+    <span><span class="legend-dot" style="background:var(--rust);"></span>Sell — 7 / 18 (38.9%)</span>
+  </div>
+
+  <div class="table-wrap" style="margin-top:1.5rem;">
+    <table>
+      <thead>
+        <tr>
+          <th>Broker</th>
+          <th>Rating</th>
+          <th class="num">Target (CHF)</th>
+          <th>Direction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>BofA (Ashley Wallace)</td>
+          <td>Neutral</td>
+          <td class="num">200</td>
+          <td class="positive">Upgraded from Underperform</td>
+        </tr>
+        <tr>
+          <td>RBC Capital (Piral Dadhania)</td>
+          <td>Sector Perform</td>
+          <td class="num">220</td>
+          <td class="positive">Upgraded from Underperform</td>
+        </tr>
+        <tr>
+          <td>Citi</td>
+          <td>Neutral</td>
+          <td class="num">193</td>
+          <td class="positive">Raised from CHF 143</td>
+        </tr>
+        <tr class="total">
+          <td>Consensus Average</td>
+          <td>Neutral / Hold</td>
+          <td class="num">163</td>
+          <td style="color:var(--rust); font-weight:600;">-23% implied from current price</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 4 — DIVIDEND HISTORY TIMELINE
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 4</div>
+  <h2>Dividend History — Bearer Share (FY2018–FY2024)</h2>
+
+  <div class="div-timeline">
+    <div class="div-year">
+      <div class="div-year-label">FY2018</div>
+      <div class="div-amount flat">CHF 8.00</div>
+    </div>
+    <div class="div-year">
+      <div class="div-year-label">FY2019</div>
+      <div class="div-amount cut">CHF 5.50</div>
+    </div>
+    <div class="div-year">
+      <div class="div-year-label">FY2020</div>
+      <div class="div-amount cut">CHF 3.50</div>
+    </div>
+    <div class="div-year">
+      <div class="div-year-label">FY2021</div>
+      <div class="div-amount raised">CHF 5.50</div>
+    </div>
+    <div class="div-year">
+      <div class="div-year-label">FY2022</div>
+      <div class="div-amount raised">CHF 6.00</div>
+    </div>
+    <div class="div-year">
+      <div class="div-year-label">FY2023</div>
+      <div class="div-amount raised">CHF 6.50</div>
+    </div>
+    <div class="div-year">
+      <div class="div-year-label">FY2024</div>
+      <div class="div-amount cut">CHF 4.50</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Fiscal Year</th>
+          <th class="num">Bearer (CHF)</th>
+          <th class="num">Registered (CHF)</th>
+          <th class="num">Payout Ratio</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FY2018</td>
+          <td class="num">8.00</td>
+          <td class="num">1.60</td>
+          <td class="num">~44%</td>
+          <td>Historical peak — earnings supported</td>
+        </tr>
+        <tr>
+          <td>FY2019</td>
+          <td class="num negative">5.50</td>
+          <td class="num">1.10</td>
+          <td class="num">~36%</td>
+          <td style="color:var(--rust);">-31% cut — HK protests &amp; COVID onset</td>
+        </tr>
+        <tr class="trough">
+          <td>FY2020</td>
+          <td class="num negative">3.50</td>
+          <td class="num">0.70</td>
+          <td class="num" style="color:var(--rust);">112% (from reserves)</td>
+          <td style="color:var(--rust);">Paid despite net loss — balance sheet confidence signal</td>
+        </tr>
+        <tr>
+          <td>FY2021</td>
+          <td class="num positive">5.50</td>
+          <td class="num">1.10</td>
+          <td class="num">~19%</td>
+          <td style="color:var(--olive);">+57% restored — V-shape recovery</td>
+        </tr>
+        <tr>
+          <td>FY2022</td>
+          <td class="num positive">6.00</td>
+          <td class="num">1.20</td>
+          <td class="num">~19%</td>
+          <td style="color:var(--olive);">+9% raised — margin expansion year</td>
+        </tr>
+        <tr>
+          <td>FY2023</td>
+          <td class="num positive">6.50</td>
+          <td class="num">1.30</td>
+          <td class="num">~19%</td>
+          <td style="color:var(--olive);">+8% raised — record net income CHF 890M</td>
+        </tr>
+        <tr class="highlight">
+          <td class="label-bold">FY2024</td>
+          <td class="num negative">4.50</td>
+          <td class="num">0.90</td>
+          <td class="num" style="color:var(--rust);">121% (from reserves)</td>
+          <td style="color:var(--rust);">-31% disciplined cut — not distressed; CHF 4.50 maintained for FY2025</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="signal ok">
+    <div class="signal-title">Dividend Reads as Confidence, Not Distress</div>
+    Both the FY2020 dividend (paid from reserves during a net loss year) and the FY2024 cut
+    (disciplined 31% reduction rather than elimination) reflect a family-controlled capital allocation
+    philosophy: maintain a dividend signal at all costs, even if payout exceeds 100% of net income.
+    The FY2025 dividend was held flat at CHF 4.50 — management sees the trough as transitory.
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 5 — 6-YEAR HISTORICAL PERFORMANCE
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 5</div>
+  <h2>Six-Year Historical Performance (FY2019–FY2024)</h2>
+  <p>All financial figures in CHF million. Dividends are bearer share amounts (registered = ÷5). Employees are year-end headcount.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th class="num">Net Sales</th>
+          <th class="num">Op Result</th>
+          <th class="num">Op Margin</th>
+          <th class="num">Net Result</th>
+          <th class="num">Net Margin</th>
+          <th class="num">Div / Bearer</th>
+          <th class="num">Employees</th>
+          <th>Key Event</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-bold">2019</td>
+          <td class="num">8,243</td>
+          <td class="num">1,023</td>
+          <td class="num">12.4%</td>
+          <td class="num">748</td>
+          <td class="num">9.1%</td>
+          <td class="num">CHF 8.00</td>
+          <td class="num">~36,100</td>
+          <td>Pre-COVID peak; HK protests cost ~CHF 200M H2; CK license still active</td>
+        </tr>
+        <tr class="trough">
+          <td class="label-bold" style="color:var(--rust);">2020</td>
+          <td class="num negative">5,595</td>
+          <td class="num negative">52</td>
+          <td class="num negative">0.9%</td>
+          <td class="num negative">(53)</td>
+          <td class="num negative">(0.9%)</td>
+          <td class="num">CHF 3.50</td>
+          <td class="num">32,400</td>
+          <td>COVID — first net loss in history; 384 stores closed; e-com +70%; net liquidity CHF 1,700M</td>
+        </tr>
+        <tr>
+          <td class="label-bold">2021</td>
+          <td class="num positive">7,313</td>
+          <td class="num positive">1,021</td>
+          <td class="num positive">14.0%</td>
+          <td class="num positive">774</td>
+          <td class="num positive">10.6%</td>
+          <td class="num">CHF 5.50</td>
+          <td class="num">31,444</td>
+          <td>V-shape recovery +30.7%; margin above 2019; Calvin Klein formally discontinued</td>
+        </tr>
+        <tr>
+          <td class="label-bold">2022</td>
+          <td class="num positive">7,499</td>
+          <td class="num positive">1,158</td>
+          <td class="num positive">15.4%</td>
+          <td class="num positive">823</td>
+          <td class="num positive">11.0%</td>
+          <td class="num">CHF 6.00</td>
+          <td class="num">32,061</td>
+          <td>MoonSwatch launch Mar 2022 (1M+ units); Omega +50%; China lockdowns -CHF 700M</td>
+        </tr>
+        <tr>
+          <td class="label-bold">2023</td>
+          <td class="num positive">7,888</td>
+          <td class="num positive">1,191</td>
+          <td class="num positive">15.1%</td>
+          <td class="num positive">890</td>
+          <td class="num positive">11.3%</td>
+          <td class="num">CHF 6.50</td>
+          <td class="num">33,602</td>
+          <td>Peak earnings — record net income CHF 890M; capex CHF 803M; China softening late H2</td>
+        </tr>
+        <tr class="highlight">
+          <td class="label-bold">2024</td>
+          <td class="num negative">6,735</td>
+          <td class="num negative">304</td>
+          <td class="num negative">4.5%</td>
+          <td class="num negative">219</td>
+          <td class="num negative">3.3%</td>
+          <td class="num">CHF 4.50</td>
+          <td class="num">32,477</td>
+          <td>China-led collapse; W&amp;J margin 10.6% (vs 17.2%); Production division deeply negative; Marc A. Hayek joins board</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="signal danger">
+    <div class="signal-title">Revenue Gap: FY2024 Still 18.3% Below 2019 Peak — Six Years On</div>
+    FY2024 net sales of CHF 6,735M represent an CHF 1,508M shortfall versus the FY2019 peak of CHF 8,243M.
+    Despite record operating margins in 2022–2023, the Group never recovered nominal revenue to pre-pandemic levels.
+    In real terms — accounting for CHF appreciation and Swiss inflation — the gap is materially larger.
+  </div>
+
+  <div class="signal warn">
+    <div class="signal-title">Amplified Downturns: Revenue Decline Translates to Catastrophic Operating Decline</div>
+    The Group's fixed-cost structure (Swiss manufacturing, owned retail) creates extreme operating leverage.
+    In 2020, a -32% revenue decline produced a -94.9% operating result collapse (CHF 1,023M to CHF 52M).
+    In 2024, a -14.6% revenue decline produced a -74.5% operating result collapse (CHF 1,191M to CHF 304M).
+    The same structural dynamic that enabled 15.4% margins in 2022 becomes a liability when volumes contract.
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 6 — OPERATING LEVERAGE VISUALIZATION
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 6</div>
+  <h2>Operating Leverage Analysis</h2>
+  <p>Operating leverage ratio = % change in operating result ÷ % change in revenue. Values above 1.0x indicate amplified earnings sensitivity.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th class="num">Revenue Change</th>
+          <th class="num">Op Result Change</th>
+          <th class="num">Leverage Ratio</th>
+          <th>Interpretation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="trough">
+          <td class="label-bold" style="color:var(--rust);">2020</td>
+          <td class="num negative">-32.1%</td>
+          <td class="num negative">-94.9%</td>
+          <td class="num negative">3.0x</td>
+          <td>Pandemic shock — every 1% revenue loss destroyed 3% operating profit</td>
+        </tr>
+        <tr>
+          <td class="label-bold" style="color:var(--olive);">2021</td>
+          <td class="num positive">+30.7%</td>
+          <td class="num positive">+1,863%</td>
+          <td class="num positive">60.7x</td>
+          <td>Recovery leverage — near-zero base in 2020 amplifies % gains; margin exceeded 2019</td>
+        </tr>
+        <tr>
+          <td class="label-bold" style="color:var(--olive);">2022</td>
+          <td class="num positive">+2.5%</td>
+          <td class="num positive">+13.4%</td>
+          <td class="num positive">5.4x</td>
+          <td>Positive leverage — incremental revenue flows through at high margin</td>
+        </tr>
+        <tr>
+          <td class="label-bold" style="color:var(--olive);">2023</td>
+          <td class="num positive">+5.2%</td>
+          <td class="num positive">+2.8%</td>
+          <td class="num neutral" style="color:var(--muted);">0.5x</td>
+          <td>Near-peak margins; capex investment year absorbs incremental revenue</td>
+        </tr>
+        <tr class="highlight">
+          <td class="label-bold">2024</td>
+          <td class="num negative">-14.6%</td>
+          <td class="num negative">-74.5%</td>
+          <td class="num negative">5.1x</td>
+          <td>Severe deleverage — for every 1% revenue decline, operating profit fell 5.1%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="signal danger">
+    <div class="signal-title">2024 Shows 5.1x Negative Operating Leverage — The Core Structural Risk</div>
+    For every 1% revenue decline in 2024, operating profit fell 5.1%. This is a direct consequence of
+    Swatch Group's vertical integration model: Swiss manufacturing capacity, owned retail networks,
+    and an in-house production division cannot be scaled down quickly. When volumes recover, this same
+    structure generates exceptional margins (15.4% in 2022). But the downside is symmetric and severe.
+    The Production division — supplying Swiss Made components to third parties — amplifies this effect:
+    it has high fixed costs and saw revenue contract as the entire Swiss watch industry destocked.
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 7 — CORPORATE ACTIONS & STRATEGIC EVENTS
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 7</div>
+  <h2>Corporate Actions &amp; Strategic Events</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Event</th>
+          <th>Financial Impact</th>
+          <th>Classification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2019 Jan</td>
+          <td>Close CHF 1B share buyback program (15.5M shares, launched 2016)</td>
+          <td>Float reduced; EPS accretion complete</td>
+          <td><span class="kpi">Capital Allocation</span></td>
+        </tr>
+        <tr>
+          <td>2020</td>
+          <td>COVID-19 — 384 retail locations closed; 10.2% workforce reduction</td>
+          <td>Net sales -32.1%; first loss in history (CHF -53M)</td>
+          <td><span class="kpi">Exogenous Shock</span></td>
+        </tr>
+        <tr>
+          <td>2021</td>
+          <td>Calvin Klein license exit (22-year relationship discontinued)</td>
+          <td>+CHF 47M operating improvement vs. 2020 drag; portfolio simplified</td>
+          <td><span class="kpi">Strategic</span></td>
+        </tr>
+        <tr>
+          <td>2022 Mar 26</td>
+          <td>MoonSwatch launch (Swatch x Omega, CHF 250, bioceramic)</td>
+          <td>1M+ units sold; Omega Speedmaster sales +50%; global queuing phenomenon</td>
+          <td><span class="kpi">Innovation</span></td>
+        </tr>
+        <tr>
+          <td>2023–2025</td>
+          <td>Sustained open-market share repurchases</td>
+          <td>CHF 600M+ aggregate; EPS support; float shrink increases Hayek relative control</td>
+          <td><span class="kpi">Capital Allocation</span></td>
+        </tr>
+        <tr>
+          <td>2024 Jul</td>
+          <td>Hayek family direct open-market purchase (Nayla, Nick, Marc Hayek)</td>
+          <td>80,371 bearer shares at CHF 178.30 = CHF 14.3M total; confidence signal at multi-year lows</td>
+          <td><span class="kpi">Insider Buying</span></td>
+        </tr>
+        <tr>
+          <td>2024 May</td>
+          <td>Marc A. Hayek (3rd generation) appointed to Board of Directors</td>
+          <td>Formalizes succession; no immediate financial effect</td>
+          <td><span class="kpi">Governance</span></td>
+        </tr>
+        <tr class="highlight">
+          <td>2025</td>
+          <td>Activist investor challenges Hayek control — seeks board seat</td>
+          <td>Governance risk premium; minority shareholder pressure on strategy and returns</td>
+          <td><span class="kpi">Governance</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 8 — GOVERNANCE — HAYEK FAMILY STRUCTURE
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 8</div>
+  <h2>Governance — Hayek Family Control Structure</h2>
+
+  <div class="signal neutral">
+    <div class="signal-title">Dual-Class Structure: 25% Economic Interest, 44.1% Voting Control</div>
+    <p>The Hayek Pool controls <strong>44.1% of voting rights</strong> (as of December 31, 2024) via the registered share concentration
+    permitted under Swatch Group's dual-class structure. Registered shares carry the same one vote as bearer shares
+    but trade at 1/5 the price (CHF 41.80 vs. CHF 211.70), giving the family approximately <strong>~25% economic interest</strong>
+    while commanding a blocking minority on all shareholder votes.</p>
+    <p style="margin-top:0.6rem;">The 2025 activist board challenge reflects <strong>growing minority shareholder frustration</strong>
+    with the Group's operational performance and capital allocation during the 2024 downturn.
+    Buybacks continuing during the earnings collapse paradoxically serve family interests:
+    they shrink public float, which mechanically increases the Hayek family's relative voting weight
+    without any direct family investment. The July 2024 family purchase of CHF 14.3M in bearer
+    shares at market lows was a confidence signal — and also extended voting control to 44.1%.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-bold">CEO</td>
+          <td>Nick Hayek Jr. — continuous tenure since January 1, 2003</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Chairwoman</td>
+          <td>Nayla Hayek (sister) — chair since June 30, 2010</td>
+        </tr>
+        <tr>
+          <td class="label-bold">3rd Generation</td>
+          <td>Marc A. Hayek (nephew of Nick; son of late founder Nicolas G. Hayek Sr.) — joined board May 2024</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Voting rights (Hayek Pool)</td>
+          <td>44.1% as of Dec 31, 2024 (up from 43.3% end-2023)</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Economic interest</td>
+          <td>~25% (estimated; exact figure via Annual Report Corporate Governance section)</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Control mechanism</td>
+          <td>Registered shares (CHF 0.45 nominal, 1 vote) vs. bearer shares (CHF 2.25 nominal, 1 vote) — family concentrates in registered shares to maximise votes per CHF of capital</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Institutional holders</td>
+          <td>Vanguard, BlackRock, State Street, Charles Schwab — all &lt;5% stakes; no institutional counterweight</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Activist event (2025)</td>
+          <td>External activist sought board representation; outcome reflects minority shareholder frustration with performance trajectory</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 9 — BEAR / BULL CASE
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 9</div>
+  <h2>Investment Scenarios — Bear &amp; Bull Case</h2>
+
+  <div class="bb-grid">
+    <div class="bear-card">
+      <div class="bear-title">Bear Case</div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--rust);">&#9660;</span>
+        <span>China structural decline extends through 2025–2026; no cyclical recovery materializes</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--rust);">&#9660;</span>
+        <span>Pre-owned luxury market cannibalization accelerates — Rolex CPO, Chrono24 growth reduces new watch demand</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--rust);">&#9660;</span>
+        <span>Olympic sponsorship and commitment costs persist through 2028 — capex remains elevated vs. revenue</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--rust);">&#9660;</span>
+        <span>Breguet and Blancpain market share permanently ceded to Richemont's IWC, Panerai; ultra-luxury repositioning fails</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--rust);">&#9660;</span>
+        <span>Effective tax rate remains elevated as COVID loss carryforwards fully expire; FY2025 ETR 84% not a one-off</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--rust);">&#9660;</span>
+        <span>Activist-driven board disruption distracts management during critical recovery period</span>
+      </div>
+    </div>
+
+    <div class="bull-card">
+      <div class="bull-title">Bull Case</div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--olive);">&#9650;</span>
+        <span>China luxury demand recovers in 2025H2 — Swatch has maximum leverage with ~30% China revenue exposure</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--olive);">&#9650;</span>
+        <span>MoonSwatch-style innovation creates new accessible luxury demand beyond existing collector base</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--olive);">&#9650;</span>
+        <span>Buybacks at below-book value (P/B 0.95x) are accretive — best capital allocation at current prices</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--olive);">&#9650;</span>
+        <span>Electronic Systems order book +25% — visible non-luxury revenue recovery signals broader industrial demand</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--olive);">&#9650;</span>
+        <span>SNB rate cuts weaken CHF vs. EUR/USD/CNY — direct FX tailwind on reported CHF revenues</span>
+      </div>
+      <div class="case-point">
+        <span class="case-icon" style="color:var(--olive);">&#9650;</span>
+        <span>Vertical integration becomes a competitive moat post-recovery — in-house movement supply creates irreplicable Swiss Made authenticity</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION 10 — AUDITOR'S VALUATION CONCLUSION
+  ════════════════════════════════════════════════════ -->
+  <div class="section-number">Section 10</div>
+  <h2>Auditor's Valuation Conclusion</h2>
+
+  <div class="conclusion-box">
+    <h3>Valuation Assessment — May 2026</h3>
+    <p>
+      At <span class="kpi">CHF 211.70</span> (bearer), Swatch Group trades at
+      <span class="kpi">0.95x book value</span> — historically unusual for a luxury goods company and
+      a signal that the market is pricing in continued earnings pressure rather than near-term recovery.
+      The <span class="kpi">49.6x P/E</span> on FY2024 earnings is not the operative metric;
+      the FY2024 EPS of CHF 3.73 reflects an exceptional earnings trough driven by China demand collapse
+      and Production division deleveraging, not structural impairment of the business.
+    </p>
+    <p>
+      The more relevant entry-point multiples are <span class="kpi">EV/Sales 1.5x</span> and
+      <span class="kpi">EV/EBITDA 14–17x</span>, which compare reasonably against Swiss luxury peers
+      on a trough-earnings basis. On a normalized earnings assumption (return to 10–12% operating
+      margins, consistent with the 2019–2023 range), the forward P/E compresses substantially.
+    </p>
+    <p>
+      The <strong>30% premium to analyst consensus</strong> implies the market is pricing a faster China
+      recovery than sell-side models assume — or that recent analyst upgrades (BofA, RBC, Citi) are still
+      lagging a fundamental re-rating already underway. The stock's recovery from CHF 127 lows to
+      CHF 211.70 (+67%) validates that the market saw the trough ahead of consensus.
+    </p>
+    <p>
+      <strong>Key monitoring metrics for audit follow-through:</strong> (1) China luxury goods data Q1–Q2
+      2025 — any inflection in Mainland Chinese spending; (2) Watches &amp; Jewelry segment operating
+      margin trajectory — recovery from 10.6% toward 15%+ would be decisive; (3) Production division
+      operating result — the segment that amplifies downturns will also amplify the recovery;
+      (4) inventory days outstanding — elevated finished goods inventory signals channel saturation has
+      not cleared; (5) whether management initiates formal financial guidance — currently absent, which
+      itself signals management uncertainty.
+    </p>
+  </div>
+
+  <footer>
+    <p><strong>Swatch Group Financial Audit 2024</strong> — Module 04: Valuation &amp; Historical Performance</p>
+    <p style="margin-top:0.4rem;">
+      Sources: Swatch Group Annual Reports (2019–2024); FHS (Federation of the Swiss Watch Industry) Key Figures;
+      stockanalysis.com; investing.com; simplywall.st; alphaspread.com; multiples.vc; valueinvesting.io;
+      divvydiary.com; dividendmax.com; companiesmarketcap.com; swissinfo.ch; watchpro.com; hl.co.uk; marketscreener.com.
+    </p>
+    <p style="margin-top:0.4rem; color: var(--rust);">
+      Note: Year-end share prices 2019–2021 are derived estimates (market cap / shares outstanding). Verify against Bloomberg terminal or SIX historical data portal before use in external-facing materials. Short interest data is not publicly available for SIX-listed UHR shares.
+    </p>
+    <p style="margin-top:0.8rem;">Prepared May 2026 &mdash; Albert School S2 Business &mdash; Financial Audit</p>
+  </footer>
+
+</body>
+</html>
