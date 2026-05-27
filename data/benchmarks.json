@@ -1,0 +1,205 @@
+{
+  "metadata": {
+    "researched_date": "2026-05-27",
+    "analyst_note": "All figures sourced from official company press releases, FH statistics, and Morgan Stanley/LuxeConsult industry reports. LVMH watches operating profit derived: 2023 base EUR 2,162m × 0.72 = EUR 1,546m; margin derived EUR 1,546m / EUR 10,507m = 14.7%. Richemont FY ends 31 March — FY2025 covers April 2024 to March 2025."
+  },
+  "fy2024_comparison": {
+    "swatch_group": {
+      "revenue_chf_m": 6735,
+      "revenue_eur_m": null,
+      "op_profit_chf_m": 304,
+      "op_margin_pct": 4.5,
+      "watches_jewelry_segment_margin_pct": 10.6,
+      "net_income_chf_m": 219,
+      "net_margin_pct": 3.3,
+      "revenue_growth_pct": -14.6,
+      "revenue_growth_constant_fx_pct": -12.2,
+      "greater_china_revenue_chf_m": 1830,
+      "greater_china_share_of_revenue_pct": 27,
+      "greater_china_revenue_prior_year_chf_m": 2630,
+      "greater_china_decline_pct": -30.4,
+      "net_cash_chf_m": 1370,
+      "source": "Swatch Group Key Figures 2024 press release (swatchgroup.com, Feb 2025); FH summary 13 Feb 2025",
+      "fy_note": "Calendar year Jan-Dec 2024"
+    },
+    "richemont": {
+      "revenue_eur_m": 21399,
+      "op_profit_eur_m": 4467,
+      "op_margin_pct": 20.9,
+      "net_income_eur_m": 3762,
+      "revenue_growth_pct": 4,
+      "revenue_growth_constant_fx_pct": 4,
+      "net_cash_eur_m": 8257,
+      "proposed_dividend_chf": 3.0,
+      "source": "Richemont FY25 Annual Results Press Release, 16 May 2025 (richemont.com)",
+      "fy_note": "FY ending 31 March 2025 (covers April 2024 to March 2025)",
+      "segments": {
+        "jewellery_maisons": {
+          "brands": ["Cartier", "Van Cleef & Arpels"],
+          "revenue_eur_m": 15300,
+          "op_profit_eur_m": 4900,
+          "op_margin_pct": 31.9,
+          "revenue_growth_pct": 8
+        },
+        "specialist_watchmakers": {
+          "brands": ["IWC", "Panerai", "Jaeger-LeCoultre", "Vacheron Constantin", "A. Lange & Soehne"],
+          "revenue_eur_m": 3280,
+          "revenue_prior_year_eur_m": 3800,
+          "op_profit_eur_m": 175,
+          "op_margin_pct": 5.3,
+          "op_margin_prior_year_pct": 15.2,
+          "revenue_growth_pct": -13,
+          "asia_pacific_ex_japan_decline_pct": -27,
+          "us_growth_pct": 15
+        },
+        "other_fashion_accessories": {
+          "revenue_eur_m": 2800,
+          "op_profit_eur_m": -102,
+          "op_margin_pct": -3.7,
+          "revenue_growth_pct": 7
+        }
+      }
+    },
+    "lvmh_watches_jewelry": {
+      "revenue_eur_m": 10507,
+      "revenue_prior_year_eur_m": 10900,
+      "op_profit_eur_m": 1546,
+      "op_profit_prior_year_eur_m": 2162,
+      "op_margin_pct": 14.7,
+      "op_margin_prior_year_pct": 19.8,
+      "revenue_growth_pct": -3.6,
+      "revenue_growth_organic_pct": -2,
+      "op_profit_growth_pct": -28,
+      "lvmh_group_revenue_eur_m": 84700,
+      "lvmh_group_op_profit_eur_m": 19600,
+      "lvmh_group_op_margin_pct": 23.1,
+      "brands": ["Bulgari", "TAG Heuer", "Hublot", "Zenith", "Chaumet", "Tiffany & Co."],
+      "source": "LVMH Annual Results 2024 (lvmh.com, Jan 2025); MonochromeWatches.com; FH summary 13 Feb 2025. Operating profit derived from 2023 base EUR 2,162m × (1 - 0.28) = EUR 1,546m.",
+      "fy_note": "Calendar year Jan-Dec 2024"
+    },
+    "kering_watches_jewelry": {
+      "note": "Kering does not report a standalone watches and jewelry segment. Watch and jewelry brands are bundled in 'Other Houses'.",
+      "other_houses_segment_revenue_eur_m": 3200,
+      "other_houses_op_profit_eur_m": -9,
+      "other_houses_op_margin_pct": null,
+      "other_houses_revenue_growth_pct": -7,
+      "watch_brands": ["Ulysse Nardin", "Girard-Perregaux"],
+      "jewelry_brands": ["Boucheron", "Pomellato", "Qeelin", "Dodo"],
+      "kering_group_revenue_eur_m": 17200,
+      "kering_group_revenue_growth_pct": -12,
+      "source": "Kering 2024 Annual Results Press Release, 11 Feb 2025 (GlobeNewswire)",
+      "fy_note": "Calendar year Jan-Dec 2024"
+    },
+    "hermes": {
+      "revenue_eur_m": 15200,
+      "op_income_eur_m": 6200,
+      "op_margin_pct": 40.5,
+      "net_profit_eur_m": 4600,
+      "revenue_growth_constant_fx_pct": 15,
+      "source": "Hermes 2024 Full-Year Results (finance.hermes.com, Feb 2025)",
+      "fy_note": "Calendar year Jan-Dec 2024 — included as benchmark reference only, not a watch group"
+    }
+  },
+  "swiss_watch_exports_2024": {
+    "total_value_chf_m": 26000,
+    "prior_year_chf_m": 26700,
+    "yoy_change_pct": -2.8,
+    "volume_units_million": 15.3,
+    "volume_prior_year_million": 16.9,
+    "volume_yoy_change_pct": -9.4,
+    "source": "Federation de l'Horlogerie (FH) Annual Statistics, 30 Jan 2025 (fhs.swiss/eng/2025_01_30_00_statistics.html)",
+    "price_segments": {
+      "below_chf_3000_export_price": {
+        "share_of_total_value_pct": "~20%",
+        "yoy_change_pct": -15.6
+      },
+      "above_chf_3000_export_price": {
+        "share_of_total_value_pct": ">80%",
+        "yoy_change_pct": 1.0
+      },
+      "steel_watches": {
+        "yoy_change_pct": -9.8
+      },
+      "precious_metal_watches": {
+        "yoy_change_pct": 2.2
+      }
+    },
+    "top_destinations": [
+      { "market": "United States", "yoy_change_pct": 5.0, "note": "Leading market, 4th consecutive year of growth" },
+      { "market": "Japan", "yoy_change_pct": 7.8, "note": "Rose to 3rd position; mainly tourist purchases" },
+      { "market": "South Korea", "yoy_change_pct": 8.7, "note": "Favorable base effect" },
+      { "market": "India", "yoy_change_pct": 25.2, "note": "Emerging growth market" },
+      { "market": "France", "yoy_change_pct": 2.5 },
+      { "market": "Europe (total)", "yoy_change_pct": -0.1 },
+      { "market": "Americas (total)", "yoy_change_pct": 5.4, "share_of_total_pct": 20 },
+      { "market": "Singapore", "yoy_change_pct": -2.1 },
+      { "market": "United Kingdom", "yoy_change_pct": -1.6 },
+      { "market": "Italy", "yoy_change_pct": -1.6 },
+      { "market": "Germany", "yoy_change_pct": -3.8 },
+      { "market": "Hong Kong SAR", "yoy_change_pct": -18.7, "note": "Lost 3rd position ranking" },
+      { "market": "China", "yoy_change_pct": -25.8, "note": "Steeper than Covid-era decline; near 2019 level" },
+      { "market": "Asia (total)", "yoy_change_pct": -7.6 }
+    ]
+  },
+  "rolex_2024_estimates": {
+    "estimated_revenue_chf_m": 10583,
+    "implied_retail_value_chf_m": 15450,
+    "units_produced": 1176000,
+    "avg_price_chf": 13140,
+    "market_share_pct": 32,
+    "source": "Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024 Annual Report, Feb 2025 (reported via MonochromeWatches.com, WatchAnalytics.io, TheHourMarkers.com)",
+    "note": "All Rolex figures are analyst estimates; Rolex is privately held and does not publish financials"
+  },
+  "market_share_swiss_watch_industry_2024": {
+    "source": "Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024",
+    "total_top50_market_chf_m": 35258,
+    "prior_year_chf_m": 36127,
+    "brands": [
+      { "brand": "Rolex", "group": "Private", "revenue_chf_m": 10583, "units": 1176000, "market_share_pct": 32 },
+      { "brand": "Cartier", "group": "Richemont", "revenue_chf_m": null, "units": 680000, "market_share_pct": null },
+      { "brand": "Omega", "group": "Swatch Group", "revenue_chf_m": 2390, "units": 505000, "market_share_pct": 7 },
+      { "brand": "Patek Philippe", "group": "Private", "revenue_chf_m": 2300, "units": 72000, "market_share_pct": 7 },
+      { "brand": "Audemars Piguet", "group": "Private", "revenue_chf_m": 2380, "units": 51000, "market_share_pct": null },
+      { "brand": "Richard Mille", "group": "Private", "revenue_chf_m": 1550, "units": 5700, "market_share_pct": 3 },
+      { "brand": "Breguet", "group": "Swatch Group", "revenue_chf_m": 165, "units": 7400, "market_share_pct": null }
+    ],
+    "group_shares": [
+      { "group": "Rolex Group", "market_share_pct": 32 },
+      { "group": "Swatch Group", "market_share_pct": 18.3, "prior_year_pct": 20.3, "change_bps": -200 },
+      { "group": "Big Four private brands (Rolex, Patek, AP, Richard Mille)", "combined_market_share_pct": 47, "change_bps": 300 }
+    ]
+  },
+  "valuation_multiples_2024": {
+    "swatch_pe": 18,
+    "swatch_ev_ebitda": 7.9,
+    "swatch_market_cap_chf_m": 9300,
+    "swatch_eps_chf": 3.73,
+    "swatch_source": "Simply Wall St, Alpha Spread, CompaniesMarketCap.com — data as of early 2025 based on Dec 2024 earnings",
+    "richemont_pe": 25,
+    "richemont_ev_ebitda": 17.5,
+    "richemont_source": "GuruFocus, TradingEconomics — TTM ended Sep/Dec 2024",
+    "lvmh_pe": 22,
+    "lvmh_ev_ebitda": 10.4,
+    "lvmh_source": "multiples.vc, Finimize — as of 2024",
+    "hermes_pe": 28,
+    "hermes_source": "Yahoo Finance, ainvest.com — 2024",
+    "kering_pe": null,
+    "kering_ev_ebitda": 8.7,
+    "kering_source": "multiples.vc — 2024",
+    "luxury_sector_avg_ev_ebitda": 13,
+    "luxury_sector_avg_pe": 25,
+    "sector_source": "multiples.vc luxury goods sector averages; LinkedIn/Louis Guerin analysis 2024"
+  },
+  "audit_key_findings": {
+    "swatch_vs_industry_revenue_gap_pp": 11.8,
+    "note_gap": "Swatch -14.6% vs Swiss industry exports -2.8% = 11.8pp underperformance. vs LVMH watches -2% = 12.6pp gap.",
+    "china_industry_decline_pct": -25.8,
+    "china_swatch_decline_pct": -30.4,
+    "china_swatch_share_of_revenue_pct": 27,
+    "swatch_consolidated_op_margin_pct": 4.5,
+    "richemont_watch_only_margin_pct": 5.3,
+    "lvmh_watch_jewelry_margin_pct": 14.7,
+    "swatch_market_share_loss_bps": -200,
+    "market_share_structural_vs_cyclical_assessment": "Mixed: ~60% cyclical (China-driven, industry-wide), ~40% structural (mid-market price segment secular pressure, brand equity erosion at Breguet/Omega, ultra-luxury polarization benefiting independents at Swatch's expense)"
+  }
+}

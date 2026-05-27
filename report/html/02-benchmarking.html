@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swatch Group 2024 — Competitive Benchmarking</title>
+  <style>
+    :root {
+      --ivory: #FAF9F5;
+      --slate: #141413;
+      --clay: #D97757;
+      --oat: #E3DACC;
+      --olive: #788C5D;
+      --rust: #B04A3F;
+      --muted: #6B7280;
+      --border: #D1CFC5;
+      --card: #FFFFFF;
+      --shadow: 0 1px 3px rgba(20,20,19,0.07), 0 4px 16px rgba(20,20,19,0.05);
+      --radius: 12px;
+      --serif: ui-serif, Georgia, "Times New Roman", serif;
+      --sans: system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--ivory); color: var(--slate); font-family: var(--sans); font-size: 15px; line-height: 1.6; max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 6rem; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.2; }
+    h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: 0.4rem; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 3rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1.5px solid var(--border); }
+    h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+    h4 { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 1rem 0 0.4rem; }
+    p { margin: 0.6rem 0; }
+    .meta-strip { display: flex; flex-wrap: wrap; gap: 0.4rem 2rem; padding: 0.8rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 0.5rem 0 2.5rem; font-size: 0.83rem; color: var(--muted); }
+    .meta-strip strong { color: var(--slate); }
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: var(--oat); color: var(--slate); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.7rem 1rem; text-align: left; border-bottom: 1.5px solid var(--border); }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(227,218,204,0.3); }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); }
+    td.positive { color: var(--olive); font-weight: 600; }
+    td.negative { color: var(--rust); font-weight: 600; }
+    td.label-bold { font-weight: 700; }
+    tr.highlight td { background: rgba(217,119,87,0.08); }
+    tr.total td { background: var(--oat); font-weight: 700; border-top: 1.5px solid var(--border); }
+    .signal { padding: 1rem 1.25rem; border-radius: var(--radius); margin: 1rem 0; border-left: 4px solid; }
+    .signal.warn { background: rgba(217,119,87,0.08); border-color: var(--clay); }
+    .signal.danger { background: rgba(176,74,63,0.08); border-color: var(--rust); }
+    .signal.ok { background: rgba(120,140,93,0.08); border-color: var(--olive); }
+    .signal-title { font-weight: 700; margin-bottom: 0.25rem; }
+    .signal.warn .signal-title { color: var(--clay); }
+    .signal.danger .signal-title { color: var(--rust); }
+    .signal.ok .signal-title { color: var(--olive); }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .kpi-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; box-shadow: var(--shadow); }
+    .kpi-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .kpi-value { font-family: var(--serif); font-size: 1.8rem; font-weight: 700; line-height: 1; }
+    .kpi-delta { font-size: 0.82rem; font-weight: 600; margin-top: 0.3rem; }
+    .kpi-delta.down { color: var(--rust); }
+    .kpi-delta.up { color: var(--olive); }
+    .kpi-value.down { color: var(--rust); }
+
+    /* Margin bar chart */
+    .margin-bar { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+    .margin-bar:last-child { border-bottom: none; }
+    .margin-bar-label { min-width: 240px; font-size: 0.88rem; font-weight: 500; }
+    .margin-bar-track { flex: 1; height: 20px; background: var(--oat); border-radius: 4px; overflow: hidden; position: relative; }
+    .margin-bar-fill { height: 100%; border-radius: 4px; }
+    .margin-bar-fill.swatch { background: var(--clay); }
+    .margin-bar-fill.richemont-watch { background: var(--muted); }
+    .margin-bar-fill.lvmh { background: var(--olive); }
+    .margin-bar-fill.rolex { background: var(--slate); }
+    .margin-bar-fill.richemont-jewel { background: #4a7c59; }
+    .margin-bar-fill.negative { background: var(--rust); width: 4px !important; }
+    .margin-bar-pct { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; min-width: 60px; text-align: right; }
+    .margin-bar-pct.down { color: var(--rust); }
+
+    /* Peer card */
+    .peer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .peer-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; box-shadow: var(--shadow); }
+    .peer-card.swatch { border-color: var(--clay); border-width: 2px; }
+    .peer-name { font-family: var(--serif); font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .peer-card.swatch .peer-name { color: var(--clay); }
+    .peer-stat { display: flex; justify-content: space-between; padding: 0.25rem 0; font-size: 0.85rem; }
+    .peer-stat-label { color: var(--muted); }
+    .peer-stat-value { font-family: var(--mono); font-weight: 600; }
+    .peer-stat-value.neg { color: var(--rust); }
+    .peer-stat-value.pos { color: var(--olive); }
+    .peer-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--border); line-height: 1.4; }
+
+    /* Segment price analysis */
+    .price-segment { display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+    .price-seg-card { flex: 1; min-width: 150px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; text-align: center; }
+    .price-seg-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 0.5rem; }
+    .price-seg-value { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; }
+    .price-seg-value.negative { color: var(--rust); }
+    .price-seg-value.positive { color: var(--olive); }
+    .price-seg-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* Three column structural layout */
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    .col-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.2rem; box-shadow: var(--shadow); }
+    .col-card-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1.5px solid var(--border); }
+    .col-card-title.cyclical { color: var(--clay); border-color: var(--clay); }
+    .col-card-title.structural { color: var(--rust); border-color: var(--rust); }
+    .col-card-title.watch { color: var(--muted); }
+    .col-card ul { list-style: none; padding: 0; }
+    .col-card ul li { font-size: 0.85rem; padding: 0.35rem 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
+    .col-card ul li:last-child { border-bottom: none; }
+    .col-card ul li::before { content: "→ "; color: var(--muted); font-size: 0.8rem; }
+
+    /* Share bar for market share */
+    .share-grid { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+    .share-row { display: flex; align-items: center; gap: 0.75rem; }
+    .share-label { min-width: 200px; font-size: 0.85rem; }
+    .share-track { flex: 1; height: 16px; background: var(--oat); border-radius: 3px; overflow: hidden; }
+    .share-fill { height: 100%; border-radius: 3px; }
+    .share-fill.private { background: var(--slate); }
+    .share-fill.swatch { background: var(--clay); }
+    .share-fill.richemont { background: var(--muted); }
+    .share-fill.lvmh { background: var(--olive); }
+    .share-fill.other { background: var(--border); }
+    .share-pct { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; min-width: 50px; text-align: right; }
+
+    @media (max-width: 600px) {
+      .three-col { grid-template-columns: 1fr; }
+      .margin-bar-label { min-width: 140px; }
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.25rem; }
+    }
+
+    footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1.5px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <h1>Competitive Benchmarking</h1>
+  <div class="meta-strip">
+    <span><strong>Report:</strong> Swatch Group Financial Audit 2024</span>
+    <span><strong>Section:</strong> 02 — Peer Comparison &amp; Industry Context</span>
+    <span><strong>Period:</strong> FY2024 (Jan–Dec 2024)</span>
+    <span><strong>Researched:</strong> 27 May 2026</span>
+    <span><strong>Sources:</strong> FH Statistics, Morgan Stanley / LuxeConsult, Richemont FY25, LVMH FY24, Kering FY24</span>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 1: THE VERDICT                                           -->
+  <!-- ================================================================ -->
+  <h2>1. The Verdict — Where Swatch Stands</h2>
+  <p>Four metrics capture the 2024 competitive position at a glance. Each tells the same story: Swatch Group underperformed the industry, ceded share to ultra-luxury independents, and saw its flagship brand suffer a demand collapse disproportionate even to peer watchmakers.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Industry Underperformance</div>
+      <div class="kpi-value down">−11.8pp</div>
+      <div class="kpi-delta down">Swatch −14.6% vs FH industry avg −2.8%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Swatch Group Market Share</div>
+      <div class="kpi-value down">18.3%</div>
+      <div class="kpi-delta down">−200 bps YoY (was 20.3%)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Breguet Units Sold</div>
+      <div class="kpi-value down">7,400</div>
+      <div class="kpi-delta down">Down from ~20,000 — a 63% collapse</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Op. Margin vs Richemont Watch</div>
+      <div class="kpi-value down">4.5%</div>
+      <div class="kpi-delta down">vs Richemont Specialist 5.3%</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 2: PEER COMPARISON OVERVIEW                              -->
+  <!-- ================================================================ -->
+  <h2>2. Peer Comparison Overview</h2>
+  <p>Five entities frame the competitive landscape. Note that Richemont's watch division is the most directly comparable pure-play peer; LVMH and Kering benefit from jewellery segments that buffered the watch downturn; Rolex demonstrates what pricing power and supply discipline can achieve at scale.</p>
+
+  <div class="peer-grid">
+    <div class="peer-card swatch">
+      <div class="peer-name">Swatch Group</div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Revenue</span>
+        <span class="peer-stat-value">CHF 6,735M</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Growth</span>
+        <span class="peer-stat-value neg">−14.6%</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Op. Margin</span>
+        <span class="peer-stat-value neg">4.5%</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">W&amp;J Seg. Margin</span>
+        <span class="peer-stat-value">10.6%</span>
+      </div>
+      <div class="peer-note">Pure-play watchmaker. No jewellery buffer. Greater China = 27% of revenue. Mid-market concentration amplified downturn.</div>
+    </div>
+
+    <div class="peer-card">
+      <div class="peer-name">Richemont — Watch Div.</div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Revenue</span>
+        <span class="peer-stat-value">€3,280M</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Growth</span>
+        <span class="peer-stat-value neg">−13%</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Op. Margin</span>
+        <span class="peer-stat-value neg">5.3%</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Prior Year Margin</span>
+        <span class="peer-stat-value">15.2%</span>
+      </div>
+      <div class="peer-note">IWC, JLC, Vacheron, Panerai, A. Lange. FY ends March 2025. Margin collapsed −990 bps — confirms watch-sector pressure is industry-wide.</div>
+    </div>
+
+    <div class="peer-card">
+      <div class="peer-name">LVMH W&amp;J</div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Revenue</span>
+        <span class="peer-stat-value">€10,507M</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Growth (organic)</span>
+        <span class="peer-stat-value neg">−2%</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Op. Margin</span>
+        <span class="peer-stat-value">~14.7%</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Prior Year Margin</span>
+        <span class="peer-stat-value neg">19.8%</span>
+      </div>
+      <div class="peer-note">Bulgari, TAG Heuer, Tiffany, Hublot, Zenith. Jewellery (Bulgari, Tiffany) provided margin cushion unavailable to pure-play watchmakers.</div>
+    </div>
+
+    <div class="peer-card">
+      <div class="peer-name">Kering — Other Houses</div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Revenue</span>
+        <span class="peer-stat-value">€3,200M</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Growth</span>
+        <span class="peer-stat-value neg">−7%</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Op. Profit</span>
+        <span class="peer-stat-value neg">−€9M</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Op. Margin</span>
+        <span class="peer-stat-value neg">Negative</span>
+      </div>
+      <div class="peer-note">Includes Ulysse Nardin, Girard-Perregaux, Boucheron, Pomellato. No standalone watch disclosure. Group dragged by Gucci −23%.</div>
+    </div>
+
+    <div class="peer-card">
+      <div class="peer-name">Rolex (est.)</div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Est. Revenue</span>
+        <span class="peer-stat-value">CHF 10,583M</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Growth</span>
+        <span class="peer-stat-value pos">Stable</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Est. Op. Margin</span>
+        <span class="peer-stat-value pos">~32%</span>
+      </div>
+      <div class="peer-stat">
+        <span class="peer-stat-label">Market Share</span>
+        <span class="peer-stat-value pos">32%</span>
+      </div>
+      <div class="peer-note">Privately held; figures are Morgan Stanley / LuxeConsult estimates. Revenue grew via avg. price increase (+13% to CHF 13,140), not volume. Units deliberately reduced.</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 3: REVENUE PERFORMANCE TABLE                             -->
+  <!-- ================================================================ -->
+  <h2>3. Revenue Performance vs Peers</h2>
+  <p>Swatch's decline sits at the severe end of the peer range — deeper than LVMH and the Swiss export index, roughly level with Richemont's watch division, but with none of Richemont's jewellery offset at the group level.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Company / Entity</th>
+          <th>Currency</th>
+          <th class="num">Revenue</th>
+          <th class="num">Reported Growth</th>
+          <th class="num">Organic / CCY Growth</th>
+          <th class="num">Op. Margin</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td class="label-bold">Swatch Group</td>
+          <td>CHF</td>
+          <td class="num">6,735M</td>
+          <td class="num negative">−14.6%</td>
+          <td class="num negative">−12.2%</td>
+          <td class="num negative">4.5%</td>
+          <td>FY Jan–Dec 2024. W&amp;J segment margin 10.6%. Production segment ran at deliberate loss.</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Richemont — Specialist Watchmakers</td>
+          <td>EUR</td>
+          <td class="num">3,280M</td>
+          <td class="num negative">−13%</td>
+          <td class="num negative">−13%</td>
+          <td class="num negative">5.3%</td>
+          <td>FY Apr 2024–Mar 2025. Prior year margin 15.2%. Asia-Pac ex-Japan −27%; US +15%.</td>
+        </tr>
+        <tr>
+          <td>Richemont — Jewellery Maisons</td>
+          <td>EUR</td>
+          <td class="num">15,300M</td>
+          <td class="num positive">+8%</td>
+          <td class="num positive">+8%</td>
+          <td class="num positive">31.9%</td>
+          <td>Cartier &amp; Van Cleef &amp; Arpels. Insulated from watch downturn.</td>
+        </tr>
+        <tr>
+          <td class="label-bold">LVMH Watches &amp; Jewelry</td>
+          <td>EUR</td>
+          <td class="num">10,507M</td>
+          <td class="num negative">−3.6%</td>
+          <td class="num negative">−2%</td>
+          <td class="num">~14.7%</td>
+          <td>FY Jan–Dec 2024. Profit −28% YoY. Bulgari, TAG, Tiffany, Hublot, Zenith.</td>
+        </tr>
+        <tr>
+          <td>Swiss Watch Exports (FH)</td>
+          <td>CHF</td>
+          <td class="num">26,000M</td>
+          <td class="num negative">−2.8%</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td>Total Swiss industry. Volume −9.4% (15.3M units). Industry benchmark.</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Rolex Group (est.)</td>
+          <td>CHF</td>
+          <td class="num">~10,583M</td>
+          <td class="num positive">Stable</td>
+          <td class="num positive">Stable</td>
+          <td class="num positive">~32%</td>
+          <td>Private. Morgan Stanley / LuxeConsult est. Units reduced; avg. price raised to CHF 13,140.</td>
+        </tr>
+        <tr>
+          <td>Kering — Other Houses</td>
+          <td>EUR</td>
+          <td class="num">3,200M</td>
+          <td class="num negative">−7%</td>
+          <td class="num">n/a</td>
+          <td class="num negative">Negative</td>
+          <td>Includes UN, Girard-Perregaux, Boucheron, Pomellato. Not pure-play watch comparison.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 4: OPERATING MARGIN BAR CHART                           -->
+  <!-- ================================================================ -->
+  <h2>4. Operating Margin Comparison</h2>
+  <p>The margin hierarchy illustrates the structural advantages of jewellery-led business models over pure-play watchmaking. Swatch and Richemont's watch division sit at the bottom — not because watches are inherently low-margin, but because their segments bear the full weight of fixed manufacturing costs without jewellery's offsetting contribution.</p>
+
+  <div style="margin: 1.5rem 0; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.4rem 1.6rem; box-shadow: var(--shadow);">
+
+    <div class="margin-bar">
+      <div class="margin-bar-label">Rolex Group (est.)</div>
+      <div class="margin-bar-track">
+        <div class="margin-bar-fill rolex" style="width: 100%;"></div>
+      </div>
+      <div class="margin-bar-pct">~32%</div>
+    </div>
+
+    <div class="margin-bar">
+      <div class="margin-bar-label">Richemont — Jewellery Maisons</div>
+      <div class="margin-bar-track">
+        <div class="margin-bar-fill richemont-jewel" style="width: 100%;"></div>
+      </div>
+      <div class="margin-bar-pct">31.9%</div>
+    </div>
+
+    <div class="margin-bar">
+      <div class="margin-bar-label">LVMH W&amp;J</div>
+      <div class="margin-bar-track">
+        <div class="margin-bar-fill lvmh" style="width: 46%;"></div>
+      </div>
+      <div class="margin-bar-pct">~14.7%</div>
+    </div>
+
+    <div class="margin-bar">
+      <div class="margin-bar-label" style="font-weight: 700; color: var(--clay);">Swatch Group (consolidated)</div>
+      <div class="margin-bar-track">
+        <div class="margin-bar-fill swatch" style="width: 14%;"></div>
+      </div>
+      <div class="margin-bar-pct" style="color: var(--clay);">4.5%</div>
+    </div>
+
+    <div class="margin-bar">
+      <div class="margin-bar-label">Richemont — Specialist Watchmakers</div>
+      <div class="margin-bar-track">
+        <div class="margin-bar-fill richemont-watch" style="width: 16.6%;"></div>
+      </div>
+      <div class="margin-bar-pct">5.3%</div>
+    </div>
+
+    <div class="margin-bar">
+      <div class="margin-bar-label">Kering — Other Houses</div>
+      <div class="margin-bar-track">
+        <div class="margin-bar-fill negative"></div>
+      </div>
+      <div class="margin-bar-pct down">Neg.</div>
+    </div>
+
+    <p style="font-size: 0.75rem; color: var(--muted); margin-top: 1rem;">Bars scaled to Rolex/Richemont Jewellery ~32% maximum. Rolex is analyst estimate (private). Richemont bar note: jewellery margin (31.9%) vs. watch-only (5.3%) quantifies the jewellery buffer Swatch lacks. Kering bar is symbolic; actual margin was −0.3%.</p>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 5: SWISS WATCH EXPORT ANALYSIS                          -->
+  <!-- ================================================================ -->
+  <h2>5. Swiss Watch Export Industry Analysis — FH 2024</h2>
+  <p>The Fédération de l'Horlogerie reported CHF 26.0 billion in exports for 2024 — down 2.8% by value but down 9.4% by volume, reflecting the continuing premiumisation of the industry. The divergence between destinations and price segments was sharper than the headline suggests.</p>
+
+  <h3>5a. Export Performance by Destination Market</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Market</th>
+          <th class="num">YoY Change</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>India</td><td class="num positive">+25.2%</td><td>Fastest-growing emerging market</td></tr>
+        <tr><td>South Korea</td><td class="num positive">+8.7%</td><td>Favorable base effect</td></tr>
+        <tr><td>Japan</td><td class="num positive">+7.8%</td><td>Rose to 3rd position; tourist purchases key driver</td></tr>
+        <tr><td>United States</td><td class="num positive">+5.0%</td><td>Leading market; 4th consecutive year of growth</td></tr>
+        <tr><td>Americas (total)</td><td class="num positive">+5.4%</td><td>~20% of total Swiss exports</td></tr>
+        <tr><td>France</td><td class="num positive">+2.5%</td><td></td></tr>
+        <tr><td>Europe (total)</td><td class="num">−0.1%</td><td>Near-flat</td></tr>
+        <tr><td>Singapore</td><td class="num negative">−2.1%</td><td></td></tr>
+        <tr><td>United Kingdom</td><td class="num negative">−1.6%</td><td></td></tr>
+        <tr><td>Italy</td><td class="num negative">−1.6%</td><td></td></tr>
+        <tr><td>Germany</td><td class="num negative">−3.8%</td><td></td></tr>
+        <tr><td>Asia (total)</td><td class="num negative">−7.6%</td><td>Dragged by China and Hong Kong</td></tr>
+        <tr><td>Hong Kong SAR</td><td class="num negative">−18.7%</td><td>Lost 3rd position in market ranking</td></tr>
+        <tr class="highlight"><td class="label-bold">China</td><td class="num negative">−25.8%</td><td>Steeper than Covid-era decline; approaching 2019 levels</td></tr>
+        <tr class="total"><td>Total Swiss Exports</td><td class="num">−2.8%</td><td>CHF 26.0B (from 26.7B in 2023)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>5b. Price Segment Bifurcation</h3>
+  <p>The starkest data point in the 2024 FH report: the Swiss watch market split cleanly along a CHF 3,000 export price boundary. Swatch Group's dominant volume concentration below this threshold was the primary amplifier of its revenue decline.</p>
+
+  <div class="price-segment">
+    <div class="price-seg-card">
+      <div class="price-seg-label">Steel Watches</div>
+      <div class="price-seg-value negative">−9.8%</div>
+      <div class="price-seg-note">Mid-tier materials; accessible entry point</div>
+    </div>
+    <div class="price-seg-card">
+      <div class="price-seg-label">Below CHF 3,000 (export)</div>
+      <div class="price-seg-value negative">−15.6%</div>
+      <div class="price-seg-note">~20% of total export value</div>
+    </div>
+    <div class="price-seg-card">
+      <div class="price-seg-label">Above CHF 3,000 (export)</div>
+      <div class="price-seg-value positive">+1.0%</div>
+      <div class="price-seg-note">&gt;80% of total export value</div>
+    </div>
+    <div class="price-seg-card">
+      <div class="price-seg-label">Precious Metal Watches</div>
+      <div class="price-seg-value positive">+2.2%</div>
+      <div class="price-seg-note">Ultra-luxury materials; price-inelastic demand</div>
+    </div>
+  </div>
+
+  <div class="signal danger">
+    <div class="signal-title">Price Segment Bifurcation — Core Risk Factor</div>
+    <p>Watches below CHF 3,000 fell <strong>−15.6%</strong> while those above CHF 3,000 grew <strong>+1.0%</strong> — a 16.6pp divergence within the same industry. Swatch Group holds an estimated <strong>72% volume share</strong> in entry and mid-level price segments. This concentration amplified the group's revenue decline beyond the industry average and, critically, beyond what China alone can explain. Even full China recovery would leave Swatch exposed to the structural migration of demand toward ultra-luxury price points.</p>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 6: MARKET SHARE ANALYSIS                                -->
+  <!-- ================================================================ -->
+  <h2>6. Market Share Analysis</h2>
+  <p>The most telling competitive metric is not revenue growth but share movement within a contracting market. In 2024, value shifted decisively toward ultra-luxury independents and away from the mid-market.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Group / Entity</th>
+          <th class="num">2023 Share</th>
+          <th class="num">2024 Share</th>
+          <th class="num">Change (bps)</th>
+          <th>Key Brands</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-bold">Big Four Independents</td>
+          <td class="num">~44%</td>
+          <td class="num positive">47%</td>
+          <td class="num positive">+300 bps</td>
+          <td>Rolex, Patek Philippe, Audemars Piguet, Richard Mille</td>
+        </tr>
+        <tr>
+          <td class="label-bold" style="color: var(--slate);">— Rolex alone</td>
+          <td class="num">~32%</td>
+          <td class="num positive">32%</td>
+          <td class="num">Stable</td>
+          <td>Price increases drove value share; volume deliberately restrained</td>
+        </tr>
+        <tr class="highlight">
+          <td class="label-bold" style="color: var(--clay);">Swatch Group</td>
+          <td class="num">20.3%</td>
+          <td class="num negative">18.3%</td>
+          <td class="num negative">−200 bps</td>
+          <td>Omega, Longines, Rado, Tissot, Breguet, Blancpain</td>
+        </tr>
+        <tr>
+          <td class="label-bold">Richemont Watch Brands</td>
+          <td class="num">n/a</td>
+          <td class="num">n/a</td>
+          <td class="num negative">Declining</td>
+          <td>IWC, JLC, Vacheron, Panerai, A. Lange — revenue −13%</td>
+        </tr>
+        <tr>
+          <td>Remainder of Top 50</td>
+          <td class="num" colspan="3">Balance of CHF 35.3B market, fragmenting</td>
+          <td>Emerging independents; niche ultra-luxury brands</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Selected Brand Performance (Morgan Stanley / LuxeConsult Top 50, 2024)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Group</th>
+          <th class="num">Est. Revenue (CHF M)</th>
+          <th class="num">Units</th>
+          <th class="num">Avg. Price (CHF)</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-bold">Rolex</td>
+          <td>Private</td>
+          <td class="num">10,583</td>
+          <td class="num">1,176,000</td>
+          <td class="num positive">~13,140</td>
+          <td>Dominant. Price-driven growth.</td>
+        </tr>
+        <tr>
+          <td>Patek Philippe</td>
+          <td>Private</td>
+          <td class="num">~2,300</td>
+          <td class="num">72,000</td>
+          <td class="num">~31,900</td>
+          <td>Ultra-high ASP; ultra-constrained supply</td>
+        </tr>
+        <tr>
+          <td>Audemars Piguet</td>
+          <td>Private</td>
+          <td class="num">~2,380</td>
+          <td class="num">51,000</td>
+          <td class="num">~46,700</td>
+          <td>Royal Oak exclusivity; waiting lists</td>
+        </tr>
+        <tr>
+          <td>Omega</td>
+          <td>Swatch Group</td>
+          <td class="num">~2,390</td>
+          <td class="num">505,000</td>
+          <td class="num">~4,730</td>
+          <td>Stagnating at ~CHF 2.2–2.4B for over a decade</td>
+        </tr>
+        <tr>
+          <td>Richard Mille</td>
+          <td>Private</td>
+          <td class="num">1,550</td>
+          <td class="num">5,700</td>
+          <td class="num positive">~271,900</td>
+          <td>Extreme ASP; hyper-exclusive niche</td>
+        </tr>
+        <tr class="highlight">
+          <td class="label-bold">Breguet</td>
+          <td>Swatch Group</td>
+          <td class="num negative">~165</td>
+          <td class="num negative">7,400</td>
+          <td class="num">~22,300</td>
+          <td>Units down from ~20,000 — a 63% decline. China-exposed ultra-luxury.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 7: STRUCTURAL VS CYCLICAL                               -->
+  <!-- ================================================================ -->
+  <h2>7. Structural vs Cyclical Assessment</h2>
+  <p>The critical question for Swatch Group's investment thesis: how much of the 2024 underperformance reverses when China recovers, and how much is permanent market share erosion?</p>
+
+  <div class="signal warn">
+    <div class="signal-title">60% Cyclical / 40% Structural — A Mixed Signal</div>
+    <p>Swatch faces both a temporary China demand dip and structural market share erosion to ultra-luxury independents. The structural component — mid-market secular pressure, brand equity erosion at Omega and Breguet, and the value migration toward above-CHF-3,000 watches — cannot be recovered by China's cyclical rebound alone. Management must address both simultaneously.</p>
+  </div>
+
+  <div class="three-col">
+    <div class="col-card">
+      <div class="col-card-title cyclical">What Is Cyclical (~60%)</div>
+      <ul>
+        <li>China luxury demand cycle — approaching 2019 floor, historical bounce expected</li>
+        <li>Industry-wide export decline −2.8% confirms macro headwind shared by all peers</li>
+        <li>Richemont watch division also fell −13% with margin collapse — sector, not Swatch-specific</li>
+        <li>Q4 2024 showing improving trend; management guided "more positive 2025"</li>
+        <li>Currency headwinds (CHF strength vs. CNY) partially reversible</li>
+        <li>Hong Kong re-routing — temporary trade disruption, not permanent demand loss</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <div class="col-card-title structural">What Is Structural (~40%)</div>
+      <ul>
+        <li>200 bps market share loss to ultra-luxury independents gaining 300 bps</li>
+        <li>Omega revenue stagnation at CHF 2.2–2.4B for over a decade — long pre-dates 2024</li>
+        <li>Breguet unit collapse (20K → 7,400) suggests brand equity erosion beyond China</li>
+        <li>Industry polarising toward hyper-luxury (Rolex, Patek) and fashion tech — mid-market squeeze</li>
+        <li>Swatch Group holds 72% volume share in below-CHF-3,000 segment — structurally shrinking</li>
+        <li>No jewellery buffer unlike every peer that outperformed in 2024</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <div class="col-card-title watch">Key Indicators to Watch</div>
+      <ul>
+        <li>China consumer confidence index and luxury spend data (H1 2025)</li>
+        <li>Breguet units in FY2025 — partial recovery vs continued decline signals equity vs. cycle</li>
+        <li>Omega ASP trend — can it exit the CHF 4,000–5,000 band?</li>
+        <li>Swiss export data for watches above CHF 3,000 — bellwether for segment mix</li>
+        <li>Production segment margin — when does capacity utilisation normalise?</li>
+        <li>MoonSwatch collaboration pipeline — can the playbook be replicated for Omega uplift?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 8: AUDIT CONCLUSION                                     -->
+  <!-- ================================================================ -->
+  <h2>8. Audit Conclusion — Competitive Positioning</h2>
+
+  <p>The 2024 benchmarking exercise reveals a company that is structurally disadvantaged relative to its most resilient peers — not because of operational failure, but because of portfolio architecture. Every group that significantly outperformed Swatch in 2024 (LVMH, Richemont at the group level, Hermès) held large jewellery divisions that generated margin and growth independent of the watch cycle. Swatch has no equivalent buffer.</p>
+
+  <p>The pure-play watch exposure that defined Swatch's identity becomes a liability precisely in years like 2024, when watches were the worst-performing luxury sub-category. Richemont's near-identical watch-division performance (−13%, 5.3% margin) confirms this is a sector problem — but Richemont's jewellery maisons (+8%, ~32% margin) meant its overall group reported +4% revenue growth while Swatch reported −14.6%.</p>
+
+  <p>Peer outperformance requires structural fixes, not just China recovery. The cyclical portion of the decline will reverse with Chinese luxury demand; the structural portion — mid-market squeeze, Omega's decade-long stagnation, and Breguet's brand equity questions — will not.</p>
+
+  <div class="signal danger">
+    <div class="signal-title">Core Structural Vulnerability</div>
+    <p>Swatch Group lacks a high-margin jewellery buffer analogous to Cartier (Richemont) or Bulgari/Tiffany (LVMH). In a year when Swiss watch exports fell −2.8% but jewellery-inclusive groups grew, this gap was exposed. Harry Winston exists within the group but remains too small to offset. Without either jewellery expansion or a wholesale repositioning of Omega toward the above-CHF-3,000 segment, the structural underperformance risk is permanent.</p>
+  </div>
+
+  <div class="signal ok">
+    <div class="signal-title">Where Swatch Still Leads — Durable Competitive Advantages</div>
+    <p>Three structural advantages remain intact and should not be discounted in a recovery scenario:</p>
+    <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem; list-style: disc;">
+      <li style="margin-bottom: 0.3rem;"><strong>Vertical integration:</strong> Swatch produces ~95% of its movements in-house through ETA/Nivarox. This delivers cost advantages unavailable to most peers and insulates against supply chain shocks that would cripple assemblers.</li>
+      <li style="margin-bottom: 0.3rem;"><strong>Swiss manufacturing concentration:</strong> Near-complete Swiss Made certification across the portfolio provides authentic heritage positioning as luxury consumers increasingly scrutinise country-of-origin claims.</li>
+      <li style="margin-bottom: 0.3rem;"><strong>MoonSwatch demand innovation playbook proven:</strong> The 2022 Swatch × Omega MoonSwatch demonstrated that the group can engineer cultural moments, drive secondary market premiums, and generate press value without full price erosion. If this model is extended and replicated for other segments, it represents a legitimate path to premiumisation without needing to acquire jewellery assets.</li>
+    </ul>
+  </div>
+
+  <h3>Scenario Outlook</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Driver</th>
+          <th class="num">Implied Revenue Growth (2025E)</th>
+          <th>Key Assumption</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-bold positive">Bull — China Rebounds</td>
+          <td>Chinese luxury spend recovers +15%+ in H2 2025; Swatch leverages vertical cost base</td>
+          <td class="num positive">+10% to +14%</td>
+          <td>Greater China returns to CHF 2.3B+; Breguet units recover to 12,000+</td>
+        </tr>
+        <tr class="highlight">
+          <td class="label-bold">Base — Gradual Recovery</td>
+          <td>China stabilises near 2019 levels; Americas/Japan offset Asia weakness</td>
+          <td class="num">+4% to +7%</td>
+          <td>Consistent with FH export recovery to CHF 26.5B range; Omega holds share</td>
+        </tr>
+        <tr>
+          <td class="label-bold negative">Bear — Structural Drag</td>
+          <td>China slow; mid-market continues to cede share to independents; Omega stagnates</td>
+          <td class="num negative">Flat to +2%</td>
+          <td>Breguet fails to recover; below-CHF-3,000 segment contracts further</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <p><strong>Sources:</strong> Fédération de l'Horlogerie Annual Statistics (30 Jan 2025) · Richemont FY25 Annual Results Press Release (16 May 2025) · LVMH Annual Results 2024 (Jan 2025) · Kering Annual Results 2024 (11 Feb 2025) · Hermès 2024 Full-Year Results (Feb 2025) · Morgan Stanley / LuxeConsult Top 50 Swiss Watch Brands 2024 (Feb 2025) · Swatch Group Key Figures 2024 (Feb 2025) · GuruFocus · multiples.vc · CompaniesMarketCap.com · Alpha Spread</p>
+    <p style="margin-top: 0.5rem;">All Rolex figures are analyst estimates (Morgan Stanley / LuxeConsult); Rolex is privately held and does not publish financial statements. LVMH 2024 Watches &amp; Jewelry operating profit is derived from the 2023 base of €2,162M × (1 − 0.28) = €1,546M. Richemont FY ends 31 March — FY2025 covers April 2024 to March 2025.</p>
+    <p style="margin-top: 0.5rem;"><em>Prepared as part of the Swatch Group 2024 Financial Audit · Albert School S2 · May 2026</em></p>
+  </footer>
+
+</body>
+</html>

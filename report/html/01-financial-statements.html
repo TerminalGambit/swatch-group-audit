@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swatch Group 2024 — Financial Statements</title>
+  <style>
+    :root {
+      --ivory: #FAF9F5;
+      --slate: #141413;
+      --clay: #D97757;
+      --oat: #E3DACC;
+      --olive: #788C5D;
+      --rust: #B04A3F;
+      --muted: #6B7280;
+      --border: #D1CFC5;
+      --card: #FFFFFF;
+      --shadow: 0 1px 3px rgba(20,20,19,0.07), 0 4px 16px rgba(20,20,19,0.05);
+      --radius: 12px;
+      --serif: ui-serif, Georgia, "Times New Roman", serif;
+      --sans: system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--ivory);
+      color: var(--slate);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.2; }
+    h1 { font-size: 2.4rem; font-weight: 700; margin-bottom: 0.4rem; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 3rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1.5px solid var(--border); }
+    h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+    h4 { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 1rem 0 0.4rem; }
+    p { margin: 0.6rem 0; }
+
+    /* KPI grid */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .kpi-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; box-shadow: var(--shadow); }
+    .kpi-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .kpi-value { font-family: var(--serif); font-size: 2rem; font-weight: 700; line-height: 1; }
+    .kpi-delta { font-size: 0.82rem; font-weight: 600; margin-top: 0.3rem; }
+    .kpi-delta.up { color: var(--olive); }
+    .kpi-delta.down { color: var(--rust); }
+    .kpi-value.positive { color: var(--olive); }
+    .kpi-value.negative { color: var(--rust); }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: var(--oat); color: var(--slate); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.7rem 1rem; text-align: left; border-bottom: 1.5px solid var(--border); }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(227,218,204,0.3); }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); }
+    td.positive { color: var(--olive); font-weight: 600; }
+    td.negative { color: var(--rust); font-weight: 600; }
+    td.label-bold { font-weight: 700; }
+    tr.subtotal td { background: rgba(227,218,204,0.4); font-weight: 600; }
+    tr.total td { background: var(--oat); font-weight: 700; border-top: 1.5px solid var(--border); }
+
+    /* Signal banners */
+    .signal { padding: 1rem 1.25rem; border-radius: var(--radius); margin: 1rem 0; border-left: 4px solid; }
+    .signal.warn { background: rgba(217,119,87,0.08); border-color: var(--clay); }
+    .signal.danger { background: rgba(176,74,63,0.08); border-color: var(--rust); }
+    .signal.ok { background: rgba(120,140,93,0.08); border-color: var(--olive); }
+    .signal-title { font-weight: 700; margin-bottom: 0.25rem; }
+    .signal.warn .signal-title { color: var(--clay); }
+    .signal.danger .signal-title { color: var(--rust); }
+    .signal.ok .signal-title { color: var(--olive); }
+
+    /* Meta strip */
+    .meta-strip { display: flex; flex-wrap: wrap; gap: 0.4rem 2rem; padding: 0.8rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 0.5rem 0 2.5rem; font-size: 0.83rem; color: var(--muted); }
+    .meta-strip strong { color: var(--slate); }
+
+    /* Section badge */
+    .section-badge { display: inline-block; background: var(--clay); color: white; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2em 0.6em; border-radius: 4px; margin-right: 0.6rem; vertical-align: middle; }
+
+    /* Waterfall */
+    .waterfall { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 1rem 0; }
+    .waterfall-row { display: flex; align-items: center; padding: 0.7rem 1.2rem; border-bottom: 1px solid var(--border); gap: 1rem; }
+    .waterfall-row:last-child { border-bottom: none; background: var(--oat); font-weight: 700; }
+    .waterfall-label { flex: 1; font-size: 0.88rem; }
+    .waterfall-bar-wrap { flex: 2; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .waterfall-bar { height: 100%; border-radius: 3px; }
+    .waterfall-bar.negative { background: var(--rust); }
+    .waterfall-bar.positive { background: var(--olive); }
+    .waterfall-bar.neutral { background: var(--clay); }
+    .waterfall-amount { font-family: var(--mono); font-size: 0.85rem; font-weight: 600; min-width: 90px; text-align: right; }
+    .waterfall-amount.negative { color: var(--rust); }
+    .waterfall-amount.positive { color: var(--olive); }
+
+    /* Segment cards */
+    .segment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .segment-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.4rem; box-shadow: var(--shadow); }
+    .segment-name { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.8rem; }
+    .segment-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 0.3rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .segment-stat:last-child { border-bottom: none; }
+    .segment-stat-label { color: var(--muted); }
+    .segment-stat-value { font-family: var(--mono); font-weight: 600; }
+    .segment-stat-value.down { color: var(--rust); }
+    .segment-stat-value.up { color: var(--olive); }
+
+    /* Footer */
+    footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1.5px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+
+    /* Indented rows */
+    .indent { padding-left: 2rem; }
+    .indent2 { padding-left: 3rem; }
+
+    /* Print-friendly */
+    @media print {
+      body { padding: 1rem; }
+      .waterfall-bar-wrap { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
+  <h1>Swatch Group AG</h1>
+  <p style="font-family: var(--serif); font-size: 1.15rem; color: var(--muted); margin-bottom: 0.5rem;">
+    Consolidated Financial Statements — Fiscal Year 2024
+  </p>
+
+  <div class="meta-strip">
+    <span><strong>Standard</strong> Swiss GAAP FER</span>
+    <span><strong>Currency</strong> CHF million</span>
+    <span><strong>Auditor</strong> PricewaterhouseCoopers AG, Basel</span>
+    <span><strong>Opinion</strong> Unqualified</span>
+    <span><strong>Approved</strong> 5 March 2025</span>
+    <span><strong>Materiality</strong> CHF 40m (consolidated)</span>
+    <span><strong>Prepared</strong> 27 May 2026</span>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 1: KPI HEADER
+  ============================================================ -->
+  <h2><span class="section-badge">01</span>Key Performance Indicators</h2>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Net Sales</div>
+      <div class="kpi-value">CHF 6,735M</div>
+      <div class="kpi-delta down">&#x25BC; -14.6% vs 2023</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Operating Result</div>
+      <div class="kpi-value">CHF 304M</div>
+      <div class="kpi-delta down">&#x25BC; -74.5% vs 2023</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Net Margin</div>
+      <div class="kpi-value">3.3%</div>
+      <div class="kpi-delta down">&#x25BC; -800 bps vs 2023</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Equity Ratio</div>
+      <div class="kpi-value">87.3%</div>
+      <div class="kpi-delta up">&#x25B2; +120 bps vs 2023</div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 2: INCOME STATEMENT
+  ============================================================ -->
+  <h2><span class="section-badge">02</span>Consolidated Income Statement</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="min-width:260px;">Line Item</th>
+          <th class="num">2024<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">% Sales</th>
+          <th class="num">2023<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">% Sales</th>
+          <th class="num">Change<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">YoY %</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- Net Sales -->
+        <tr class="total">
+          <td class="label-bold">Net Sales</td>
+          <td class="num">6,735</td>
+          <td class="num">100.0%</td>
+          <td class="num">7,888</td>
+          <td class="num">100.0%</td>
+          <td class="num negative">-1,153</td>
+          <td class="num negative">-14.6%</td>
+        </tr>
+        <tr>
+          <td class="indent" style="font-size:0.83rem;color:var(--muted);">Sale of goods</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">6,708</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">—</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">7,864</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">—</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">-1,156</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">-14.7%</td>
+        </tr>
+        <tr>
+          <td class="indent" style="font-size:0.83rem;color:var(--muted);">Rendering of services</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">27</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">—</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">24</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">—</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">+3</td>
+          <td class="num" style="font-size:0.83rem;color:var(--muted);">+12.5%</td>
+        </tr>
+
+        <!-- Other income -->
+        <tr>
+          <td>Other operating income</td>
+          <td class="num">263</td>
+          <td class="num">3.9%</td>
+          <td class="num">136</td>
+          <td class="num">1.7%</td>
+          <td class="num positive">+127</td>
+          <td class="num positive">+93.4%</td>
+        </tr>
+        <tr>
+          <td>Changes in inventories</td>
+          <td class="num">213</td>
+          <td class="num">3.2%</td>
+          <td class="num">687</td>
+          <td class="num">8.7%</td>
+          <td class="num negative">-474</td>
+          <td class="num negative">-69.0%</td>
+        </tr>
+
+        <!-- Cost lines -->
+        <tr>
+          <td>Material purchases</td>
+          <td class="num">-1,345</td>
+          <td class="num">-20.0%</td>
+          <td class="num">-1,864</td>
+          <td class="num">-23.6%</td>
+          <td class="num positive">+519</td>
+          <td class="num positive">+27.8%</td>
+        </tr>
+        <tr>
+          <td>Personnel expense</td>
+          <td class="num">-2,506</td>
+          <td class="num">-37.2%</td>
+          <td class="num">-2,550</td>
+          <td class="num">-32.3%</td>
+          <td class="num positive">+44</td>
+          <td class="num positive">+1.7%</td>
+        </tr>
+        <tr>
+          <td>Depreciation &amp; impairment (PPE)</td>
+          <td class="num">-368</td>
+          <td class="num">-5.5%</td>
+          <td class="num">-346</td>
+          <td class="num">-4.4%</td>
+          <td class="num negative">-22</td>
+          <td class="num negative">-6.4%</td>
+        </tr>
+        <tr>
+          <td>Amortization &amp; impairment (intangibles)</td>
+          <td class="num">-48</td>
+          <td class="num">-0.7%</td>
+          <td class="num">-44</td>
+          <td class="num">-0.6%</td>
+          <td class="num negative">-4</td>
+          <td class="num negative">-9.1%</td>
+        </tr>
+        <tr>
+          <td>Other operating expenses</td>
+          <td class="num">-2,640</td>
+          <td class="num">-39.2%</td>
+          <td class="num">-2,716</td>
+          <td class="num">-34.4%</td>
+          <td class="num positive">+76</td>
+          <td class="num positive">+2.8%</td>
+        </tr>
+        <tr style="font-size:0.82rem;">
+          <td class="indent" style="color:var(--muted);">— Marketing, sales &amp; administration</td>
+          <td class="num" style="color:var(--muted);">-1,051</td>
+          <td class="num" style="color:var(--muted);">—</td>
+          <td class="num" style="color:var(--muted);">-1,204</td>
+          <td class="num" style="color:var(--muted);">—</td>
+          <td class="num" style="color:var(--muted);">+153</td>
+          <td class="num" style="color:var(--muted);">+12.7%</td>
+        </tr>
+        <tr style="font-size:0.82rem;">
+          <td class="indent" style="color:var(--muted);">— Subcontracting &amp; other direct costs</td>
+          <td class="num" style="color:var(--muted);">-353</td>
+          <td class="num" style="color:var(--muted);">—</td>
+          <td class="num" style="color:var(--muted);">-380</td>
+          <td class="num" style="color:var(--muted);">—</td>
+          <td class="num" style="color:var(--muted);">+27</td>
+          <td class="num" style="color:var(--muted);">+7.1%</td>
+        </tr>
+        <tr style="font-size:0.82rem;">
+          <td class="indent" style="color:var(--muted);">— Maintenance, rents &amp; energy</td>
+          <td class="num" style="color:var(--muted);">-1,023</td>
+          <td class="num" style="color:var(--muted);">—</td>
+          <td class="num" style="color:var(--muted);">-1,057</td>
+          <td class="num" style="color:var(--muted);">—</td>
+          <td class="num" style="color:var(--muted);">+34</td>
+          <td class="num" style="color:var(--muted);">+3.2%</td>
+        </tr>
+        <tr style="font-size:0.82rem;">
+          <td class="indent" style="color:var(--muted);">— Other operating expenses</td>
+          <td class="num" style="color:var(--muted);">-213</td>
+          <td class="num" style="color:var(--muted);">—</td>
+          <td class="num" style="color:var(--muted);">-75</td>
+          <td class="num" style="color:var(--muted);">—</td>
+          <td class="num" style="color:var(--rust);">-138</td>
+          <td class="num" style="color:var(--rust);">-184.0%</td>
+        </tr>
+
+        <!-- Operating Result -->
+        <tr class="total">
+          <td class="label-bold">Operating Result</td>
+          <td class="num">304</td>
+          <td class="num">4.5%</td>
+          <td class="num">1,191</td>
+          <td class="num">15.1%</td>
+          <td class="num negative">-887</td>
+          <td class="num negative">-74.5%</td>
+        </tr>
+
+        <!-- Financial result -->
+        <tr>
+          <td>Other financial income and expense</td>
+          <td class="num">44</td>
+          <td class="num">0.6%</td>
+          <td class="num">-36</td>
+          <td class="num">-0.5%</td>
+          <td class="num positive">+80</td>
+          <td class="num positive">n/m</td>
+        </tr>
+        <tr>
+          <td>Interest expense</td>
+          <td class="num">-3</td>
+          <td class="num">—</td>
+          <td class="num">-4</td>
+          <td class="num">—</td>
+          <td class="num positive">+1</td>
+          <td class="num positive">+25.0%</td>
+        </tr>
+        <tr>
+          <td>Share of result from associates &amp; JVs</td>
+          <td class="num">-2</td>
+          <td class="num">—</td>
+          <td class="num">-1</td>
+          <td class="num">—</td>
+          <td class="num negative">-1</td>
+          <td class="num negative">-100.0%</td>
+        </tr>
+
+        <!-- Ordinary Result -->
+        <tr class="subtotal">
+          <td>Ordinary Result</td>
+          <td class="num">343</td>
+          <td class="num">5.1%</td>
+          <td class="num">1,150</td>
+          <td class="num">14.6%</td>
+          <td class="num negative">-807</td>
+          <td class="num negative">-70.2%</td>
+        </tr>
+
+        <tr>
+          <td>Non-operating result</td>
+          <td class="num">2</td>
+          <td class="num">—</td>
+          <td class="num">2</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+        </tr>
+
+        <!-- Result before taxes -->
+        <tr class="subtotal">
+          <td>Result Before Income Taxes</td>
+          <td class="num">345</td>
+          <td class="num">5.1%</td>
+          <td class="num">1,152</td>
+          <td class="num">14.6%</td>
+          <td class="num negative">-807</td>
+          <td class="num negative">-70.1%</td>
+        </tr>
+
+        <tr>
+          <td>Income taxes <span style="font-size:0.78rem;color:var(--muted);">(eff. rate: 36.5% vs 22.7%)</span></td>
+          <td class="num">-126</td>
+          <td class="num">-1.9%</td>
+          <td class="num">-262</td>
+          <td class="num">-3.3%</td>
+          <td class="num positive">+136</td>
+          <td class="num positive">+51.9%</td>
+        </tr>
+
+        <!-- Net Result -->
+        <tr class="total">
+          <td class="label-bold">Net Result</td>
+          <td class="num">219</td>
+          <td class="num">3.3%</td>
+          <td class="num">890</td>
+          <td class="num">11.3%</td>
+          <td class="num negative">-671</td>
+          <td class="num negative">-75.4%</td>
+        </tr>
+        <tr>
+          <td class="indent" style="color:var(--muted);font-size:0.85rem;">Attributable to shareholders</td>
+          <td class="num" style="color:var(--muted);font-size:0.85rem;">193</td>
+          <td class="num">—</td>
+          <td class="num" style="color:var(--muted);font-size:0.85rem;">869</td>
+          <td class="num">—</td>
+          <td class="num" style="color:var(--muted);font-size:0.85rem;">-676</td>
+          <td class="num" style="color:var(--muted);font-size:0.85rem;">-77.8%</td>
+        </tr>
+        <tr>
+          <td class="indent" style="color:var(--muted);font-size:0.85rem;">Attributable to non-controlling interests</td>
+          <td class="num" style="color:var(--muted);font-size:0.85rem;">26</td>
+          <td class="num">—</td>
+          <td class="num" style="color:var(--muted);font-size:0.85rem;">21</td>
+          <td class="num">—</td>
+          <td class="num" style="color:var(--muted);font-size:0.85rem;">+5</td>
+          <td class="num" style="color:var(--muted);font-size:0.85rem;">+23.8%</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Earnings Per Share</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Share Class</th>
+          <th class="num">2024 Basic</th>
+          <th class="num">2024 Diluted</th>
+          <th class="num">2023 Basic</th>
+          <th class="num">2023 Diluted</th>
+          <th class="num">YoY Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Registered shares (CHF)</td>
+          <td class="num">0.75</td>
+          <td class="num">0.75</td>
+          <td class="num">3.35</td>
+          <td class="num">3.35</td>
+          <td class="num negative">-77.6%</td>
+        </tr>
+        <tr>
+          <td>Bearer shares (CHF)</td>
+          <td class="num">3.74</td>
+          <td class="num">3.74</td>
+          <td class="num">16.76</td>
+          <td class="num">16.75</td>
+          <td class="num negative">-77.7%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="signal danger">
+    <div class="signal-title">Effective Tax Rate Spike — Note 27</div>
+    <p>ETR surged from 22.7% (2023) to 36.5% (2024), against a Biel HQ applicable rate of 20.9%. The primary driver: CHF 41M additional tax burden from non-recognition of CHF 863M in unrecognized loss carryforwards across 37 jurisdictions — predominantly in Greater China and loss-making European subsidiaries. The unrecognized carryforward pool grew from CHF 848M (2023) to CHF 952M total, of which only CHF 89M is recognized. Potential tax asset if utilized: CHF 152M.</p>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 3: OPERATING RESULT WATERFALL
+  ============================================================ -->
+  <h2><span class="section-badge">03</span>Operating Result — Bridge 2023 → 2024</h2>
+  <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1rem;">
+    Operating result declined CHF 887M from CHF 1,191M to CHF 304M (-74.5%). The waterfall below decomposes the key drivers. Bar width is proportional to magnitude.
+  </p>
+
+  <div class="waterfall">
+
+    <!-- Starting point -->
+    <div class="waterfall-row">
+      <div class="waterfall-label" style="font-weight:700;">Operating Result 2023</div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar neutral" style="width:100%;"></div>
+      </div>
+      <div class="waterfall-amount" style="color:var(--clay);">CHF 1,191M</div>
+    </div>
+
+    <!-- Revenue decline -->
+    <div class="waterfall-row">
+      <div class="waterfall-label">
+        Revenue decline (Net Sales -CHF 1,153M)<br>
+        <span style="font-size:0.78rem;color:var(--muted);">Greater China -CHF 797M; W&amp;J segment -CHF 1,128M</span>
+      </div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar negative" style="width:100%;"></div>
+      </div>
+      <div class="waterfall-amount negative">-CHF 1,153M</div>
+    </div>
+
+    <!-- Inventory build / changes -->
+    <div class="waterfall-row">
+      <div class="waterfall-label">
+        Lower inventory build (production maintained)<br>
+        <span style="font-size:0.78rem;color:var(--muted);">Changes in inventories: CHF 213M vs CHF 687M</span>
+      </div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar negative" style="width:40%;"></div>
+      </div>
+      <div class="waterfall-amount negative">-CHF 474M</div>
+    </div>
+
+    <!-- Material savings -->
+    <div class="waterfall-row">
+      <div class="waterfall-label">
+        Lower material purchases<br>
+        <span style="font-size:0.78rem;color:var(--muted);">In line with lower production; -CHF 519M vs prior year</span>
+      </div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar positive" style="width:45%;"></div>
+      </div>
+      <div class="waterfall-amount positive">+CHF 519M</div>
+    </div>
+
+    <!-- Personnel savings -->
+    <div class="waterfall-row">
+      <div class="waterfall-label">
+        Personnel cost savings<br>
+        <span style="font-size:0.78rem;color:var(--muted);">Headcount Dec 2024: 32,477 vs 33,602 (Dec 2023)</span>
+      </div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar positive" style="width:4%;"></div>
+      </div>
+      <div class="waterfall-amount positive">+CHF 44M</div>
+    </div>
+
+    <!-- Other opex savings -->
+    <div class="waterfall-row">
+      <div class="waterfall-label">
+        Other operating expenses reduction<br>
+        <span style="font-size:0.78rem;color:var(--muted);">Marketing &amp; admin savings partially offset by "other" spike (+CHF 138M)</span>
+      </div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar positive" style="width:7%;"></div>
+      </div>
+      <div class="waterfall-amount positive">+CHF 76M</div>
+    </div>
+
+    <!-- Depreciation headwind -->
+    <div class="waterfall-row">
+      <div class="waterfall-label">
+        Higher D&amp;A (capex cycle)<br>
+        <span style="font-size:0.78rem;color:var(--muted);">PPE capex CHF 503M; D&amp;A up CHF 26M YoY</span>
+      </div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar negative" style="width:2.5%;"></div>
+      </div>
+      <div class="waterfall-amount negative">-CHF 26M</div>
+    </div>
+
+    <!-- Other operating income tailwind -->
+    <div class="waterfall-row">
+      <div class="waterfall-label">
+        Higher other operating income<br>
+        <span style="font-size:0.78rem;color:var(--muted);">Includes CHF 7M Rivoli disposal gain; various other items</span>
+      </div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar positive" style="width:11%;"></div>
+      </div>
+      <div class="waterfall-amount positive">+CHF 127M</div>
+    </div>
+
+    <!-- End result -->
+    <div class="waterfall-row">
+      <div class="waterfall-label">Operating Result 2024</div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar neutral" style="width:25%;"></div>
+      </div>
+      <div class="waterfall-amount" style="color:var(--clay);">CHF 304M</div>
+    </div>
+
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 4: BALANCE SHEET
+  ============================================================ -->
+  <h2><span class="section-badge">04</span>Consolidated Balance Sheet</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th colspan="5" style="background:var(--slate);color:white;font-size:0.75rem;letter-spacing:0.06em;">ASSETS</th>
+        </tr>
+        <tr>
+          <th style="min-width:220px;">Line Item</th>
+          <th class="num">31.12.2024<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">% Total</th>
+          <th class="num">31.12.2023<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">% Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="subtotal"><td colspan="5" class="label-bold">Current Assets</td></tr>
+        <tr>
+          <td class="indent">Cash and cash equivalents</td>
+          <td class="num">1,103</td>
+          <td class="num">7.9%</td>
+          <td class="num">1,683</td>
+          <td class="num">11.8%</td>
+        </tr>
+        <tr>
+          <td class="indent">Financial assets, securities &amp; derivatives</td>
+          <td class="num">293</td>
+          <td class="num">2.1%</td>
+          <td class="num">380</td>
+          <td class="num">2.7%</td>
+        </tr>
+        <tr>
+          <td class="indent">Trade receivables (net)</td>
+          <td class="num">612</td>
+          <td class="num">4.3%</td>
+          <td class="num">672</td>
+          <td class="num">4.7%</td>
+        </tr>
+        <tr>
+          <td class="indent">Other current assets</td>
+          <td class="num">107</td>
+          <td class="num">0.8%</td>
+          <td class="num">195</td>
+          <td class="num">1.4%</td>
+        </tr>
+        <tr>
+          <td class="indent">Inventories <span style="font-size:0.78rem;color:var(--clay);">&#x26A0; Key audit matter</span></td>
+          <td class="num">7,641</td>
+          <td class="num">54.6%</td>
+          <td class="num">7,309</td>
+          <td class="num">51.4%</td>
+        </tr>
+        <tr>
+          <td class="indent">Prepayments and accrued income</td>
+          <td class="num">250</td>
+          <td class="num">1.8%</td>
+          <td class="num">263</td>
+          <td class="num">1.8%</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Total Current Assets</td>
+          <td class="num">10,006</td>
+          <td class="num">71.5%</td>
+          <td class="num">10,502</td>
+          <td class="num">73.8%</td>
+        </tr>
+
+        <tr class="subtotal"><td colspan="5" class="label-bold">Non-Current Assets</td></tr>
+        <tr>
+          <td class="indent">Property, plant and equipment (net)</td>
+          <td class="num">3,162</td>
+          <td class="num">22.6%</td>
+          <td class="num">3,029</td>
+          <td class="num">21.3%</td>
+        </tr>
+        <tr>
+          <td class="indent">Intangible assets (net)</td>
+          <td class="num">151</td>
+          <td class="num">1.1%</td>
+          <td class="num">153</td>
+          <td class="num">1.1%</td>
+        </tr>
+        <tr>
+          <td class="indent">Investments in associates &amp; JVs</td>
+          <td class="num">34</td>
+          <td class="num">0.2%</td>
+          <td class="num">13</td>
+          <td class="num">0.1%</td>
+        </tr>
+        <tr>
+          <td class="indent">Other non-current assets</td>
+          <td class="num">186</td>
+          <td class="num">1.3%</td>
+          <td class="num">84</td>
+          <td class="num">0.6%</td>
+        </tr>
+        <tr>
+          <td class="indent">Deferred tax assets</td>
+          <td class="num">453</td>
+          <td class="num">3.3%</td>
+          <td class="num">448</td>
+          <td class="num">3.1%</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Total Non-Current Assets</td>
+          <td class="num">3,986</td>
+          <td class="num">28.5%</td>
+          <td class="num">3,727</td>
+          <td class="num">26.2%</td>
+        </tr>
+        <tr class="total">
+          <td class="label-bold">Total Assets</td>
+          <td class="num">13,992</td>
+          <td class="num">100.0%</td>
+          <td class="num">14,229</td>
+          <td class="num">100.0%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap" style="margin-top:1.5rem;">
+    <table>
+      <thead>
+        <tr>
+          <th colspan="5" style="background:var(--slate);color:white;font-size:0.75rem;letter-spacing:0.06em;">EQUITY AND LIABILITIES</th>
+        </tr>
+        <tr>
+          <th style="min-width:220px;">Line Item</th>
+          <th class="num">31.12.2024<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">% Total</th>
+          <th class="num">31.12.2023<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">% Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="subtotal"><td colspan="5" class="label-bold">Current Liabilities</td></tr>
+        <tr>
+          <td class="indent">Financial debts and derivative instruments</td>
+          <td class="num">20</td>
+          <td class="num">0.1%</td>
+          <td class="num">75</td>
+          <td class="num">0.5%</td>
+        </tr>
+        <tr>
+          <td class="indent">Trade payables</td>
+          <td class="num">270</td>
+          <td class="num">1.9%</td>
+          <td class="num">317</td>
+          <td class="num">2.2%</td>
+        </tr>
+        <tr>
+          <td class="indent">Other liabilities</td>
+          <td class="num">213</td>
+          <td class="num">1.5%</td>
+          <td class="num">164</td>
+          <td class="num">1.2%</td>
+        </tr>
+        <tr>
+          <td class="indent">Provisions</td>
+          <td class="num">95</td>
+          <td class="num">0.7%</td>
+          <td class="num">97</td>
+          <td class="num">0.7%</td>
+        </tr>
+        <tr>
+          <td class="indent">Accrued expenses</td>
+          <td class="num">424</td>
+          <td class="num">3.0%</td>
+          <td class="num">567</td>
+          <td class="num">4.0%</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Total Current Liabilities</td>
+          <td class="num">1,022</td>
+          <td class="num">7.3%</td>
+          <td class="num">1,220</td>
+          <td class="num">8.6%</td>
+        </tr>
+
+        <tr class="subtotal"><td colspan="5" class="label-bold">Non-Current Liabilities</td></tr>
+        <tr>
+          <td class="indent">Financial debts (long-term)</td>
+          <td class="num">2</td>
+          <td class="num">0.0%</td>
+          <td class="num">2</td>
+          <td class="num">0.0%</td>
+        </tr>
+        <tr>
+          <td class="indent">Deferred tax liabilities</td>
+          <td class="num">507</td>
+          <td class="num">3.6%</td>
+          <td class="num">516</td>
+          <td class="num">3.6%</td>
+        </tr>
+        <tr>
+          <td class="indent">Retirement benefit obligations</td>
+          <td class="num">44</td>
+          <td class="num">0.3%</td>
+          <td class="num">42</td>
+          <td class="num">0.3%</td>
+        </tr>
+        <tr>
+          <td class="indent">Provisions (non-current)</td>
+          <td class="num">71</td>
+          <td class="num">0.5%</td>
+          <td class="num">64</td>
+          <td class="num">0.5%</td>
+        </tr>
+        <tr>
+          <td class="indent">Accrued expenses (non-current)</td>
+          <td class="num">129</td>
+          <td class="num">0.9%</td>
+          <td class="num">127</td>
+          <td class="num">0.9%</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Total Non-Current Liabilities</td>
+          <td class="num">753</td>
+          <td class="num">5.4%</td>
+          <td class="num">751</td>
+          <td class="num">5.3%</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Total Liabilities</td>
+          <td class="num">1,775</td>
+          <td class="num">12.7%</td>
+          <td class="num">1,971</td>
+          <td class="num">13.9%</td>
+        </tr>
+
+        <tr class="subtotal"><td colspan="5" class="label-bold">Equity</td></tr>
+        <tr>
+          <td class="indent">Share capital</td>
+          <td class="num">118</td>
+          <td class="num">—</td>
+          <td class="num">118</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td class="indent">Capital reserves</td>
+          <td class="num">-978</td>
+          <td class="num">—</td>
+          <td class="num">-971</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td class="indent">Treasury shares</td>
+          <td class="num">-132</td>
+          <td class="num">—</td>
+          <td class="num">-114</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td class="indent">Goodwill recognized in equity <span style="font-size:0.78rem;color:var(--muted);">(Swiss GAAP FER)</span></td>
+          <td class="num">-1,416</td>
+          <td class="num">—</td>
+          <td class="num">-1,352</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td class="indent">Translation differences</td>
+          <td class="num">-754</td>
+          <td class="num">—</td>
+          <td class="num">-900</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td class="indent">Retained earnings</td>
+          <td class="num">15,274</td>
+          <td class="num">—</td>
+          <td class="num">15,416</td>
+          <td class="num">—</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Equity — Swatch Group Ltd Shareholders</td>
+          <td class="num">12,112</td>
+          <td class="num">86.6%</td>
+          <td class="num">12,197</td>
+          <td class="num">85.7%</td>
+        </tr>
+        <tr>
+          <td class="indent">Non-controlling interests</td>
+          <td class="num">105</td>
+          <td class="num">0.7%</td>
+          <td class="num">61</td>
+          <td class="num">0.4%</td>
+        </tr>
+        <tr class="total">
+          <td class="label-bold">Total Equity</td>
+          <td class="num">12,217</td>
+          <td class="num">87.3%</td>
+          <td class="num">12,258</td>
+          <td class="num">86.1%</td>
+        </tr>
+        <tr class="total">
+          <td class="label-bold">Total Equity and Liabilities</td>
+          <td class="num">13,992</td>
+          <td class="num">100.0%</td>
+          <td class="num">14,229</td>
+          <td class="num">100.0%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="signal warn">
+    <div class="signal-title">Inventory Build Risk — Note 7</div>
+    <p>Inventories rose +CHF 332M (+4.5%) to CHF 7,641M despite net sales declining -14.6%. Finished goods alone grew from CHF 3,565M to CHF 3,918M (+CHF 353M). The Group is deliberately maintaining production capacity — a strategic choice — but Days Inventory Outstanding is rising sharply. If the Chinese consumer recovery is delayed into 2026, write-down risk on CHF 7.6B of inventory is material. PwC identified inventory valuation as the sole Key Audit Matter; additional write-downs in 2024 totalled CHF 47M (CHF 39M net). Inventories represent 54.6% of total assets.</p>
+  </div>
+
+  <div class="signal warn">
+    <div class="signal-title">Operating Lease Off-Balance-Sheet Exposure — Note 28</div>
+    <p>CHF 2,122M in total non-cancellable operating lease commitments (2023: CHF 1,958M), predominantly retail store contracts. Under IFRS 16 equivalent treatment, this would add approximately CHF 1.7–1.9B to reported debt and right-of-use assets — increasing leverage ratios significantly. Leasing costs recognized in 2024: CHF 551M. Additionally, other irrevocable commitments grew from CHF 502M (2023) to CHF 730M (+45.4%), mainly marketing, sponsoring, and capex commitments. Swiss GAAP FER does not require IFRS 16-style recognition; these commitments remain off-balance-sheet.</p>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 5: CASH FLOW STATEMENT
+  ============================================================ -->
+  <h2><span class="section-badge">05</span>Consolidated Statement of Cash Flows</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="min-width:300px;">Line Item</th>
+          <th class="num">2024<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">2023<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+          <th class="num">Change<br><span style="font-weight:400;color:var(--muted);">CHF m</span></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- Operating -->
+        <tr class="subtotal"><td colspan="4" class="label-bold">Operating Activities</td></tr>
+        <tr>
+          <td class="indent">Net result</td>
+          <td class="num">219</td>
+          <td class="num">890</td>
+          <td class="num negative">-671</td>
+        </tr>
+        <tr>
+          <td class="indent">Share of result from associates &amp; JVs</td>
+          <td class="num">2</td>
+          <td class="num">1</td>
+          <td class="num positive">+1</td>
+        </tr>
+        <tr>
+          <td class="indent">Income taxes (add-back)</td>
+          <td class="num">126</td>
+          <td class="num">262</td>
+          <td class="num negative">-136</td>
+        </tr>
+        <tr>
+          <td class="indent">Depreciation and amortization</td>
+          <td class="num">414</td>
+          <td class="num">390</td>
+          <td class="num positive">+24</td>
+        </tr>
+        <tr>
+          <td class="indent">Impairment</td>
+          <td class="num">2</td>
+          <td class="num">—</td>
+          <td class="num">+2</td>
+        </tr>
+        <tr>
+          <td class="indent">Changes in provisions &amp; retirement</td>
+          <td class="num">4</td>
+          <td class="num">16</td>
+          <td class="num negative">-12</td>
+        </tr>
+        <tr>
+          <td class="indent">Gains/losses on sale of non-current assets</td>
+          <td class="num">1</td>
+          <td class="num">-2</td>
+          <td class="num positive">+3</td>
+        </tr>
+        <tr>
+          <td class="indent">Fair value gains/losses on securities</td>
+          <td class="num">4</td>
+          <td class="num">-12</td>
+          <td class="num positive">+16</td>
+        </tr>
+        <tr>
+          <td class="indent">Employee stock option expense</td>
+          <td class="num">7</td>
+          <td class="num">8</td>
+          <td class="num negative">-1</td>
+        </tr>
+        <tr>
+          <td class="indent">Other non-cash items</td>
+          <td class="num">-39</td>
+          <td class="num">81</td>
+          <td class="num negative">-120</td>
+        </tr>
+        <tr>
+          <td class="indent">Change in trade receivables</td>
+          <td class="num">71</td>
+          <td class="num">72</td>
+          <td class="num negative">-1</td>
+        </tr>
+        <tr>
+          <td class="indent">Change in inventories</td>
+          <td class="num">-220</td>
+          <td class="num">-698</td>
+          <td class="num positive">+478</td>
+        </tr>
+        <tr>
+          <td class="indent">Change in other current assets &amp; prepayments</td>
+          <td class="num">32</td>
+          <td class="num">-73</td>
+          <td class="num positive">+105</td>
+        </tr>
+        <tr>
+          <td class="indent">Change in trade payables</td>
+          <td class="num">-30</td>
+          <td class="num">25</td>
+          <td class="num negative">-55</td>
+        </tr>
+        <tr>
+          <td class="indent">Change in other liabilities &amp; accrued expenses</td>
+          <td class="num">-60</td>
+          <td class="num">26</td>
+          <td class="num negative">-86</td>
+        </tr>
+        <tr>
+          <td class="indent">Dividends from associates &amp; JVs</td>
+          <td class="num">2</td>
+          <td class="num">1</td>
+          <td class="num positive">+1</td>
+        </tr>
+        <tr>
+          <td class="indent">Income tax paid</td>
+          <td class="num">-202</td>
+          <td class="num">-228</td>
+          <td class="num positive">+26</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Cash Flow from Operating Activities</td>
+          <td class="num">333</td>
+          <td class="num">615</td>
+          <td class="num negative">-282</td>
+        </tr>
+
+        <!-- Free Cash Flow highlight -->
+        <tr style="background:rgba(120,140,93,0.06);">
+          <td style="font-weight:700;color:var(--olive);padding-left:1rem;">
+            Free Cash Flow (Operating CF - PPE Capex)
+          </td>
+          <td class="num" style="color:var(--olive);font-weight:700;">-170</td>
+          <td class="num" style="color:var(--olive);font-weight:700;">-115</td>
+          <td class="num negative">-55</td>
+        </tr>
+        <tr style="font-size:0.8rem;background:rgba(120,140,93,0.03);">
+          <td colspan="4" style="color:var(--muted);padding-left:2rem;font-style:italic;">
+            Operating CF CHF 333M less PPE capex CHF -503M = Free Cash Flow CHF -170M (2023: CHF 615M - CHF 730M = CHF -115M)
+          </td>
+        </tr>
+
+        <!-- Investing -->
+        <tr class="subtotal"><td colspan="4" class="label-bold">Investing Activities</td></tr>
+        <tr>
+          <td class="indent">Investments in PPE (capex)</td>
+          <td class="num">-503</td>
+          <td class="num">-730</td>
+          <td class="num positive">+227</td>
+        </tr>
+        <tr>
+          <td class="indent">Proceeds from sale of PPE</td>
+          <td class="num">3</td>
+          <td class="num">20</td>
+          <td class="num negative">-17</td>
+        </tr>
+        <tr>
+          <td class="indent">Government grants related to assets</td>
+          <td class="num">1</td>
+          <td class="num">—</td>
+          <td class="num">+1</td>
+        </tr>
+        <tr>
+          <td class="indent">Investments in intangible assets</td>
+          <td class="num">-46</td>
+          <td class="num">-55</td>
+          <td class="num positive">+9</td>
+        </tr>
+        <tr>
+          <td class="indent">Proceeds from sale of intangibles</td>
+          <td class="num">2</td>
+          <td class="num">1</td>
+          <td class="num positive">+1</td>
+        </tr>
+        <tr>
+          <td class="indent">Investments in other non-current assets</td>
+          <td class="num">-19</td>
+          <td class="num">-18</td>
+          <td class="num negative">-1</td>
+        </tr>
+        <tr>
+          <td class="indent">Proceeds from other non-current assets</td>
+          <td class="num">9</td>
+          <td class="num">12</td>
+          <td class="num negative">-3</td>
+        </tr>
+        <tr>
+          <td class="indent">Acquisition of subsidiaries (net of cash)</td>
+          <td class="num">—</td>
+          <td class="num">-2</td>
+          <td class="num positive">+2</td>
+        </tr>
+        <tr>
+          <td class="indent">Repurchase of non-controlling interests</td>
+          <td class="num">-6</td>
+          <td class="num">—</td>
+          <td class="num negative">-6</td>
+        </tr>
+        <tr>
+          <td class="indent">Investments in current financial assets &amp; securities</td>
+          <td class="num">-241</td>
+          <td class="num">-439</td>
+          <td class="num positive">+198</td>
+        </tr>
+        <tr>
+          <td class="indent">Proceeds from current financial assets &amp; securities</td>
+          <td class="num">330</td>
+          <td class="num">443</td>
+          <td class="num negative">-113</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Cash Flow from Investing Activities</td>
+          <td class="num">-470</td>
+          <td class="num">-768</td>
+          <td class="num positive">+298</td>
+        </tr>
+
+        <!-- Financing -->
+        <tr class="subtotal"><td colspan="4" class="label-bold">Financing Activities</td></tr>
+        <tr>
+          <td class="indent">Dividends paid to shareholders</td>
+          <td class="num">-335</td>
+          <td class="num">-311</td>
+          <td class="num negative">-24</td>
+        </tr>
+        <tr>
+          <td class="indent">Dividends paid to non-controlling interests</td>
+          <td class="num">-23</td>
+          <td class="num">-17</td>
+          <td class="num negative">-6</td>
+        </tr>
+        <tr>
+          <td class="indent">Purchase of treasury shares</td>
+          <td class="num">-50</td>
+          <td class="num">—</td>
+          <td class="num negative">-50</td>
+        </tr>
+        <tr>
+          <td class="indent">Sale of treasury shares</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td class="indent">Change in non-current financial debts</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td class="indent">Change in current financial debts</td>
+          <td class="num">-3</td>
+          <td class="num">—</td>
+          <td class="num negative">-3</td>
+        </tr>
+        <tr class="subtotal">
+          <td class="label-bold">Cash Flow from Financing Activities</td>
+          <td class="num">-410</td>
+          <td class="num">-327</td>
+          <td class="num negative">-83</td>
+        </tr>
+
+        <!-- Reconciliation -->
+        <tr>
+          <td>Net impact of FX rate differences on cash</td>
+          <td class="num">28</td>
+          <td class="num">-80</td>
+          <td class="num positive">+108</td>
+        </tr>
+        <tr class="total">
+          <td class="label-bold">Change in Cash and Cash Equivalents</td>
+          <td class="num negative">-519</td>
+          <td class="num negative">-560</td>
+          <td class="num positive">+41</td>
+        </tr>
+        <tr>
+          <td>Balance at beginning of year</td>
+          <td class="num">1,616</td>
+          <td class="num">2,176</td>
+          <td class="num negative">-560</td>
+        </tr>
+        <tr class="total">
+          <td class="label-bold">Balance at End of Year (net cash)</td>
+          <td class="num">1,097</td>
+          <td class="num">1,616</td>
+          <td class="num negative">-519</td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);font-size:0.83rem;" class="indent">Balance sheet cash (incl. overdrafts)</td>
+          <td class="num" style="color:var(--muted);font-size:0.83rem;">1,103</td>
+          <td class="num" style="color:var(--muted);font-size:0.83rem;">1,683</td>
+          <td class="num negative" style="font-size:0.83rem;">-580</td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);font-size:0.83rem;" class="indent">Net liquidity (cash + securities - current fin. debts)</td>
+          <td class="num" style="color:var(--muted);font-size:0.83rem;">1,376</td>
+          <td class="num" style="color:var(--muted);font-size:0.83rem;">1,988</td>
+          <td class="num negative" style="font-size:0.83rem;">-612</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 6: SEGMENT ANALYSIS
+  ============================================================ -->
+  <h2><span class="section-badge">06</span>Segment Analysis</h2>
+  <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1rem;">
+    Swatch Group operates two reporting segments. The Watches &amp; Jewelry segment represents 95.3% of external revenue. Corporate and eliminations account for the balance.
+  </p>
+
+  <div class="segment-grid">
+
+    <!-- Watches & Jewelry -->
+    <div class="segment-card">
+      <div class="segment-name">Watches &amp; Jewelry</div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Net Sales 2024</span>
+        <span class="segment-stat-value">CHF 6,418M</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Net Sales 2023</span>
+        <span class="segment-stat-value">CHF 7,546M</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">YoY Sales Change</span>
+        <span class="segment-stat-value down">-14.9%</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Operating Result 2024</span>
+        <span class="segment-stat-value">CHF 410M</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Operating Result 2023</span>
+        <span class="segment-stat-value">CHF 1,298M</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Operating Margin 2024</span>
+        <span class="segment-stat-value down">6.4%</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Operating Margin 2023</span>
+        <span class="segment-stat-value">17.2%</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Margin Change</span>
+        <span class="segment-stat-value down">-1,080 bps</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Key Driver</span>
+        <span class="segment-stat-value" style="font-family:var(--sans);font-size:0.78rem;color:var(--rust);">Greater China -30% demand shock</span>
+      </div>
+    </div>
+
+    <!-- Electronic Systems -->
+    <div class="segment-card">
+      <div class="segment-name">Electronic Systems</div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Net Sales 2024</span>
+        <span class="segment-stat-value">CHF 330M</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Net Sales 2023</span>
+        <span class="segment-stat-value">CHF 359M</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">YoY Sales Change</span>
+        <span class="segment-stat-value down">-8.1%</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Operating Result 2024</span>
+        <span class="segment-stat-value">CHF 12M</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Operating Result 2023</span>
+        <span class="segment-stat-value">CHF 27M</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Operating Margin 2024</span>
+        <span class="segment-stat-value down">3.6%</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Operating Margin 2023</span>
+        <span class="segment-stat-value">7.5%</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Margin Change</span>
+        <span class="segment-stat-value down">-390 bps</span>
+      </div>
+      <div class="segment-stat">
+        <span class="segment-stat-label">Recovery Signal</span>
+        <span class="segment-stat-value up" style="font-family:var(--sans);font-size:0.78rem;">Order book +25% YoY</span>
+      </div>
+    </div>
+
+  </div>
+
+  <h4>Segment Revenue Contribution Table</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Segment</th>
+          <th class="num">2024 Net Sales</th>
+          <th class="num">2024 Op. Result</th>
+          <th class="num">2024 Margin</th>
+          <th class="num">2023 Net Sales</th>
+          <th class="num">2023 Op. Result</th>
+          <th class="num">2023 Margin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Watches &amp; Jewelry</td>
+          <td class="num">6,418</td>
+          <td class="num">410</td>
+          <td class="num">6.4%</td>
+          <td class="num">7,546</td>
+          <td class="num">1,298</td>
+          <td class="num">17.2%</td>
+        </tr>
+        <tr>
+          <td>Electronic Systems</td>
+          <td class="num">330</td>
+          <td class="num">12</td>
+          <td class="num">3.6%</td>
+          <td class="num">359</td>
+          <td class="num">27</td>
+          <td class="num">7.5%</td>
+        </tr>
+        <tr>
+          <td>Corporate</td>
+          <td class="num">8</td>
+          <td class="num">-118</td>
+          <td class="num">—</td>
+          <td class="num">9</td>
+          <td class="num">-134</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td>Eliminations</td>
+          <td class="num">-21</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">-26</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+        </tr>
+        <tr class="total">
+          <td class="label-bold">Total Group</td>
+          <td class="num">6,735</td>
+          <td class="num">304</td>
+          <td class="num">4.5%</td>
+          <td class="num">7,888</td>
+          <td class="num">1,191</td>
+          <td class="num">15.1%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ============================================================
+       SECTION 7: KEY NOTES HIGHLIGHTS
+  ============================================================ -->
+  <h2><span class="section-badge">07</span>Key Notes Highlights</h2>
+
+  <div class="signal warn">
+    <div class="signal-title">Note 27 — Effective Tax Rate Spike (22.7% → 36.5%)</div>
+    <p>The 2024 effective tax rate of 36.5% is 15.6 percentage points above the applicable rate of 20.9% and a 13.8 percentage point increase from 2023. The primary driver is non-recognition of CHF 41M in loss carryforward deferred tax assets. Total unrecognized carryforward losses reached CHF 863M (2023: CHF 726M) — a growing pool reflecting loss-making subsidiaries across the Group's 37 tax jurisdictions. These losses have an estimated unrecognized deferred tax value of CHF 152M. BEPS 2.0 global minimum tax came into force 1 January 2024; additional top-up taxes were less than CHF 1M in 2024, but Irish and Middle East operations may face material impacts from 2025.</p>
+  </div>
+
+  <div class="signal danger">
+    <div class="signal-title">Note 7 — Inventory Risk: CHF 7,641M at 54.6% of Total Assets</div>
+    <p>Inventories remain the single largest balance sheet item and the sole key audit matter. Despite a -14.6% revenue decline, inventory grew +CHF 332M to CHF 7,641M. Finished goods make up CHF 3,918M (51.3% of total inventory). The Group wrote down CHF 47M of additional inventory in 2024 (net -CHF 39M after reversals), down slightly from CHF 53M in 2023. The deliberate capacity-maintenance strategy is coherent but heightens impairment risk. A China recovery delay of more than 12 months would likely require accelerated write-downs. PwC concluded management's approach is "reasonable" but this warrants ongoing monitoring. Days Inventory Outstanding is estimated to exceed 400 days based on 2024 COGS.</p>
+  </div>
+
+  <div class="signal ok">
+    <div class="signal-title">Note 3 — Unqualified Audit Opinion / Clean Post-Balance Sheet</div>
+    <p>PricewaterhouseCoopers AG (Basel) issued an unqualified opinion on the consolidated financial statements as at 31 December 2024, approved by the Board on 5 March 2025. Auditor in charge: Thomas Brüderlin and Tobias Handschin. Audit scope: 70 reporting units across 30 countries, covering more than 85% of Group net sales. Group materiality: CHF 40M. Parent company (Swatch Group Ltd) also received an unqualified opinion with CHF 35M materiality. Note 3 confirms no significant events occurred after the balance sheet date. The next shareholder approval milestone is the Annual General Meeting of 21 May 2025.</p>
+  </div>
+
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <p><strong>Swatch Group AG — Consolidated Financial Statements 2024</strong> — Prepared for financial audit course purposes only. All figures sourced from the Swatch Group 2024 Annual Report (approved 5 March 2025). Reporting standard: Swiss GAAP FER. Currency: CHF million. Auditor: PricewaterhouseCoopers AG, Basel — unqualified opinion. This document is a teaching aid and does not constitute investment advice.</p>
+    <p style="margin-top:0.5rem;">Report prepared: 27 May 2026 &nbsp;|&nbsp; Albert School — S2 Business / Financial Audit</p>
+  </footer>
+
+</body>
+</html>
